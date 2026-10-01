@@ -1,0 +1,18 @@
+box {
+    width: 100%; /*alto*/
+    height: 100%; /*ancho*/
+    background: hsl(210, 40%, 85%); /*color*/
+    margin: 20px; /*espaciado*/
+    margin-left: 100px;
+    text-align: center;
+    border-top: 2px solid hsl(210, 40%, 45%);
+    color: hsl(210, 40%, 45%);
+    font-family: sans-serif;
+    font-weight: bold;
+
+}
+
+/*RGB SIGNIFICA: RED, GREEN BLUE. CADA UNO TIENE 256, SE MULTIPLICAN 256 POR CADA UNO Y SON MAS DE 16 MILLONES DE POSIBILIDADES*/
+/*RGBA Es de alfa para opacidad normas*/
+/*RGB SIGNIFICA: RED, GREEN BLUE. CADA UNO TIENE 256, van del 0 al 255*/
+/*RGB, cada uno es 256, es como un balde, podemos colocar un poco del RED con el BLUE en una caneca para hacer un color */

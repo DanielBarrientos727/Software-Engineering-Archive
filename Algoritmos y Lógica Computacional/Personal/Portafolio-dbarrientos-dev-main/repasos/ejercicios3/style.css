@@ -1,0 +1,23 @@
+div {
+  background: #afb5b9;
+  padding: 20mm;
+  font-family: sans-serif;
+  border-left: 5px solid #999;
+}
+
+
+/*medidas fisicas: in, mm, cm, son para imprimir por ejemplo*/
+h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+span {
+  color: #999;
+  font-size: 16px;
+  font-weight: 100px;
+}
+
+p {
+  color: #555;
+}

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The KernelGarden</title>
+  <meta name="description" content="The KernelGarden: grupo de desarrolladores de ingeniería de software. Lanzamos videojuegos bajo The KernelGames." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&family=Special+Elite&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="img/logo.jpg" />
+
+  <link rel="stylesheet" href="css/main.css" />
+
+
+</head>
+<body>
+
+  <!-- Cursor personalizado -->
+  <div id="cursor-dot"  aria-hidden="true"></div>
+  <div id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- Barra de progreso de scroll -->
+  <div id="scroll-bar"  aria-hidden="true"></div>
+
+  <!-- Botón volver arriba -->
+  <button id="back-top" aria-label="Volver al inicio" title="Volver arriba">▲</button>
+
+  <!-- ═══════════════════════════════════════
+       BOOT SCREEN
+  ═══════════════════════════════════════ -->
+  <div id="boot-screen" role="presentation" aria-hidden="true">
+    <div class="boot-line"      style="animation-delay:.05s">KernelGarden OS v1.0 — cargando módulos...</div>
+    <div class="boot-line ok"   style="animation-delay:.22s">[ OK ] Entorno de desarrollo: inicializado</div>
+    <div class="boot-line ok"   style="animation-delay:.40s">[ OK ] Repositorio KernelGames: conectado</div>
+    <div class="boot-line ok"   style="animation-delay:.58s">[ OK ] Pangolin: The Lost Cap — rama dev</div>
+    <div class="boot-line warn" style="animation-delay:.76s">[ !! ] CafeBinario: docs incompletas — PR abierto</div>
+    <div class="boot-line ok"   style="animation-delay:.94s">[ OK ] 6 devs online — Quindío, Colombia</div>
+    <div class="boot-line"      style="animation-delay:1.08s">Montando interfaz...</div>
+    <div class="boot-bar-wrap" aria-hidden="true"><div class="boot-bar"></div></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       NAV
+  ═══════════════════════════════════════ -->
+  <nav class="nav" aria-label="Principal">
+    <a href="#hero" class="logo">[ KernelGarden ]</a>
+
+    <button class="nav-toggle" aria-label="Menú" aria-expanded="false" aria-controls="nav-menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-links" id="nav-menu" role="list">
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#kernelgames">KernelGames</a></li>
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#extras">Extras</a></li>
+      <li><a href="#foro">Foro</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+
+    <span class="nav-status" aria-label="Sistema en línea">ONLINE</span>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════ -->
+  <header id="hero">
+    <div class="hero-img" aria-hidden="true"></div>
+
+    <div class="hero-inner">
+      <p class="hero-prompt">
+        <span class="sym">kernel@garden</span>:~$ ./bienvenida.sh
+      </p>
+
+      <h1>THE KERNELGARDEN</h1>
+
+      <!-- subtitulo: el JS escribe el texto; el cursor es un span separado -->
+      <p class="subtitulo" aria-label="Un jardín donde seis ingenieros construyen programas, videojuegos, seguridad e IA — desde el Quindío.">
+        <span class="subtitulo-text"></span><span class="cursor-blink" aria-hidden="true"></span>
+      </p>
+
+      <div class="kg-sello">
+        ▸ SELLO DE VIDEOJUEGOS:&nbsp;<strong>THE KERNELGAMES</strong>
+      </div>
+
+      <div class="btn-group">
+        <a href="#kernelgames" class="btn">Ver KernelGames</a>
+        <a href="https://github.com/dbarrientos-dev/The-KernelGames" class="btn sec" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════
+       NOSOTROS
+  ═══════════════════════════════════════ -->
+  <section id="nosotros">
+    <div class="container">
+
+      <div class="sec-head reveal">
+        <span class="sec-tag">el_grupo</span>
+        <p class="sec-titulo">El Grupo</p>
+        <div class="sec-linea" aria-hidden="true"></div>
+      </div>
+
+      <p class="intro reveal d1">
+        Somos seis amigos y compañeros de ingeniería de software en la CUE AVH, Quindío.
+        <strong style="color:var(--dorado-claro)">The KernelGarden</strong> es nuestro espacio de desarrollo y comunidad.
+        Bajo el sello <strong style="color:var(--albaricoque)">The KernelGames</strong> publicamos nuestros videojuegos indie.
+        Dos nombres, un mismo equipo.
+      </p>
+
+      <img
+        src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=900&q=80&auto=format&fit=crop"
+        alt="Equipo programando"
+        class="img-decorativa reveal d2"
+        loading="lazy"
+      />
+
+      <!-- Stats — el JS anima los números desde 0 -->
+      <div class="stats-row reveal d2" aria-label="Estadísticas del equipo">
+        <div class="stat-item">
+          <span class="stat-num" data-target="6">0</span>
+          <span class="stat-label">Devs</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num" data-target="3">0</span>
+          <span class="stat-label">Proyectos</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num" data-target="1" data-suffix="°">0</span>
+          <span class="stat-label">Semestre</span>
+        </div>
+      </div>
+
+      <!-- Equipo -->
+      <div class="equipo-grid" role="list">
+        <article class="card miembro reveal d1" role="listitem">
+          <div class="avatar-wrap">
+            <img class="avatar" src="img/1.jpg" alt="Daniel" loading="lazy" />
+            <span class="avatar-ring" aria-hidden="true"></span>
+          </div>
+          <h3>Daniel</h3>
+          <span class="rol">Líder · Técnico Software · Rust</span>
+        </article>
+        <article class="card miembro reveal d2" role="listitem">
+          <div class="avatar-wrap">
+            <img class="avatar" src="img/3.jpg" alt="Santiago" loading="lazy" />
+            <span class="avatar-ring" aria-hidden="true"></span>
+          </div>
+          <h3>Santiago</h3>
+          <span class="rol">Estética · Diseño · UI/UX</span>
+        </article>
+        <article class="card miembro reveal d3" role="listitem">
+          <div class="avatar-wrap">
+            <img class="avatar" src="img/2.jpg" alt="Juan" loading="lazy" />
+            <span class="avatar-ring" aria-hidden="true"></span>
+          </div>
+          <h3>Juan</h3>
+          <span class="rol">Dev · Ciberseguridad · Servidor</span>
+        </article>
+        <article class="card miembro reveal d4" role="listitem">
+          <div class="avatar-wrap">
+            <img class="avatar" src="img/4.jpg" alt="Miguel" loading="lazy" />
+            <span class="avatar-ring" aria-hidden="true"></span>
+          </div>
+          <h3>Miguel</h3>
+          <span class="rol">QA Tester · Narrativa · Docs</span>
+        </article>
+        <article class="card miembro reveal d5" role="listitem">
+          <div class="avatar-wrap">
+            <img class="avatar" src="img/5.jpg" alt="Jeshua" loading="lazy" />
+            <span class="avatar-ring" aria-hidden="true"></span>
+          </div>
+          <h3>Jeshua</h3>
+          <span class="rol">Dev · Algoritmos · Bajo nivel</span>
+        </article>
+        <article class="card miembro reveal d6" role="listitem">
+          <div class="avatar-wrap">
+            <img class="avatar" src="img/6.jpg" alt="David" loading="lazy" />
+            <span class="avatar-ring" aria-hidden="true"></span>
+          </div>
+          <h3>David</h3>
+          <span class="rol">Música · Sistemas interactivos</span>
+        </article>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       THE KERNELGAMES
+  ═══════════════════════════════════════ -->
+  <section id="kernelgames" class="bg-alt">
+    <div class="container">
+
+      <div class="sec-head reveal">
+        <span class="sec-tag">the_kernelgames</span>
+        <p class="sec-titulo">The KernelGames</p>
+        <div class="sec-linea" aria-hidden="true"></div>
+      </div>
+
+      <div class="kg-bloque reveal d1">
+        <span class="kg-bloque-logo" aria-hidden="true">KG</span>
+        <div>
+          <p class="kg-bloque-titulo">THE KERNELGAMES — sello indie</p>
+          <p>
+            Todo juego que construye The KernelGarden se publica bajo este sello.
+            Empezamos con HTML, CSS y Phaser 3. No somos grandes — pero somos reales.
+          </p>
+          <a href="https://github.com/dbarrientos-dev/The-KernelGames"
+             class="btn" style="margin-top:16px;font-size:.44rem;"
+             target="_blank" rel="noopener">Repositorio ↗</a>
+        </div>
+      </div>
+
+      <p class="dev-tag reveal d2">Juego en desarrollo</p>
+
+      <article class="card flagship reveal d3">
+        <img src="img/pag3.jpeg" alt="Pangolin: The Lost Cap" class="flagship-img" loading="lazy" />
+        <div class="proyecto-contenido" style="flex:1;min-width:220px;">
+          <p class="flagship-badge">FLAGSHIP ★</p>
+          <h3 style="font-family:var(--fp);font-size:.48rem;color:var(--dorado);margin-bottom:12px;line-height:1.8;">
+            Pangolin: The Lost Cap
+          </h3>
+          <p>
+            Juego de plataformas indie nacido en el Quindío. Un pangolín con actitud Sonic
+            recorre mundos inspirados en Odyssey. Física arcade, cámara dinámica, arte propio.
+            Hecho con Phaser 3 y mucho café.
+          </p>
+          <div class="tags" style="margin-top:14px;">
+            <span class="tag">Phaser 3</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">HTML5 Canvas</span>
+            <span class="tag">CSS</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       PROYECTOS
+  ═══════════════════════════════════════ -->
+  <section id="proyectos">
+    <div class="container">
+
+      <div class="sec-head reveal">
+        <span class="sec-tag">proyectos_del_jardin</span>
+        <p class="sec-titulo">Proyectos del Jardín</p>
+        <div class="sec-linea" aria-hidden="true"></div>
+      </div>
+
+      <p class="intro reveal d1">Todo lo que construimos: juegos, wikis, herramientas y experimentos.</p>
+
+      <div class="proyectos-grid">
+        <article class="card proyecto-card reveal d1">
+          <div class="proyecto-img-wrap">
+            <img src="img/pag4.jpeg" alt="CafeBinario" class="proyecto-img" loading="lazy" />
+            <div class="proyecto-overlay" aria-hidden="true"></div>
+          </div>
+          <div class="proyecto-contenido">
+            <h3>CafeBinario</h3>
+            <p>Wiki técnica FOSS para aprender computación real, desde fundamentos hasta investigación avanzada.</p>
+            <div class="tags">
+              <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card proyecto-card reveal d2">
+          <div class="proyecto-img-wrap">
+            <img src="img/pag3.jpeg" alt="Pangolin: The Lost Cap" class="proyecto-img" loading="lazy" />
+            <div class="proyecto-overlay" aria-hidden="true"></div>
+          </div>
+          <div class="proyecto-contenido">
+            <h3>Pangolin: The Lost Cap</h3>
+            <p>Videojuego indie. Plataformas estilo Sonic × Odyssey. Publicado bajo The KernelGames.</p>
+            <div class="tags">
+              <span class="tag">Phaser 3</span><span class="tag">JS</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card proyecto-card reveal d3">
+          <div class="proyecto-img-wrap">
+            <img src="img/pag1.jpg" alt="The SoundGarden" class="proyecto-img" loading="lazy" />
+            <div class="proyecto-overlay" aria-hidden="true"></div>
+          </div>
+          <div class="proyecto-contenido">
+            <h3>The SoundGarden</h3>
+            <p>Ciencia y arte sonoro con programación creativa y síntesis digital.</p>
+            <div class="tags">
+              <span class="tag">Rust</span><span class="tag">React</span>
+            </div>
+          </div>
+        </article>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       EXTRAS
+  ═══════════════════════════════════════ -->
+  <section id="extras" class="bg-alt">
+    <div class="container">
+      <div class="extras-grid">
+
+        <div class="extra-bloque reveal d1">
+          <h2>// MÚSICA</h2>
+          <div class="linea-sub" aria-hidden="true"></div>
+          <ol class="tracklist" aria-label="Playlist del equipo">
+            <li class="track">
+              <span class="num" aria-hidden="true">01</span>
+              <div><div class="nombre">「アイドル」</div><div class="artista">YOASOBI</div></div>
+            </li>
+            <li class="track">
+              <span class="num" aria-hidden="true">02</span>
+              <div><div class="nombre">Harder Better Faster Stronger</div><div class="artista">Daft Punk</div></div>
+            </li>
+            <li class="track">
+              <span class="num" aria-hidden="true">03</span>
+              <div><div class="nombre">Losing My Religion</div><div class="artista">R.E.M.</div></div>
+            </li>
+          </ol>
+        </div>
+
+        <div class="extra-bloque reveal d2">
+          <h2>// JUEGOS FAVORITOS</h2>
+          <div class="linea-sub" aria-hidden="true"></div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <article class="card juego"><h4>DOOM</h4><p>FPS clásico con diseño de niveles brutal.</p></article>
+            <article class="card juego"><h4>MINECRAFT</h4><p>Sandbox infinito y base para pruebas técnicas.</p></article>
+            <article class="card juego"><h4>TERRARIA</h4><p>Supervivencia 2D estratégica y desafiante.</p></article>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FORO
+  ═══════════════════════════════════════ -->
+  <section id="foro">
+    <div class="container">
+
+      <div class="sec-head reveal">
+        <span class="sec-tag">foro</span>
+        <p class="sec-titulo">Foro</p>
+        <div class="sec-linea" aria-hidden="true"></div>
+      </div>
+
+      <ul class="hilos reveal d1" aria-label="Hilos del foro">
+        <li class="hilo">
+          <span class="cat seg" aria-label="Seguridad">SEG</span>
+          <div class="info">
+            <h4>Hardening en Linux para devs</h4>
+            <p>Seguridad · 13 respuestas</p>
+          </div>
+          <span class="hilo-meta">Hoy</span>
+        </li>
+        <li class="hilo">
+          <span class="cat ia" aria-label="Inteligencia Artificial">IA</span>
+          <div class="info">
+            <h4>Modelos pequeños para correr local</h4>
+            <p>Machine Learning · 8 respuestas</p>
+          </div>
+          <span class="hilo-meta">Ayer</span>
+        </li>
+        <li class="hilo">
+          <span class="cat juegos" aria-label="GameDev">GAMEDEV</span>
+          <div class="info">
+            <h4>Física arcade en Phaser 3</h4>
+            <p>Videojuegos · 5 respuestas</p>
+          </div>
+          <span class="hilo-meta">2 días</span>
+        </li>
+      </ul>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       CONTACTO
+  ═══════════════════════════════════════ -->
+  <section id="contacto">
+    <div class="container">
+      <div class="contacto-wrap reveal">
+        <h2>Contacto</h2>
+        <p>¿Quieres colaborar con The KernelGarden o The KernelGames? Escríbenos.</p>
+        <form class="contact-form" action="mailto:dabarrientos_1333@unihumboldt.edu.co" method="post" enctype="text/plain">
+          <div class="form-grupo reveal d1">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" placeholder="Tu nombre" autocomplete="name" required />
+          </div>
+          <div class="form-grupo reveal d2">
+            <label for="mensaje">Mensaje</label>
+            <textarea id="mensaje" name="mensaje" placeholder="¿Qué tienes en mente?" required></textarea>
+          </div>
+          <div class="reveal d3">
+            <button type="submit" class="btn">Enviar</button>
+          </div>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════ -->
+  <footer>
+    <span class="logo-footer">[ THE KERNELGARDEN ]</span>
+    <p class="footer-sub">THE KERNELGAMES — sello indie de videojuegos</p>
+    <nav class="links-footer" aria-label="Footer">
+      <a href="#nosotros">Nosotros</a>
+      <a href="#kernelgames">KernelGames</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#foro">Foro</a>
+      <a href="#extras">Extras</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <p class="copy">&copy; <span id="current-year"></span> The KernelGarden — Hecho con ☕ en el Quindío</p>
+  </footer>
+
+  <!-- ═══════════════════════════════════════
+       JAVASCRIPT — módulos IIFE orquestados
+  ═══════════════════════════════════════ -->
+  <script src="js/main.js" defer></script>
+
+</body>
+</html>

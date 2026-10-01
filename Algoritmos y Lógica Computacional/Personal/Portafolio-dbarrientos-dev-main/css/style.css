@@ -1,0 +1,230 @@
+@font-face {
+  font-family: "Montserrat";
+  src: url(./fonts/Montserrat-Light.ttf) format("truetype");
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url(./fonts/Montserrat-Regular.ttf) format("truetype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url(./fonts/Montserrat-Bold.ttf) format("truetype");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url(./fonts/Montserrat-ExtraBold.ttf) format("truetype");
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url(./fonts/Montserrat-Black.ttf) format("truetype");
+  font-weight: 900;
+}
+
+/* ═══════════════════════════════════════
+   VARIABLES
+═══════════════════════════════════════ */
+
+:root {
+  --negro: #0a0a0a;
+  --superficie: #111;
+  --tarjeta: #1a1a1a;
+  --borde: #2a2a2a;
+  --oro: #c9a227;
+  --oro-claro: #e8c050;
+  --oro-opaco: #c9a22740;
+  --texto: #e8e8e8;
+  --texto-suave: #888;
+  --code-bg: #1e1e1e;
+}
+
+/* ═══════════════════════════════════════
+   RESET + BASE
+═══════════════════════════════════════ */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--negro);
+  color: var(--texto);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+
+/* ═══════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════ */
+
+.contenedor {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+
+/* ═══════════════════════════════════════
+   TIPOGRAFÍA
+═══════════════════════════════════════ */
+
+h1, h2, h3 {
+  color: var(--oro);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+h1 { font-size: 2.2rem; }
+
+h2 {
+  font-size: 1.5rem;
+  border-bottom: 1px solid var(--borde);
+  padding-bottom: 0.3rem;
+}
+
+h3 {
+  font-size: 1.1rem;
+  color: var(--oro-claro);
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+small {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+
+/* ═══════════════════════════════════════
+   ENLACES
+═══════════════════════════════════════ */
+
+a {
+  color: var(--oro);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--oro-claro);
+  text-decoration: underline;
+}
+
+
+/* ═══════════════════════════════════════
+   COMPONENTES
+═══════════════════════════════════════ */
+
+/* Tarjeta en vez de div global */
+.card {
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+/* Inputs coherentes con el tema */
+input {
+  margin: 5px;
+  padding: 6px 9px;
+  border: 1px solid var(--borde);
+  background: var(--superficie);
+  color: var(--texto);
+  border-radius: 5px;
+}
+
+/* Caja de prueba */
+.box {
+  width: 100px;
+  height: 100px;
+  background: var(--oro);
+  margin: 10px;
+  padding: 25px;
+  border: 2px solid var(--borde);
+}
+
+
+/* ═══════════════════════════════════════
+   CÓDIGO
+═══════════════════════════════════════ */
+
+code {
+  background-color: var(--code-bg);
+  color: var(--oro-claro);
+  font-family: 'Cascadia Code', monospace;
+  font-size: 0.88rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  border: 1px solid var(--borde);
+}
+
+pre {
+  background-color: var(--code-bg);
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  padding: 1.2rem 1.5rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--texto);
+}
+
+
+/* ═══════════════════════════════════════
+   IMÁGENES
+═══════════════════════════════════════ */
+
+.centrada {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ═══════════════════════════════════════
+  NOMBRE DE USUARIO DE DANIEL BARRIENTOS EN GITHUB
+═══════════════════════════════════════ */
+
+.Miusername {
+  text-align: center;
+}
+
+
+/* ═══════════════════════════════════════
+   ZONA DE MI SETUP EN CODE
+═══════════════════════════════════════ */
+
+
+pre {
+  text-align: center;
+}
+
+
+/* ═══════════════════════════════════════
+   MODO OSCURO
+═══════════════════════════════════════ */
+
+.light-mode {
+  background-color: #ffffff;
+  color: #111;
+}

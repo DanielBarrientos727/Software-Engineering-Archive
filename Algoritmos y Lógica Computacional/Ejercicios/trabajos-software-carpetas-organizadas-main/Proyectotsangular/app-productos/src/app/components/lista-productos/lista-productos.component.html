@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="header">
+    <h1>Productos</h1>
+    <a routerLink="/productos/nuevo" class="btn-nuevo">+ Nuevo Producto</a>
+  </div>
+
+  @if (cargando()) {
+    <p>Cargando productos...</p>
+  }
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  @if (!cargando() && !error()) {
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (producto of productos(); track producto.id) {
+          <tr>
+            <td>{{ producto.id }}</td>
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.precio | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+            <td>{{ producto.stock }}</td>
+            <td>
+              <a [routerLink]="['/productos/editar', producto.id]" class="btn-editar">Editar</a>
+              <button (click)="eliminar(producto.id!)" class="btn-eliminar">Eliminar</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

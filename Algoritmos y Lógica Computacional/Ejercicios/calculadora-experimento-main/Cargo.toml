@@ -1,0 +1,21 @@
+[package]
+name = "rust-calculator"
+version = "0.1.0"
+edition = "2021"
+description = "A WebAssembly calculator built in Rust"
+
+# cdylib: genera la librería dinámica que wasm-pack convierte a .wasm
+# rlib: permite usar el crate como librería Rust normal (útil para tests)
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+# wasm-bindgen: el puente entre Rust y JavaScript
+# Expone structs y funciones de Rust como objetos JS nativos
+wasm-bindgen = "0.2"
+
+[profile.release]
+# Optimizar por tamaño en lugar de velocidad — clave para WASM en navegador
+opt-level = "s"
+# Link-time optimization: elimina código muerto entre crates
+lto = true

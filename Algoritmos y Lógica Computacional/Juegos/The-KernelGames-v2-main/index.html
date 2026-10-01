@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The KernelGarden 🐢</title>
+  <link rel="icon" type="image/png" href="./assets/images/Golden_Sun_Icon.svg.png" />
+  <link rel="apple-touch-icon" href="./assets/images/Golden_Sun_Icon.svg.png" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- BUG FIX #1: Eliminado el <script src="main.js"> del <head> que se ejecutaba
+       antes de que el DOM existiera. El script ahora solo se carga UNA vez
+       al final del <body>, que es el lugar correcto. -->
+</head>
+
+<body>
+  <a href="#contenido-principal" class="skip-link">Saltar al contenido</a>
+
+  <canvas id="particulas-fondo" aria-hidden="true"></canvas>
+
+  <header role="banner">
+    <nav class="navbar" aria-label="Navegación principal">
+      <div class="contenedor nav-contenido">
+
+        <a href="./index.html" class="logo" aria-label="Inicio — The KernelGarden Games">
+          <span class="logo-icono" aria-hidden="true">🌱</span>
+          <span> The KernelGarden<span style="color:var(--text-muted);font-size:0.8em;"> Games</span></span>
+        </a>
+      
+        <ul class="nav-links" id="nav-links" role="list" aria-label="Secciones del sitio">
+          <li><a href="#juegos">Juegos</a></li>
+          <li><a href="#productos">Productos</a></li>
+          <li><a href="#equipo">Equipo</a></li>
+          <li>
+            <a href="https://t.me/TheKernelGarden" target="_blank" rel="noopener noreferrer"
+               aria-label="Telegram de The KernelGarden (abre en nueva pestaña)">
+              Telegram ↗
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+
+  <main id="contenido-principal">
+
+    <section class="hero" aria-labelledby="hero-titulo">
+      <div class="contenedor">
+
+        <div class="hero-badge" aria-label="Presentación del equipo">
+          🎓 Somos Universitarios · Ing. Software · 100% Colombianos
+        </div>
+
+        <h1 class="hero-titulo" id="hero-titulo">
+          Mini-juegos hechos<br/>
+          <span class="oro">por estudiantes</span>
+          <span class="abalache"> colombianos</span>
+        </h1>
+
+        <p class="hero-desc">
+          Somos <strong>The KernelGarden Team</strong> — estudiantes de 
+          Ingeniería de Software en Armenia, Quindío. Aprendemos haciendo, 
+          creando código abierto y compartiendo conocimiento. 🚀
+        </p>
+
+        <div class="hero-botones">
+          <a href="#juegos" class="btn btn-oro">
+            <span aria-hidden="true">▶</span> Jugar ahora
+          </a>
+          <a href="#productos" class="btn btn-borde">
+            Ver el ecosistema
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="stats" aria-label="Estadísticas del proyecto">
+      <div class="contenedor">
+        <div class="stats-grid">
+
+          <div class="stat">
+            <span class="stat-numero" data-count="3" aria-live="polite">3</span>
+            <span class="stat-texto">Juegos</span>
+          </div>
+
+          <div class="stat">
+            <span class="stat-numero" data-count="4" aria-live="polite">4</span>
+            <span class="stat-texto">Productos</span>
+          </div>
+
+          <div class="stat">
+            <span class="stat-numero" style="font-size:1.9rem;">100%</span>
+            <span class="stat-texto">Open Source</span>
+          </div>
+
+          <div class="stat">
+            <span class="stat-numero" style="font-size:1.9rem;" aria-label="Hecho en Colombia">🇨🇴</span>
+            <span class="stat-texto">Hecho en Colombia</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="separador" role="separator"></div>
+
+
+    <section id="juegos" class="seccion" aria-labelledby="juegos-titulo">
+      <div class="contenedor">
+
+        <div class="seccion-titulo reveal">
+          <span class="seccion-label" aria-hidden="true">🎮 Jugar</span>
+          <h2 id="juegos-titulo">
+            Los <span class="oro">Juegos</span>
+          </h2>
+          <p>HTML, CSS y JavaScript puro — sin frameworks, sin dependencias. Solo código.</p>
+        </div>
+
+        <div class="grid-juegos" role="list">
+
+          <a href="geoguerra.html"
+             class="card-juego reveal"
+             role="listitem"
+             aria-label="Jugar GeoGuerra — Estrategia geográfica"
+             style="animation-delay:0.1s">
+            <span class="card-icono" aria-hidden="true">🗺️</span>
+            <span class="card-tag">Estrategia</span>
+            <h3>GeoGuerra</h3>
+            <p>
+              Conquista territorios en el mapa del mundo. Pon a prueba tus
+              conocimientos de geografía política mientras expandes tu reino.
+              ¿Lograrás el dominio total?
+            </p>
+            <span class="card-link" aria-hidden="true">Jugar →</span>
+          </a>
+
+          <a href="./snake.html"
+             class="card-juego reveal"
+             role="listitem"
+             aria-label="Jugar Snake 2100 — Arcade futurista"
+             style="animation-delay:0.2s">
+            <span class="card-icono" aria-hidden="true">🐍</span>
+            <span class="card-tag">Arcade</span>
+            <h3>Snake 2100</h3>
+            <p>
+              El clásico Snake reinventado en el año 2100. Obstáculos
+              dinámicos, power-ups y un modo de velocidad que te hará
+              sudar. El futuro de la serpiente empieza aquí.
+            </p>
+            <span class="card-link" aria-hidden="true">Jugar →</span>
+          </a>
+
+          <a href="cartas.html"
+             class="card-juego variante-abalache reveal"
+             role="listitem"
+             aria-label="Jugar Cartas — Juego de memoria"
+             style="animation-delay:0.3s">
+            <span class="card-icono" aria-hidden="true">🃏</span>
+            <span class="card-tag">Memoria</span>
+            <h3>Cartas</h3>
+            <p>
+              Encuentra todos los pares ocultos antes de que se acabe el
+              tiempo. Entrena tu memoria con tres niveles de dificultad
+              y supera tu récord personal.
+            </p>
+            <span class="card-link" aria-hidden="true">Jugar →</span>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="separador" role="separator"></div>
+
+
+    <section id="productos" class="seccion" aria-labelledby="productos-titulo">
+      <div class="contenedor">
+
+        <div class="seccion-titulo reveal">
+          <span class="seccion-label" aria-hidden="true">🌿 Ecosistema</span>
+          <h2 id="productos-titulo">
+            Nuestro ecosistema <span class="abalache">KernelGarden</span>
+          </h2>
+          <p>Más que juegos — herramientas y software libre con sello local.</p>
+        </div>
+
+        <div class="grid-productos" role="list">
+
+          <article class="card-producto reveal" role="listitem">
+            <div class="prod-icono" aria-hidden="true">☕</div>
+            <div class="prod-body">
+              <h3>CaféBinario</h3>
+              <p>
+                Herramienta de conversión y aprendizaje binario pensada
+                para estudiantes de primeros semestres. Convierte, visualiza
+                y comprende cómo los computadores piensan en 0s y 1s.
+              </p>
+              <span class="prod-tag">Educación · Web</span>
+            </div>
+          </article>
+
+          <article class="card-producto reveal" role="listitem" style="animation-delay:0.1s">
+            <div class="prod-icono" aria-hidden="true">🌐</div>
+            <div class="prod-body">
+              <h3>Café Browser</h3>
+              <p>
+                Navegador web ligero y privado basado en el motor Gecko de Firefox,
+                exclusivo para Linux. Sin telemetría, con bloqueo de
+                rastreadores y DuckDuckGo por defecto.
+              </p>
+              <span class="prod-tag">Linux · Gecko · Privacidad</span>
+            </div>
+          </article>
+
+          <article class="card-producto reveal" role="listitem" style="animation-delay:0.15s">
+            <div class="prod-icono" aria-hidden="true">🌺</div>
+            <div class="prod-body">
+              <h3>Quindío Chan</h3>
+              <p>
+                Asistente virtual con identidad quindiana. Aprende sobre
+                la cultura cafetera del Eje Cafetero colombiano de una
+                forma interactiva y entretenida.
+              </p>
+              <span class="prod-tag">IA · Cultura · Colombia</span>
+            </div>
+          </article>
+
+          <article class="card-producto reveal" role="listitem" style="animation-delay:0.2s">
+            <div class="prod-icono" aria-hidden="true">🎮</div>
+            <div class="prod-body">
+              <h3>KernelGarden Games</h3>
+              <p>
+                La plataforma que estás viendo ahora mismo. Una colección
+                de mini-juegos web hechos con HTML, CSS y JavaScript puro
+                como ejercicio de aprendizaje colectivo.
+              </p>
+              <span class="prod-tag">Juegos · Open Source · Web</span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="separador" role="separator"></div>
+
+
+    <section class="banner-interactivo" aria-labelledby="banner-titulo">
+      <div class="contenedor">
+        <h2 id="banner-titulo" class="reveal">
+          ¿Prefieres el <span class="oro">modo claro</span>?
+        </h2>
+        <p class="reveal">Cambia el tema sin recargar la página — tu preferencia se guarda.</p>
+
+        <!-- BUG FIX #2: aria-checked ahora se actualiza dinámicamente desde JS.
+             El valor inicial sigue siendo "false" (modo oscuro por defecto),
+             pero main.js debe actualizarlo al cambiar el toggle. -->
+        <label class="toggle-tema reveal" aria-label="Cambiar entre modo oscuro y claro">
+          <input type="checkbox" id="toggle-tema" role="switch" aria-checked="false" />
+          <span class="toggle-track" aria-hidden="true"></span>
+          <span>Modo claro</span>
+        </label>
+      </div>
+    </section>
+
+
+    <section id="equipo" class="seccion" aria-labelledby="equipo-titulo">
+      <div class="contenedor">
+
+        <div class="seccion-titulo reveal">
+          <span class="seccion-label" aria-hidden="true">🌱 Nosotros</span>
+          <h2 id="equipo-titulo">
+            The <span class="abalache">KernelGarden</span> Team
+          </h2>
+          <p>Universitarios apasionados por la tecnología — Armenia, Quindío.</p>
+        </div>
+
+        <div class="grid-about" role="list">
+
+          <article class="card-about reveal" role="listitem">
+            <h3>🌱 ¿Quiénes somos?</h3>
+            <p>
+              Somos estudiantes de <strong>Ingeniería de Software</strong> 
+              en Armenia, Quindío del CUE AVH. Nosotros hemos decidido unirnos para crear 
+              <strong>The KernelGarden</strong>, un grupo donde podemos aplicar 
+              lo que aprendemos en clases desarrollando proyectos de código abierto.
+            </p>
+          </article>
+
+          <article class="card-about reveal" role="listitem" style="animation-delay:0.1s">
+            <h3>🚀 Nuestra filosofía</h3>
+            <p>
+              Creemos que la mejor forma de aprender a programar es
+              construyendo cosas reales. Cada línea de código es una lección.
+              Aprendemos haciendo, compartiendo y mejorando juntos, sin atajos, 
+              solo con fundamentos sólidos.
+            </p>
+          </article>
+
+
+          <article class="card-about reveal" role="listitem" style="animation-delay:0.2s">
+            <h3>💻 Nuestro stack</h3>
+            <p>
+              Todos los proyectos web están construidos con
+              <strong>HTML5, CSS3 y JavaScript ES6</strong> puro. 
+              Código limpio, comentado y listo para ser leído por vosotros,
+              reutilizado y mejorado por cualquier persona. <strong>Open source forever.</strong>
+            </p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+  
+  <footer role="contentinfo">
+    <div class="contenedor">
+
+      <div class="footer-grid">
+
+        <div class="footer-marca">
+          <a href="#" class="logo" aria-label="Volver al inicio">
+            <span class="logo-icono" aria-hidden="true">🌱</span>
+            KernelGarden <span style="color:var(--text-muted);font-size:0.8em;">Games</span>
+          </a>
+          <p>
+            Ecosistema web open source.<br/>
+            Un proyecto desarrollado por
+            <strong style="color:var(--gold);">The KernelGarden Team</strong>.<br/>
+            Desde Armenia, Quindío 🇨🇴 para el mundo.
+          </p>
+        </div>
+
+        <nav aria-label="Enlace a juegos en el pie de página">
+          <div class="footer-col">
+            <h4>Nuestros juegos más valorados</h4>
+            <ul role="list">
+              <li><a href="./geoguerra.html">GeoGuerra</a></li>
+              <li><a href="./snake.html">Snake 2100</a></li>
+              <li><a href="./cartas.html">Cartas</a></li>
+            </ul>
+          </div>
+        </nav>
+
+        <nav aria-label="Links externos y redes">
+          <div class="footer-col">
+            <h4>Links</h4>
+            <ul role="list">
+              <li>
+                <a href="https://t.me/TheKernelGarden" target="_blank" rel="noopener noreferrer">
+                  Canal en Telegram ↗
+                </a>
+              </li>
+              <li><a href="#equipo">Sobre el equipo</a></li>
+              <li><a href="#" aria-label="Próximamente GitHub">GitHub (Próximamente)</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <div class="footer-abajo">
+        <p>
+          © 2026 <strong style="color:var(--text);">The KernelGarden Team 🐧</strong>
+          — Open Source forever.
+        </p>
+        <p>
+          Hecho con mucho ❤️ en <strong style="color:var(--text);">Armenia, Quindío 🇨🇴</strong>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- BUG FIX #1: Script cargado UNA sola vez, aquí al final del body.
+       Así el DOM ya existe cuando el script se ejecuta. -->
+  <script src="assets/js/main.js"></script>
+
+
+</body>
+</html>

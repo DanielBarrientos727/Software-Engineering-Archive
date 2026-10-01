@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Contribuye | CaféBinario</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <div class="logo">☕ CaféBinario</div>
+
+      <nav class="nav-links">
+        <a href="index.html">Inicio</a>
+        <a href="explorar.html">Explorar</a>
+        <a href="equipo.html">Equipo</a>
+        <a href="contribuye.html" class="active">Contribuye</a>
+      </nav>
+
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menú" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero small-hero">
+    <h1>Construyamos conocimiento juntos</h1>
+    <p>
+      CaféBinario es un proyecto abierto.  
+      Si sabes algo, compártelo.  
+      Si estás aprendiendo, documenta el proceso.
+    </p>
+  </section>
+
+  <!-- ================= FORMULARIO ================= -->
+  <section class="contribuye-section container">
+
+    <div class="contribuye-info">
+      <h2>¿Cómo puedes ayudar?</h2>
+
+      <ul>
+        <li>✍️ Escribiendo artículos técnicos</li>
+        <li>🧠 Explicando conceptos complejos de forma clara</li>
+        <li>🐛 Reportando errores</li>
+        <li>💡 Proponiendo nuevas secciones</li>
+        <li>🧩 Mejorando el diseño y la experiencia</li>
+      </ul>
+
+      <p>
+        Este proyecto cree en el conocimiento libre y bien documentado.
+        No buscamos perfección. Buscamos claridad.
+      </p>
+    </div>
+
+    <div class="contribuye-form">
+      <h2>Enviar propuesta</h2>
+
+      <form id="formContribucion">
+
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" required>
+
+        <label for="email">Correo</label>
+        <input type="email" id="email" required>
+
+        <label for="tema">Tema del artículo</label>
+        <input type="text" id="tema" required>
+
+        <label for="mensaje">Propuesta o descripción</label>
+        <textarea id="mensaje" rows="5" required></textarea>
+
+        <button type="submit" class="btn-primary">
+          Enviar contribución
+        </button>
+
+      </form>
+
+      <p id="mensajeExito" class="mensaje-exito"></p>
+    </div>
+
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <p>© 2026 CaféBinario | Conocimiento abierto para mentes curiosas.</p>
+  </footer>
+
+  <!-- JS -->
+  <script src="JS/main.js"></script>
+  <script>
+    // Simulación de envío
+    const form = document.getElementById("formContribucion");
+    const mensajeExito = document.getElementById("mensajeExito");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      mensajeExito.textContent = "Gracias por contribuir. Revisaremos tu propuesta pronto.";
+      mensajeExito.style.display = "block";
+
+      form.reset();
+    });
+  </script>
+
+</body>
+</html>

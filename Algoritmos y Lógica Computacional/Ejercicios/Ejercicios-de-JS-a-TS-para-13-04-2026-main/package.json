@@ -1,0 +1,10 @@
+{
+  "name": "ejercicios-de-js-a-ts-para-13-04-2026",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

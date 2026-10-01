@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+*{ margin: 0;
+    padding: 0;
+    box-sizing: border box;
+    font-family: 'luckiest Guy', cursive;
+}
+header{
+    text-align:center;
+    background: #f7ce69;
+    color:rgb(255, 255, 255);
+    padding: 10px o;
+    border-radius: 10px;
+    border: #000000;
+}
+.container{
+    max-width: 700px;
+    margin: auto;
+    padding: 20px;
+}
+section{
+    background-color: #ccc;
+    border: 2px solid #f7ce69;
+    border-radius: 7px;
+    padding: 10px;
+    margin: 10px;
+}
+label{
+    display: block;
+    padding: 7px;
+    border-radius: 7px;
+    cursor: pointer;
+    border: 1px dashed #ccc;
+    margin-bottom: 3px;
+
+}
+
+label:hover{
+    background: #cec0fc;
+}
+button{
+    width: 80%;
+    display: block;
+    margin: auto;
+    padding: 10px;
+
+    background-color: #3974f5;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+
+
+}
+button:hover{
+    background: #000000;
+    color: blueviolet;
+
+}
+h2{
+    text-align: center;
+    color: azure;
+    background-color: #000000;
+   
+
+}
+
+#resultado{
+    font-size: 30px;
+    color: rgb(223, 204, 32);
+}
+
+body {
+    background-image: url('bkgc.jpeg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+}

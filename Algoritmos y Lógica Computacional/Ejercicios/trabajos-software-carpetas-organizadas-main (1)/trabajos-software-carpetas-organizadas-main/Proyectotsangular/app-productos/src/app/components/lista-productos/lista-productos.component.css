@@ -1,0 +1,38 @@
+.container {
+
+max-width: 900px;
+
+margin: 40px auto;
+
+font-family: Arial;
+
+}
+
+table {
+
+width: 100%;
+
+border-collapse: collapse;
+
+}
+
+th,
+td {
+
+border: 1px solid #ccc;
+
+padding: 10px;
+
+}
+
+th {
+
+background: #f5f5f5;
+
+}
+
+.error {
+
+color: red;
+
+}

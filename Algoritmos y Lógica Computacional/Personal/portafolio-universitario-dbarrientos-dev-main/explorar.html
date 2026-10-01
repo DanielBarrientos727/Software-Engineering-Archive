@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explora artículos técnicos en CaféBinario sobre Linux, algoritmos, electrónica y más.">
+  <title>Explorar | CaféBinario</title>
+
+  <link rel="stylesheet" href="CSS/style.css">
+</head>
+
+<body>
+
+  <!-- ===================== NAVBAR ===================== -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <div class="logo">
+        <span class="logo-icon">☕</span>
+        <span class="logo-text">CaféBinario</span>
+      </div>
+
+      <nav class="nav-links">
+        <a href="index.html">Inicio</a>
+        <a href="explorar.html" class="active">Explorar</a>
+        <a href="index.html#equipo">Equipo</a>
+        <a href="index.html#contribuye">Contribuye</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn btn-outline">Ingresar</button>
+        <button class="btn btn-primary">Crear cuenta</button>
+      </div>
+
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menú" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <!-- ===================== HERO EXPLORAR ===================== -->
+  <section class="hero-small">
+    <div class="container">
+      <h1>Explorar artículos</h1>
+      <p>Encuentra contenido por nivel, categoría o tema específico.</p>
+    </div>
+  </section>
+
+  <!-- ===================== BUSCADOR ===================== -->
+  <section class="search-section">
+    <div class="container">
+
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Buscar artículo... (Ej: Linux, Git, Algoritmos)">
+        <select id="filterLevel">
+          <option value="">Todos los niveles</option>
+          <option value="Básico">Básico</option>
+          <option value="Intermedio">Intermedio</option>
+          <option value="Avanzado">Avanzado</option>
+        </select>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================== LISTADO ===================== -->
+  <section class="articles">
+    <div class="container">
+
+      <div class="grid-3" id="articlesContainer">
+
+        <article class="card article-card" data-level="Básico">
+          <span class="tag basic">Básico</span>
+          <h3>¿Qué es Linux y por qué importa?</h3>
+          <p>Fundamentos del sistema operativo libre más influyente del mundo.</p>
+        </article>
+
+        <article class="card article-card" data-level="Básico">
+          <span class="tag basic">Básico</span>
+          <h3>Sistemas de numeración</h3>
+          <p>Binario, decimal y hexadecimal explicados con ejemplos prácticos.</p>
+        </article>
+
+        <article class="card article-card" data-level="Intermedio">
+          <span class="tag intermediate">Intermedio</span>
+          <h3>Git desde cero</h3>
+          <p>Control de versiones explicado paso a paso.</p>
+        </article>
+
+        <article class="card article-card" data-level="Intermedio">
+          <span class="tag intermediate">Intermedio</span>
+          <h3>Electrónica digital</h3>
+          <p>Puertas lógicas, álgebra booleana y circuitos básicos.</p>
+        </article>
+
+        <article class="card article-card" data-level="Avanzado">
+          <span class="tag advanced">Avanzado</span>
+          <h3>Algoritmos de ordenamiento</h3>
+          <p>Comparación matemática y análisis Big-O.</p>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container footer-grid">
+
+      <div>
+        <h4>CaféBinario</h4>
+        <p>Wiki técnica FOSS hecha en Quindío.</p>
+      </div>
+
+      <div>
+        <h4>Proyecto</h4>
+        <ul>
+          <li><a href="#">GitHub</a></li>
+          <li><a href="#">Licencia MIT</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Comunidad</h4>
+        <ul>
+          <li><a href="#">Contribuir</a></li>
+          <li><a href="#">Código de conducta</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 CaféBinario — FOSS forever.</p>
+    </div>
+  </footer>
+
+  <script src="JS/main.js"></script>
+
+  <!-- ===================== FILTRO SIMPLE ===================== -->
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const filterLevel = document.getElementById("filterLevel");
+    const articles = document.querySelectorAll(".article-card");
+
+    function filterArticles() {
+      const searchValue = searchInput.value.toLowerCase();
+      const selectedLevel = filterLevel.value;
+
+      articles.forEach(article => {
+        const title = article.querySelector("h3").innerText.toLowerCase();
+        const level = article.dataset.level;
+
+        const matchesSearch = title.includes(searchValue);
+        const matchesLevel = selectedLevel === "" || level === selectedLevel;
+
+        if (matchesSearch && matchesLevel) {
+          article.style.display = "block";
+        } else {
+          article.style.display = "none";
+        }
+      });
+    }
+
+    searchInput.addEventListener("input", filterArticles);
+    filterLevel.addEventListener("change", filterArticles);
+  </script>
+
+</body>
+</html>

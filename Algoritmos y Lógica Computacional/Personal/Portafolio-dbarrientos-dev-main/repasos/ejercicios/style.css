@@ -1,0 +1,101 @@
+/* body {
+    background-color: rgb(0, 0, 0);
+    font-family: sans-serif;
+    color: white;
+    margin: auto;
+}
+
+.card {
+    background-color: coral;
+    text-align: center;
+    width: 300px;
+    margin: auto;
+    margin-top: 20px;
+}
+
+h1 {
+    padding-top: 10px;
+    font-size: 22px;
+    margin: 0;
+}
+
+h2 {
+    font-size: 13px;
+    font-weight: 100;
+    letter-spacing: 2ox;
+}
+
+p {
+    font-size: 9px;
+    padding: 20px;
+    background: lightcoral;
+    text-align: justify;
+}
+
+*/
+
+/*
+div {
+    background: red;
+    width: 200px;
+    margin: auto;
+    text-align: center;
+}
+
+/*
+div {
+    border-width: 3px; 
+    border-color: black;
+    border-style: solid;
+    border-radius: 4px; 
+
+*/
+
+/*en pixeles y % es distinto, uno rendodea desde el centro y el otro casi al final*/
+
+/*
+
+
+div {
+    border: 3px solid black; 
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 2;
+    border-bottom-right-radius: 20px;
+
+}
+ 
+*/
+
+/*todo juntos*/
+
+/*
+
+
+div {
+
+    border: 5px solid blue;
+    border-radius: 10px 50px 0 4px;
+}
+
+
+
+*/
+
+
+/*
+body {
+    background-color: black;
+}
+
+input {
+    margin: 5px;
+    padding: 6px 9px;
+    border: none;
+    border-top: 1px solid black;
+    background: whitesmoke;
+    color: greenyellow;
+    border-radius: 5px;
+}
+*/
+

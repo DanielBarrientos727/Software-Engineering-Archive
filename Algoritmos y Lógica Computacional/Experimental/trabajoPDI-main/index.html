@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Línea de Tiempo PDI - Infografía</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --color-1: #FF5A5F; /* Rosa fuerte */
+            --color-2: #8A2BE2; /* Púrpura */
+            --color-3: #00A896; /* Verde azulado */
+            --color-4: #FFB400; /* Amarillo/Naranja */
+            --color-5: #3F88C5; /* Azul */
+            --color-6: #D1495B; /* Rojo oscuro */
+            --color-7: #2ECC71; /* Verde esmeralda */
+            --color-8: #9B59B6; /* Amatista */
+            --color-9: #E67E22; /* Naranja zanahoria */
+
+            --bg-color: #F8F9FA;
+            --text-dark: #2C3E50;
+            --text-light: #6c757d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Nunito', sans-serif;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            padding: 40px 20px;
+        }
+
+        /* Cabecera de la Infografía */
+        .header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px auto;
+        }
+
+        .header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .header p {
+            font-size: 18px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* Contenedor principal de la línea de tiempo */
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* La línea central conectora */
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: #e9ecef;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+            border-radius: 10px;
+            z-index: 1;
+        }
+
+        /* Cada bloque de la línea de tiempo */
+        .container {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+            margin-bottom: 40px;
+            z-index: 2;
+        }
+
+        /* Posicionamiento izquierda y derecha */
+        .left {
+            left: 0;
+            text-align: right;
+        }
+
+        .right {
+            left: 50%;
+            text-align: left;
+        }
+
+        /* Los nodos (círculos de colores) */
+        .container::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            border: 6px solid;
+            top: 15px;
+            border-radius: 50%;
+            z-index: 3;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .left::after {
+            right: -25px;
+        }
+
+        .right::after {
+            left: -25px;
+        }
+
+        /* Contenido (Tarjetas) */
+        .content {
+            padding: 30px;
+            background-color: white;
+            position: relative;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 5px solid; /* Borde superior de color */
+        }
+
+        .content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .content h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .content h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #34495e;
+        }
+
+        .content p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        /* Iconos dentro de los nodos */
+        .icon-box {
+            position: absolute;
+            top: 25px;
+            color: white;
+            font-size: 20px;
+            z-index: 4;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .left .icon-box {
+            right: -15px;
+        }
+
+        .right .icon-box {
+            left: -15px;
+        }
+
+        /* --- ASIGNACIÓN DE COLORES POR NODO --- */
+
+        /* 1999 */
+        .node-1::after { border-color: var(--color-1); }
+        .node-1 .content { border-top-color: var(--color-1); }
+        .node-1 h2 { color: var(--color-1); }
+        .node-1 .icon-box { color: var(--color-1); }
+
+        /* 2001 */
+        .node-2::after { border-color: var(--color-2); }
+        .node-2 .content { border-top-color: var(--color-2); }
+        .node-2 h2 { color: var(--color-2); }
+        .node-2 .icon-box { color: var(--color-2); }
+
+        /* 2004 */
+        .node-3::after { border-color: var(--color-3); }
+        .node-3 .content { border-top-color: var(--color-3); }
+        .node-3 h2 { color: var(--color-3); }
+        .node-3 .icon-box { color: var(--color-3); }
+
+        /* 2011 */
+        .node-4::after { border-color: var(--color-4); }
+        .node-4 .content { border-top-color: var(--color-4); }
+        .node-4 h2 { color: var(--color-4); }
+        .node-4 .icon-box { color: var(--color-4); }
+
+        /* 2014 */
+        .node-5::after { border-color: var(--color-5); }
+        .node-5 .content { border-top-color: var(--color-5); }
+        .node-5 h2 { color: var(--color-5); }
+        .node-5 .icon-box { color: var(--color-5); }
+
+        /* 2021 */
+        .node-6::after { border-color: var(--color-6); }
+        .node-6 .content { border-top-color: var(--color-6); }
+        .node-6 h2 { color: var(--color-6); }
+        .node-6 .icon-box { color: var(--color-6); }
+
+        /* 2024 */
+        .node-7::after { border-color: var(--color-7); }
+        .node-7 .content { border-top-color: var(--color-7); }
+        .node-7 h2 { color: var(--color-7); }
+        .node-7 .icon-box { color: var(--color-7); }
+
+        /* 2030 */
+        .node-8::after { border-color: var(--color-8); }
+        .node-8 .content { border-top-color: var(--color-8); }
+        .node-8 h2 { color: var(--color-8); }
+        .node-8 .icon-box { color: var(--color-8); }
+
+
+        /* Responsividad para móviles (colapsar a la izquierda) */
+        @media screen and (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+
+            .container {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+                text-align: left;
+            }
+
+            .container::after {
+                left: 6px;
+            }
+
+            .left::after, .right::after {
+                left: 6px;
+            }
+
+            .left .icon-box, .right .icon-box {
+                left: 16px;
+            }
+
+            .right {
+                left: 0%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Evolución y Proyección PDI</h1>
+        <p>Corporación Universitaria Empresarial Alexander von Humboldt<br>Línea de tiempo estratégica hacia la excelencia 2021-2030</p>
+    </div>
+
+    <div class="timeline">
+
+        <!-- Nodo 1 -->
+        <div class="container left node-1">
+            <div class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
+            <div class="content">
+                <h2>1999</h2>
+                <h3>La Iniciativa</h3>
+                <p>Nace la idea desde la Cámara de Comercio de Armenia para crear una universidad con un fuerte enfoque empresarial para el desarrollo de la región.</p>
+            </div>
+        </div>
+
+        <!-- Nodo 2 -->
+        <div class="container right node-2">
+            <div class="icon-box"><i class="fa-solid fa-building-columns"></i></div>
+            <div class="content">
+                <h2>2001</h2>
+                <h3>Fundación y Modelo Dual</h3>
+                <p>Otorgamiento de Personería Jurídica (Resolución 439). Inician las clases con el programa de Administración de Empresas Industriales bajo el revolucionario sistema Dual Alemán.</p>
+            </div>
+        </div>
+
+        <!-- Nodo 3 -->
+        <div class="container left node-3">
+            <div class="icon-box"><i class="fa-solid fa-handshake"></i></div>
+            <div class="content">
+                <h2>2004</h2>
+                <h3>Expansión y Alianzas</h3>
+                <p>Inicio de intercambios para doble titulación con Alemania (BA Mosbach) y firma de convenios para ofertar los programas de Derecho y Psicología.</p>
+            </div>
+        </div>
+
+        <!-- Nodo 4 -->
+        <div class="container right node-4">
+            <div class="icon-box"><i class="fa-solid fa-compass"></i></div>
+            <div class="content">
+                <h2>2011</h2>
+                <h3>Plataforma PEI</h3>
+                <p>Estructuración formal del Proyecto Educativo Institucional (PEI), definiendo la ruta académica. Lanzamiento de la revista de investigación "ALETHEIA".</p>
+            </div>
+        </div>
+
+        <!-- Nodo 5 -->
+        <div class="container left node-5">
+            <div class="icon-box"><i class="fa-solid fa-award"></i></div>
+            <div class="content">
+                <h2>2014 - 2016</h2>
+                <h3>Consolidación de Calidad</h3>
+                <p>Obtención de Acreditación de Alta Calidad en programas pioneros y posicionamiento en el puesto 6º a nivel nacional en reportes del SNIES.</p>
+            </div>
+        </div>
+
+        <!-- Nodo 6 -->
+        <div class="container right node-6">
+            <div class="icon-box"><i class="fa-solid fa-map-location-dot"></i></div>
+            <div class="content">
+                <h2>2021</h2>
+                <h3>Aprobación del PDI</h3>
+                <p>Creación oficial del Plan de Desarrollo Institucional 2021-2030 (Acuerdo 005) como la carta de navegación para la siguiente década.</p>
+            </div>
+        </div>
+
+        <!-- Nodo 7 -->
+        <div class="container left node-7">
+            <div class="icon-box"><i class="fa-solid fa-pen-to-square"></i></div>
+            <div class="content">
+                <h2>2024</h2>
+                <h3>Actualización Estratégica</h3>
+                <p>Modificación y fortalecimiento del PDI bajo el Acuerdo 002. Enfoque en Fortalecimiento Institucional, Académico e impacto en ODS.</p>
+            </div>
+        </div>
+
+        <!-- Nodo 8 -->
+        <div class="container right node-8">
+            <div class="icon-box"><i class="fa-solid fa-rocket"></i></div>
+            <div class="content">
+                <h2>2030</h2>
+                <h3>Meta de Excelencia</h3>
+                <p>Visión cumplida: Ser el referente nacional de alta calidad, reconocidos por la innovación educativa, modalidades virtuales y el profundo impacto en las organizaciones del territorio.</p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

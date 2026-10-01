@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Videojuegos</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c14;
+    --card: #0d1520;
+    --border: #1a2d4a;
+    --accent: #00e5ff;
+    --accent2: #ff3d6b;
+    --text: #e8f4f8;
+    --muted: #5a7a99;
+    --correct: #00ff88;
+    --wrong: #ff3d6b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 40% at 20% 10%, rgba(0,229,255,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 80% 90%, rgba(255,61,107,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 680px;
+    position: relative;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  header h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    background: linear-gradient(135deg, var(--accent), #fff, var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .score-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 20px;
+    margin-bottom: 24px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+  }
+
+  .score-bar .score-val {
+    color: var(--accent);
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .progress {
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+
+  .question-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px 28px 28px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 0.35s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .question-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 12px 12px 0 0;
+  }
+
+  .game-tag {
+    display: inline-block;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(0,229,255,0.3);
+    background: rgba(0,229,255,0.06);
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
+
+  .question-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 28px;
+    color: #fff;
+  }
+
+  .options {
+    display: grid;
+    gap: 12px;
+  }
+
+  .option-btn {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 20px;
+    text-align: left;
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: rgba(0,229,255,0.07);
+    transform: translateX(4px);
+  }
+
+  .option-btn .letter {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    min-width: 20px;
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: rgba(0,255,136,0.1);
+    color: var(--correct);
+  }
+
+  .option-btn.correct .letter { color: var(--correct); }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: rgba(255,61,107,0.1);
+    color: var(--wrong);
+  }
+
+  .option-btn.wrong .letter { color: var(--wrong); }
+
+  .option-btn:disabled { cursor: default; }
+
+  .feedback {
+    margin-top: 20px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: none;
+    animation: fadeIn 0.25s ease;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct { background: rgba(0,255,136,0.1); color: var(--correct); border: 1px solid rgba(0,255,136,0.3); }
+  .feedback.wrong { background: rgba(255,61,107,0.1); color: var(--wrong); border: 1px solid rgba(255,61,107,0.3); }
+
+  .next-btn {
+    margin-top: 20px;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--accent) 0%, #0099bb 100%);
+    border: none;
+    border-radius: 8px;
+    color: #000;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    display: none;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .next-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .next-btn.show { display: block; animation: fadeIn 0.3s ease; }
+
+  /* Results screen */
+  .results {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 48px 32px;
+    text-align: center;
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .results.show { display: block; }
+
+  .results h2 {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.4rem;
+    font-weight: 900;
+    margin-bottom: 8px;
+    color: var(--accent);
+  }
+
+  .final-score {
+    font-family: 'Orbitron', monospace;
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1;
+    margin: 24px 0;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .result-msg {
+    font-size: 1.1rem;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+
+  .restart-btn {
+    padding: 14px 40px;
+    background: transparent;
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    color: var(--accent);
+    font-family: 'Orbitron', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .restart-btn:hover { background: rgba(0,229,255,0.1); transform: translateY(-2px); }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>GAMING QUIZ</h1>
+    <p>Pon a prueba tu conocimiento</p>
+  </header>
+
+  <div class="score-bar">
+    <div>PUNTUACIÓN: <span class="score-val" id="score">0</span></div>
+    <div class="progress" id="progress">Pregunta 1 / 10</div>
+  </div>
+
+  <div class="question-card" id="quizCard">
+    <div class="game-tag" id="gameTag"></div>
+    <div class="question-text" id="questionText"></div>
+    <div class="options" id="optionsContainer"></div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">SIGUIENTE PREGUNTA →</button>
+  </div>
+
+  <div class="results" id="results">
+    <h2>⬡ QUIZ COMPLETADO ⬡</h2>
+    <div class="final-score" id="finalScore"></div>
+    <div class="result-msg" id="resultMsg"></div>
+    <button class="restart-btn" onclick="restartQuiz()">↺ JUGAR DE NUEVO</button>
+  </div>
+</div>
+
+<script>
+  const preguntas = [
+    // Overwatch 2
+    {
+      juego: "OVERWATCH 2",
+      pregunta: "¿Qué héroe de Overwatch 2 tiene la habilidad llamada 'Pulso de Blink' que le permite teletransportarse?",
+      opciones: ["Tracer", "Sombra", "Moira", "Soldier 76"],
+      correcta: 0
+    },
+    {
+      juego: "OVERWATCH 2",
+      pregunta: "¿Cuántos jugadores conforman cada equipo en una partida estándar de Overwatch 2?",
+      opciones: ["4 jugadores", "6 jugadores", "5 jugadores", "3 jugadores"],
+      correcta: 2
+    },
+    // Rocket League
+    {
+      juego: "ROCKET LEAGUE",
+      pregunta: "¿Qué es un 'Aerial' en Rocket League?",
+      opciones: [
+        "Un tipo de impulso de boost",
+        "Golpear la pelota en el aire con el auto impulsado",
+        "Una celebración tras anotar un gol",
+        "Un mapa del juego"
+      ],
+      correcta: 1
+    },
+    {
+      juego: "ROCKET LEAGUE",
+      pregunta: "¿Cómo se llama la maniobra donde giras el auto 180° para golpear la pelota hacia atrás?",
+      opciones: ["Flip reset", "Air dribble", "Musty flick", "Ceiling shot"],
+      correcta: 2
+    },
+    // FIFA
+    {
+      juego: "FIFA",
+      pregunta: "¿Qué modo de juego de FIFA te permite construir tu propio equipo con cartas de jugadores?",
+      opciones: ["Carrera", "Volta Football", "Ultimate Team", "Pro Clubs"],
+      correcta: 2
+    },
+    {
+      juego: "FIFA",
+      pregunta: "¿Cómo se llama la calificación general que mide las habilidades de un jugador en FIFA?",
+      opciones: ["Power Rating", "OVR (Overall Rating)", "Skill Score", "Star Level"],
+      correcta: 1
+    },
+    // Dragon Ball FighterZ
+    {
+      juego: "DRAGON BALL FIGHTERZ",
+      pregunta: "¿Cuántos personajes conforman un equipo en Dragon Ball FighterZ?",
+      opciones: ["2 personajes", "4 personajes", "3 personajes", "5 personajes"],
+      correcta: 2
+    },
+    {
+      juego: "DRAGON BALL FIGHTERZ",
+      pregunta: "¿Quién es el personaje antagonista principal creado exclusivamente para Dragon Ball FighterZ?",
+      opciones: ["Cell", "Android 21", "Beerus", "Frieza"],
+      correcta: 1
+    },
+    // Black Ops 3 Zombies
+    {
+      juego: "BLACK OPS 3 ZOMBIES",
+      pregunta: "¿Cómo se llama el mapa de inicio de Black Ops 3 Zombies?",
+      opciones: ["Shadows of Evil", "Der Eisendrache", "Zetsubou No Shima", "Revelations"],
+      correcta: 0
+    },
+    {
+      juego: "BLACK OPS 3 ZOMBIES",
+      pregunta: "¿Qué objeto especial puedes fabricar en los mapas de Zombies de Black Ops 3 que es único para cada mapa?",
+      opciones: ["Pack-a-Punch", "Wonder Weapon", "Gobble Gum", "Ray Gun"],
+      correcta: 1
+    },
+
+    // EE - Shadows of Evil
+    {
+      juego: "EE — SHADOWS OF EVIL",
+      pregunta: "Para activar el Easter Egg principal de Shadows of Evil, ¿qué deben hacer los 4 personajes al final del ritual?",
+      opciones: [
+        "Disparar a 4 estatuas al mismo tiempo",
+        "Sacrificarse en los altares de las bestias simultáneamente",
+        "Activar 4 interruptores eléctricos a la vez",
+        "Matar a 4 Margwas al mismo tiempo"
+      ],
+      correcta: 1
+    },
+    {
+      juego: "EE — SHADOWS OF EVIL",
+      pregunta: "¿Cómo se llama la criatura de jefe que aparece varias veces durante el Easter Egg de Shadows of Evil?",
+      opciones: ["Shadow Man", "Margwa", "Shadowsurfer", "Beast"],
+      correcta: 1
+    },
+    {
+      juego: "EE — SHADOWS OF EVIL",
+      pregunta: "¿Qué objeto deben obtener los jugadores en Shadows of Evil para completar el ritual del Easter Egg?",
+      opciones: ["El Cráneo de los Caídos", "El Sello de Damnación", "El Ojo de la Bestia", "La Corona de Fuego"],
+      correcta: 1
+    },
+
+    // EE - Der Eisendrache
+    {
+      juego: "EE — DER EISENDRACHE",
+      pregunta: "¿Cómo se llama el arco Wonder Weapon que se construye en Der Eisendrache y es esencial para el Easter Egg?",
+      opciones: ["Wrath of the Ancients", "Ragnarok DG-4", "Annihilator", "Thunder Gun"],
+      correcta: 0
+    },
+    {
+      juego: "EE — DER EISENDRACHE",
+      pregunta: "¿Qué hay que alimentar en Der Eisendrache para desbloquear las versiones mejoradas del arco elemental?",
+      opciones: ["Perros zombie", "Gargoyles de piedra", "Pinchos de fuego", "Urnas alrededor del mapa"],
+      correcta: 3
+    },
+    {
+      juego: "EE — DER EISENDRACHE",
+      pregunta: "¿Qué personaje es el protagonista de la cinemática y narrativa de Der Eisendrache?",
+      opciones: ["Takeo", "Nikolai", "Richtofen", "Dempsey"],
+      correcta: 3
+    },
+
+    // EE - Zetsubou No Shima
+    {
+      juego: "EE — ZETSUBOU NO SHIMA",
+      pregunta: "¿Qué se necesita cultivar en Zetsubou No Shima para avanzar en el Easter Egg?",
+      opciones: ["Hongos venenosos", "Plantas especiales usando agua de colores", "Cristales de zombies", "Semillas de fuego"],
+      correcta: 1
+    },
+    {
+      juego: "EE — ZETSUBOU NO SHIMA",
+      pregunta: "¿Cómo se llama la Wonder Weapon principal que se puede conseguir en Zetsubou No Shima?",
+      opciones: ["KT-4", "Thundergun", "Ragnarok DG-4", "Wrath of the Ancients"],
+      correcta: 0
+    },
+
+    // EE - Gorod Krovi
+    {
+      juego: "EE — GOROD KROVI",
+      pregunta: "¿Qué criatura voladora debes controlar en Gorod Krovi para transportarte por el mapa?",
+      opciones: ["Wyvern (dragón)", "Gargoyle", "Hellhound gigante", "Valquiria"],
+      correcta: 0
+    },
+    {
+      juego: "EE — GOROD KROVI",
+      pregunta: "¿Cuál es el nombre de la Wonder Weapon principal de Gorod Krovi?",
+      opciones: ["Gauntlet of Siegfried", "Dragon Strike Controller", "Fury's Song", "Ragnarok DG-4"],
+      correcta: 0
+    },
+
+    // EE - Revelations
+    {
+      juego: "EE — REVELATIONS",
+      pregunta: "¿Contra qué jefe final se enfrenta el jugador al completar el Easter Egg de Revelations?",
+      opciones: ["El Margwa Gigante", "Shadowman dentro del Apothicon", "Dr. Monty", "El Apothicon (criatura enorme)"],
+      correcta: 3
+    },
+    {
+      juego: "EE — REVELATIONS",
+      pregunta: "¿Qué ocurre al completar el Easter Egg de Revelations en la línea de Richtofen?",
+      opciones: [
+        "Los 4 personajes son liberados y van al paraíso de Monty",
+        "Richtofen traiciona al grupo",
+        "El universo es destruido por el Apothicon",
+        "Los personajes quedan atrapados para siempre"
+      ],
+      correcta: 0
+    }
+  ];
+
+  let currentQ = 0;
+  let score = 0;
+  let answered = false;
+
+  const letters = ['A', 'B', 'C', 'D'];
+
+  function loadQuestion() {
+    if (currentQ >= preguntas.length) {
+      showResults();
+      return;
+    }
+
+    answered = false;
+    const q = preguntas[currentQ];
+
+    document.getElementById('quizCard').style.animation = 'none';
+    void document.getElementById('quizCard').offsetWidth;
+    document.getElementById('quizCard').style.animation = 'fadeIn 0.35s ease';
+
+    document.getElementById('gameTag').textContent = q.juego;
+    document.getElementById('questionText').textContent = q.pregunta;
+    document.getElementById('progress').textContent = `Pregunta ${currentQ + 1} / ${preguntas.length}`;
+
+    const feedback = document.getElementById('feedback');
+    feedback.className = 'feedback';
+    feedback.textContent = '';
+
+    const nextBtn = document.getElementById('nextBtn');
+    nextBtn.className = 'next-btn';
+
+    const container = document.getElementById('optionsContainer');
+    container.innerHTML = '';
+
+    q.opciones.forEach((opcion, index) => {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.innerHTML = `<span class="letter">${letters[index]}</span>${opcion}`;
+      btn.onclick = () => checkAnswer(index);
+      container.appendChild(btn);
+    });
+  }
+
+  function checkAnswer(selectedIndex) {
+    if (answered) return;
+    answered = true;
+
+    const q = preguntas[currentQ];
+    const buttons = document.querySelectorAll('.option-btn');
+    const feedback = document.getElementById('feedback');
+    const nextBtn = document.getElementById('nextBtn');
+
+    // Deshabilitar todos los botones
+    buttons.forEach(btn => btn.disabled = true);
+
+    // Marcar correcta e incorrecta
+    buttons[q.correcta].classList.add('correct');
+
+    if (selectedIndex === q.correcta) {
+      // Respuesta correcta: suma 1 punto
+      score = score + 1;
+      document.getElementById('score').textContent = score;
+
+      feedback.textContent = '✔ ¡Correcto! +1 punto';
+      feedback.className = 'feedback correct show';
+    } else {
+      // Respuesta incorrecta: no suma nada
+      buttons[selectedIndex].classList.add('wrong');
+
+      feedback.textContent = `✘ Incorrecto. La respuesta correcta era: ${q.opciones[q.correcta]}`;
+      feedback.className = 'feedback wrong show';
+    }
+
+    // Mostrar botón siguiente usando operador ternario para label
+    nextBtn.textContent = (currentQ < preguntas.length - 1) ? 'SIGUIENTE PREGUNTA →' : 'VER RESULTADOS →';
+    nextBtn.className = 'next-btn show';
+  }
+
+  function nextQuestion() {
+    currentQ = currentQ + 1;
+    loadQuestion();
+  }
+
+  function showResults() {
+    document.getElementById('quizCard').style.display = 'none';
+    document.getElementById('score-bar');
+
+    const results = document.getElementById('results');
+    results.className = 'results show';
+    document.getElementById('finalScore').textContent = `${score} / ${preguntas.length}`;
+
+    let mensaje;
+    if (score === preguntas.length) {
+      mensaje = '🏆 ¡Perfecto! Eres un verdadero gamer pro.';
+    } else if (score >= 8) {
+      mensaje = '🎮 ¡Excelente! Conoces muy bien estos juegos.';
+    } else if (score >= 6) {
+      mensaje = '👾 Buen puntaje. ¡Sigue jugando!';
+    } else if (score >= 4) {
+      mensaje = '🕹️ Puedes mejorar. ¡Practica más!';
+    } else {
+      mensaje = '💀 Necesitas jugar más estos títulos, ¡ánimo!';
+    }
+
+    document.getElementById('resultMsg').textContent = mensaje;
+  }
+
+  function restartQuiz() {
+    currentQ = 0;
+    score = 0;
+    document.getElementById('score').textContent = 0;
+    document.getElementById('quizCard').style.display = 'block';
+    document.getElementById('results').className = 'results';
+    loadQuestion();
+  }
+
+  // Iniciar quiz
+  loadQuestion();
+</script>
+</body>
+</html>

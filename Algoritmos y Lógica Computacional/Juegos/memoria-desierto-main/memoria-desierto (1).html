@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>זיכרון — ذاكرة — Memoria del Desierto</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+/* ════════════════════════════════════════════════
+   PALETTE — Noche de Desierto
+   ════════════════════════════════════════════════ */
+:root {
+  --ink:        #09070b;
+  --deep:       #110d08;
+  --surface:    #1c140d;
+  --panel:      #251a10;
+  --border:     #4a3520;
+  --border-hi:  #7a5c30;
+
+  --gold:       #c9944a;
+  --gold-hi:    #f0c878;
+  --gold-dim:   #6b4e20;
+
+  --teal:       #2a6b5e;
+  --teal-hi:    #4db89e;
+  --teal-dim:   #153b33;
+
+  --crimson:    #7a1e2a;
+  --crimson-hi: #c23048;
+
+  --sand:       #d4b483;
+  --sand-dim:   #7a6040;
+  --cream:      #f0ddb8;
+  --smoke:      #8a7458;
+
+  --card-back:  #160e08;
+  --card-face:  #1a1208;
+
+  --flip:       0.65s;
+  --radius:     10px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ink);
+  color: var(--cream);
+  font-family: 'Cinzel', serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* ── Sand grain texture ──────────────────────── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 1;
+}
+
+/* ── Radial candlelight glow from center ─────── */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 40%,
+      rgba(201,148,74,.07) 0%,
+      rgba(201,148,74,.03) 40%,
+      transparent 70%),
+    radial-gradient(ellipse 100% 80% at 50% 100%,
+      rgba(42,107,94,.06) 0%,
+      transparent 60%);
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════
+   ISLAMIC GEOMETRIC TILE PATTERN
+   (SVG inline en CSS background)
+═══════════════════════════════ */
+.geo-pattern {
+  position: fixed; inset: 0; z-index: 0;
+  opacity: .045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cdefs%3E%3Cpattern id='star' patternUnits='userSpaceOnUse' width='80' height='80'%3E%3Cpolygon points='40,5 47,28 72,28 52,43 60,66 40,52 20,66 28,43 8,28 33,28' fill='none' stroke='%23c9944a' stroke-width='0.8'/%3E%3Crect x='20' y='20' width='40' height='40' fill='none' stroke='%23c9944a' stroke-width='0.5' transform='rotate(45 40 40)'/%3E%3Ccircle cx='40' cy='40' r='6' fill='none' stroke='%23c9944a' stroke-width='0.6'/%3E%3Cline x1='0' y1='0' x2='80' y2='80' stroke='%23c9944a' stroke-width='0.3'/%3E%3Cline x1='80' y1='0' x2='0' y2='80' stroke='%23c9944a' stroke-width='0.3'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='80' height='80' fill='url(%23star)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* ── Candle flicker vignette ─────────────────── */
+.vignette {
+  position: fixed; inset: 0; z-index: 0;
+  background: radial-gradient(ellipse 90% 90% at 50% 50%,
+    transparent 40%, rgba(0,0,0,.7) 100%);
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════
+   ORNAMENTAL BORDER (top/bottom)
+═══════════════════════════════ */
+.ornament-bar {
+  position: relative; z-index: 2;
+  width: 100%; max-width: 860px;
+  display: flex; align-items: center; gap: 0;
+  padding: 0 24px;
+}
+.ornament-bar::before,
+.ornament-bar::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent, var(--gold-dim), var(--gold), var(--gold-dim), transparent);
+}
+.ornament-center {
+  padding: 0 16px;
+  color: var(--gold);
+  font-size: 1.1rem;
+  letter-spacing: .1em;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════
+   HEADER
+═══════════════════════════════ */
+header {
+  position: relative; z-index: 2;
+  width: 100%; max-width: 860px;
+  padding: 28px 24px 4px;
+  text-align: center;
+}
+
+.logo-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.logo-script {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.5rem, 5vw, 2.8rem);
+  font-weight: 900;
+  letter-spacing: .1em;
+  color: var(--gold-hi);
+  text-shadow:
+    0 0 30px rgba(201,148,74,.5),
+    0 2px 8px rgba(0,0,0,.8);
+  display: block;
+  line-height: 1.1;
+}
+
+.logo-sub {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  margin-top: 6px;
+}
+.logo-sub span {
+  font-size: .7rem;
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  color: var(--sand-dim);
+}
+.logo-sub .div { width: 30px; height: 1px; background: var(--gold-dim); }
+
+.script-right {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: .75rem;
+  color: var(--teal-hi);
+  letter-spacing: .05em;
+  opacity: .8;
+  margin-top: 4px;
+}
+
+/* ═══════════════════════════════
+   HUD
+═══════════════════════════════ */
+.hud {
+  position: relative; z-index: 2;
+  width: 100%; max-width: 860px;
+  display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+  padding: 16px 24px 0;
+}
+
+.hud-tile {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 20px 8px;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  min-width: 100px;
+  position: relative;
+  overflow: hidden;
+}
+/* ornamental corner dots */
+.hud-tile::before,
+.hud-tile::after {
+  content: '◆';
+  position: absolute;
+  font-size: .4rem;
+  color: var(--gold-dim);
+}
+.hud-tile::before { top: 4px; left: 6px; }
+.hud-tile::after  { bottom: 4px; right: 6px; }
+
+.hud-lbl {
+  font-size: .55rem;
+  letter-spacing: .25em;
+  color: var(--sand-dim);
+  text-transform: uppercase;
+}
+.hud-val {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--gold-hi);
+}
+#timer-val { color: var(--sand); }
+#pairs-val { color: var(--teal-hi); }
+#state-val { font-size: .8rem; letter-spacing: .1em; color: var(--cream); }
+
+/* ═══════════════════════════════
+   ASYNC SCROLL ─ Log Banner
+═══════════════════════════════ */
+.scroll-log {
+  position: relative; z-index: 2;
+  width: 100%; max-width: 860px;
+  margin: 14px 24px 0;
+  background: var(--deep);
+  border-top: 1px solid var(--gold-dim);
+  border-bottom: 1px solid var(--gold-dim);
+  padding: 9px 20px;
+  display: flex; align-items: center; gap: 12px;
+  overflow: hidden;
+}
+.scroll-log .tag {
+  font-size: .6rem;
+  letter-spacing: .2em;
+  color: var(--gold);
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.scroll-log .msg {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: .8rem;
+  color: var(--sand);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ═══════════════════════════════
+   BOARD
+═══════════════════════════════ */
+main {
+  position: relative; z-index: 2;
+  width: 100%; max-width: 860px;
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 13px;
+}
+
+/* ═══════════════════════════════
+   CARD
+═══════════════════════════════ */
+.card {
+  aspect-ratio: 3/4;
+  cursor: pointer;
+  perspective: 1200px;
+  transition: transform .15s, filter .2s;
+}
+.card:hover:not(.flipped):not(.matched):not(.blocked) {
+  transform: translateY(-5px) scale(1.03);
+  filter: drop-shadow(0 8px 20px rgba(201,148,74,.25));
+}
+.card.blocked { cursor: not-allowed; }
+
+.card-inner {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform var(--flip) cubic-bezier(.4,0,.2,1);
+}
+.card.flipped .card-inner,
+.card.matched .card-inner { transform: rotateY(180deg); }
+
+.card-face {
+  position: absolute; inset: 0;
+  border-radius: var(--radius);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+
+/* ── CARD BACK — ornamental ─────────────────── */
+.card-back {
+  background: var(--card-back);
+  border: 1px solid var(--border);
+}
+
+/* SVG Star of David on back */
+.card-back .back-svg {
+  width: 55%; opacity: .25;
+}
+
+/* geometric border frame on back */
+.card-back::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid var(--gold-dim);
+  border-radius: 6px;
+  background: none;
+}
+.card-back::after {
+  content: '';
+  position: absolute;
+  inset: 9px;
+  border: 1px solid rgba(201,148,74,.15);
+  border-radius: 4px;
+  background: none;
+}
+
+/* inner diagonal lines */
+.card-back-pattern {
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 8px,
+      rgba(201,148,74,.04) 8px,
+      rgba(201,148,74,.04) 9px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 8px,
+      rgba(42,107,94,.04) 8px,
+      rgba(42,107,94,.04) 9px
+    );
+  border-radius: var(--radius);
+}
+
+/* ── CARD FRONT ─────────────────────────────── */
+.card-front {
+  background: linear-gradient(160deg, #1f1508 0%, #0f0c05 100%);
+  border: 1px solid var(--gold-dim);
+  transform: rotateY(180deg);
+  flex-direction: column;
+  gap: 4px;
+}
+/* ornamental corners on front */
+.card-front::before,
+.card-front::after {
+  content: '';
+  position: absolute;
+  width: 16px; height: 16px;
+  border-color: var(--gold-dim);
+  border-style: solid;
+}
+.card-front::before {
+  top: 5px; left: 5px;
+  border-width: 1px 0 0 1px;
+  border-radius: 2px 0 0 0;
+}
+.card-front::after {
+  bottom: 5px; right: 5px;
+  border-width: 0 1px 1px 0;
+  border-radius: 0 0 2px 0;
+}
+
+.card-front .c-emoji {
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  line-height: 1;
+  filter: drop-shadow(0 0 12px rgba(201,148,74,.5));
+}
+.card-front .c-label {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: .58rem;
+  letter-spacing: .12em;
+  color: var(--gold-dim);
+  text-transform: none;
+}
+.card-front .c-hebrew {
+  font-size: .7rem;
+  color: var(--teal);
+  opacity: .8;
+  letter-spacing: .05em;
+}
+
+/* ── MATCHED ─────────────────────────────────── */
+.card.matched .card-front {
+  border-color: var(--gold);
+  background: linear-gradient(160deg, #2a1f08 0%, #1a1404 100%);
+  animation: desertGlow 1.2s ease-out forwards;
+}
+@keyframes desertGlow {
+  0%   { box-shadow: 0 0 0 0 rgba(201,148,74,.6); }
+  40%  { box-shadow: 0 0 24px 6px rgba(201,148,74,.35), inset 0 0 20px rgba(201,148,74,.08); }
+  100% { box-shadow: 0 0 10px 2px rgba(201,148,74,.2), inset 0 0 10px rgba(201,148,74,.05); }
+}
+
+/* ── WRONG shake ─────────────────────────────── */
+.card.wrong .card-inner {
+  animation: wrongShake .45s ease-in-out;
+}
+@keyframes wrongShake {
+  0%,100% { transform: rotateY(180deg) translateX(0); }
+  20%     { transform: rotateY(180deg) translateX(-6px); }
+  60%     { transform: rotateY(180deg) translateX(6px); }
+  80%     { transform: rotateY(180deg) translateX(-3px); }
+}
+
+/* ═══════════════════════════════
+   CONTROLS
+═══════════════════════════════ */
+.controls {
+  position: relative; z-index: 2;
+  margin: 0 24px 36px;
+  display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+}
+
+.btn {
+  font-family: 'Cinzel', serif;
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  padding: 11px 28px;
+  border-radius: 6px;
+  border: 1px solid var(--gold-dim);
+  background: transparent;
+  color: var(--gold);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color .2s, border-color .2s, box-shadow .2s, transform .1s;
+}
+.btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(201,148,74,.08));
+  opacity: 0;
+  transition: opacity .2s;
+}
+.btn:hover {
+  border-color: var(--gold);
+  color: var(--gold-hi);
+  box-shadow: 0 0 16px rgba(201,148,74,.2), inset 0 0 12px rgba(201,148,74,.05);
+  transform: translateY(-1px);
+}
+.btn:hover::before { opacity: 1; }
+.btn:active { transform: translateY(0); }
+
+/* ═══════════════════════════════
+   WIN OVERLAY
+═══════════════════════════════ */
+.overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(5,3,2,.92);
+  backdrop-filter: blur(14px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity .5s;
+}
+.overlay.active { opacity: 1; pointer-events: all; }
+
+.win-box {
+  background: var(--panel);
+  border: 1px solid var(--gold-dim);
+  border-radius: 16px;
+  padding: 48px 60px;
+  text-align: center;
+  max-width: 480px; width: 90%;
+  box-shadow:
+    0 0 60px rgba(201,148,74,.15),
+    0 0 120px rgba(201,148,74,.06),
+    inset 0 0 40px rgba(0,0,0,.4);
+  animation: winEntry .6s cubic-bezier(.34,1.56,.64,1);
+  position: relative;
+  overflow: hidden;
+}
+/* Geometric overlay inside win box */
+.win-box::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpolygon points='40,5 47,28 72,28 52,43 60,66 40,52 20,66 28,43 8,28 33,28' fill='none' stroke='%23c9944a' stroke-width='0.5' opacity='0.08'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+@keyframes winEntry {
+  from { transform: scale(.75) translateY(20px); opacity: 0; }
+  to   { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.win-ornament {
+  font-size: 2rem; margin-bottom: 8px;
+  animation: spinSlow 8s linear infinite;
+}
+@keyframes spinSlow { to { transform: rotate(360deg); } }
+
+.win-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 900;
+  color: var(--gold-hi);
+  text-shadow: 0 0 30px rgba(201,148,74,.5);
+  letter-spacing: .1em;
+  position: relative;
+}
+
+.win-subtitle {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: .85rem;
+  color: var(--sand-dim);
+  letter-spacing: .05em;
+  margin: 6px 0 24px;
+}
+
+.win-divider {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg,
+    transparent, var(--gold-dim), var(--gold), var(--gold-dim), transparent);
+  margin: 16px 0;
+}
+
+.win-stats {
+  display: flex; gap: 28px; justify-content: center; margin: 20px 0 28px;
+}
+.win-stat { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.win-stat .val {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+.win-stat .lbl {
+  font-size: .55rem;
+  letter-spacing: .25em;
+  color: var(--sand-dim);
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════
+   CANDLES (decorative floating)
+═══════════════════════════════ */
+.candle {
+  position: fixed; z-index: 1; bottom: 0;
+  width: 6px;
+  pointer-events: none;
+}
+.candle-body {
+  width: 6px; height: 40px;
+  background: linear-gradient(to bottom, #d4af70, #8b7040);
+  border-radius: 2px;
+}
+.candle-flame {
+  width: 8px; height: 14px;
+  background: radial-gradient(ellipse at 50% 80%, #fff 0%, #ffd060 30%, #ff8c00 65%, transparent 100%);
+  border-radius: 50% 50% 20% 20%;
+  margin: -2px auto 0;
+  animation: flicker 1.5s ease-in-out infinite alternate;
+  transform-origin: bottom center;
+}
+@keyframes flicker {
+  0%  { transform: scaleX(1) scaleY(1) rotate(-1deg); opacity: .9; }
+  30% { transform: scaleX(.9) scaleY(1.05) rotate(1deg); opacity: 1; }
+  60% { transform: scaleX(1.05) scaleY(.97) rotate(-2deg); opacity: .85; }
+  100%{ transform: scaleX(.95) scaleY(1.02) rotate(1.5deg); opacity: .95; }
+}
+.candle-glow {
+  width: 40px; height: 40px;
+  background: radial-gradient(ellipse, rgba(255,180,50,.18) 0%, transparent 70%);
+  border-radius: 50%;
+  position: absolute; top: -24px; left: -17px;
+  animation: flickerGlow 1.5s ease-in-out infinite alternate;
+}
+@keyframes flickerGlow {
+  0%,100% { opacity: .7; transform: scale(1); }
+  50%     { opacity: 1; transform: scale(1.1); }
+}
+
+/* ═══════════════════════════════
+   RESPONSIVE
+═══════════════════════════════ */
+@media (max-width: 500px) {
+  main { grid-template-columns: repeat(4, 1fr); gap: 7px; padding: 12px; }
+  .win-box { padding: 32px 24px; }
+  .win-stats { gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Decorative layers -->
+<div class="geo-pattern"></div>
+<div class="vignette"></div>
+
+<!-- Candles -->
+<div class="candle" style="left:3%">
+  <div class="candle-glow"></div>
+  <div class="candle-flame" style="animation-delay:.3s"></div>
+  <div class="candle-body"></div>
+</div>
+<div class="candle" style="left:8%">
+  <div class="candle-glow"></div>
+  <div class="candle-flame" style="animation-delay:.7s"></div>
+  <div class="candle-body" style="height:30px"></div>
+</div>
+<div class="candle" style="right:5%">
+  <div class="candle-glow"></div>
+  <div class="candle-flame" style="animation-delay:.5s"></div>
+  <div class="candle-body" style="height:50px"></div>
+</div>
+<div class="candle" style="right:11%">
+  <div class="candle-glow"></div>
+  <div class="candle-flame" style="animation-delay:1.1s"></div>
+  <div class="candle-body" style="height:28px"></div>
+</div>
+
+<!-- Top ornament bar -->
+<div class="ornament-bar" style="margin-top:20px">
+  <div class="ornament-center">✦ ✡ ✦</div>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="logo-wrap">
+    <span class="logo-script">Memoria del Desierto</span>
+    <div class="logo-sub">
+      <div class="div"></div>
+      <span>זיכרון &nbsp;·&nbsp; ذاكرة</span>
+      <div class="div"></div>
+    </div>
+    <div class="script-right">
+      "La memoria es el jardín del alma" — نهج البلاغة
+    </div>
+  </div>
+</header>
+
+<!-- Ornament -->
+<div class="ornament-bar" style="margin-top:12px">
+  <div class="ornament-center" style="font-size:.7rem;color:var(--gold-dim)">◈ ◈ ◈</div>
+</div>
+
+<!-- HUD -->
+<div class="hud">
+  <div class="hud-tile">
+    <span class="hud-lbl">Tiempo</span>
+    <span class="hud-val" id="timer-val">00:00</span>
+  </div>
+  <div class="hud-tile">
+    <span class="hud-lbl">Movimientos</span>
+    <span class="hud-val" id="moves-val">0</span>
+  </div>
+  <div class="hud-tile">
+    <span class="hud-lbl">Pares</span>
+    <span class="hud-val" id="pairs-val">0 / 8</span>
+  </div>
+  <div class="hud-tile">
+    <span class="hud-lbl">Estado</span>
+    <span class="hud-val" id="state-val">▸ Listo</span>
+  </div>
+</div>
+
+<!-- Log -->
+<div class="scroll-log">
+  <span class="tag">⟡ Async</span>
+  <span class="msg" id="logMsg">Levanta las cartas y revela los secretos del desierto…</span>
+</div>
+
+<!-- Board -->
+<main id="board"></main>
+
+<!-- Controls -->
+<div class="controls">
+  <button class="btn" onclick="initGame()">✦ &nbsp;Reiniciar la partida</button>
+</div>
+
+<!-- Bottom ornament -->
+<div class="ornament-bar" style="margin-bottom:24px">
+  <div class="ornament-center" style="font-size:.7rem;color:var(--gold-dim)">◈ ◈ ◈</div>
+</div>
+
+<!-- Win overlay -->
+<div class="overlay" id="overlay">
+  <div class="win-box">
+    <div class="win-ornament">✡</div>
+    <div class="win-title">Victoria ✦ نصر</div>
+    <p class="win-subtitle">Todos los secretos han sido revelados</p>
+    <div class="win-divider"></div>
+    <div class="win-stats">
+      <div class="win-stat">
+        <span class="val" id="win-time">—</span>
+        <span class="lbl">Tiempo</span>
+      </div>
+      <div class="win-stat">
+        <span class="val" id="win-moves">—</span>
+        <span class="lbl">Movimientos</span>
+      </div>
+      <div class="win-stat">
+        <span class="val" id="win-score">—</span>
+        <span class="lbl">Puntuación</span>
+      </div>
+    </div>
+    <div class="win-divider"></div>
+    <button class="btn" style="margin-top:20px" onclick="initGame()">✦ &nbsp;Jugar de nuevo</button>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   MEMORIA DEL DESIERTO — Async JS Demo
+═══════════════════════════════════════════════ */
+
+const CARDS = [
+  { id: 'ca', emoji: '🕎',  label: 'Janucá',   heb: 'חֲנֻכִּיָּה' },
+  { id: 'cb', emoji: '🌙',  label: 'Hilal',    heb: 'هِلال'    },
+  { id: 'cc', emoji: '🏺',  label: 'Ánfora',   heb: 'כַּד'     },
+  { id: 'cd', emoji: '🌴',  label: 'Tamar',    heb: 'תָּמָר'   },
+  { id: 'ce', emoji: '🐪',  label: 'Gamal',    heb: 'גָּמָל'   },
+  { id: 'cf', emoji: '⭐',   label: 'Kokhav',   heb: 'כּוֹכָב'  },
+  { id: 'cg', emoji: '🔯',  label: 'Magen',    heb: 'מָגֵן'    },
+  { id: 'ch', emoji: '🏜️',  label: 'Midbar',   heb: 'מִדְבָּר' },
+];
+
+// ── State ─────────────────────────────────────
+let flipped    = [];
+let matched    = [];
+let isFlipping = false;   // ← ASYNC LOCK
+let moves      = 0;
+let timerID    = null;
+let startTime  = null;
+let elapsed    = 0;
+
+// ── Helpers ───────────────────────────────────
+const $ = id => document.getElementById(id);
+
+function log(msg) {
+  $('logMsg').textContent = msg;
+}
+
+function shuffle(arr) {
+  return [...arr, ...arr]
+    .map(c => ({ ...c, uid: crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36) }))
+    .sort(() => Math.random() - .5);
+}
+
+function formatTime(ms) {
+  const s = Math.floor(ms / 1000);
+  return `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+}
+
+// ── Timer ─────────────────────────────────────
+function startTimer() {
+  startTime = Date.now() - elapsed;
+  timerID = setInterval(() => {
+    elapsed = Date.now() - startTime;
+    $('timer-val').textContent = formatTime(elapsed);
+  }, 200);
+}
+function stopTimer() { clearInterval(timerID); }
+
+// ── HUD ───────────────────────────────────────
+function updateHUD() {
+  $('moves-val').textContent = moves;
+  $('pairs-val').textContent = `${matched.length} / 8`;
+  const blocked = isFlipping;
+  $('state-val').textContent = blocked ? '⏳ Espera…' : '▸ Activo';
+  $('state-val').style.color = blocked
+    ? 'var(--sand)'
+    : 'var(--teal-hi)';
+}
+
+// ── Click ─────────────────────────────────────
+function handleClick(el, uid, baseId) {
+  /*
+   * ASYNC LOCK — setTimeout en curso
+   * isFlipping = true durante los 900ms de espera.
+   * El Event Loop sigue vivo; nosotros ignoramos el clic.
+   */
+  if (isFlipping) {
+    log('🔒 setTimeout activo → clic bloqueado. El Event Loop espera…');
+    return;
+  }
+  if (el.classList.contains('flipped') ||
+      el.classList.contains('matched')) return;
+
+  // Primera carta
+  if (flipped.length === 0) {
+    if (!startTime) startTimer();
+    flipCard(el, uid, baseId);
+    log(`▸ Primera carta: ${baseId.toUpperCase()} — ¿Dónde está su pareja?`);
+    return;
+  }
+
+  // Segunda carta
+  flipCard(el, uid, baseId);
+  moves++;
+
+  const [a, b] = flipped;
+
+  if (a.baseId === b.baseId) {
+    // ── MATCH ────────────────────────────────
+    matched.push(a.baseId);
+    a.el.classList.add('matched');
+    b.el.classList.add('matched');
+    flipped = [];
+    log(`✦ Par encontrado: ${a.baseId.toUpperCase()} — بارك الله  ·  ברוך השם`);
+
+    if (matched.length === 8) {
+      setTimeout(showWin, 800);
+    }
+  } else {
+    /*
+     * ASYNC PATTERN — setTimeout como mecanismo de UX
+     *
+     * 1. Activamos isFlipping = true ANTES del setTimeout.
+     * 2. El navegador delega el timer al Web API (no bloquea).
+     * 3. 900ms después, el callback entra a la Callback Queue.
+     * 4. El Event Loop lo procesa → voltea cartas → libera lock.
+     */
+    isFlipping = true;
+    a.el.classList.add('wrong');
+    b.el.classList.add('wrong');
+    updateHUD();
+    log('⏳ setTimeout(fn, 900) → isFlipping=true. El hilo sigue libre…');
+
+    setTimeout(() => {
+      // ← Este bloque corre desde la Callback Queue, ~900ms después
+      a.el.classList.remove('flipped', 'wrong');
+      b.el.classList.remove('flipped', 'wrong');
+      flipped    = [];
+      isFlipping = false;    // ← Liberamos el lock asíncrono
+      log('🔓 Callback Queue → isFlipping=false. Puedes seguir jugando.');
+      updateHUD();
+    }, 900);
+  }
+
+  updateHUD();
+}
+
+function flipCard(el, uid, baseId) {
+  el.classList.add('flipped');
+  flipped.push({ el, uid, baseId });
+}
+
+// ── Build ─────────────────────────────────────
+function initGame() {
+  flipped    = [];
+  matched    = [];
+  isFlipping = false;
+  moves      = 0;
+  elapsed    = 0;
+  startTime  = null;
+  stopTimer();
+  $('overlay').classList.remove('active');
+  $('timer-val').textContent = '00:00';
+  updateHUD();
+  log('Las cartas han sido mezcladas. Que comience la partida…');
+
+  const deck  = shuffle(CARDS);
+  const board = $('board');
+  board.innerHTML = '';
+
+  deck.forEach((c, i) => {
+    const uid = `${c.id}-${i}`;
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    card.innerHTML = `
+      <div class="card-inner">
+        <div class="card-face card-back">
+          <div class="card-back-pattern"></div>
+          <svg class="back-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <!-- Star of David -->
+            <polygon points="50,8 62,30 86,30 68,48 76,72 50,58 24,72 32,48 14,30 38,30"
+              fill="none" stroke="#c9944a" stroke-width="2"/>
+            <polygon points="50,18 58,34 74,34 62,44 66,60 50,52 34,60 38,44 26,34 42,34"
+              fill="none" stroke="#c9944a" stroke-width="1" opacity=".4"/>
+            <!-- Crescent -->
+            <path d="M50,80 a12,12 0 1,0 8,-10 a8,8 0 1,1 -8,10z"
+              fill="none" stroke="#2a6b5e" stroke-width="1.5" opacity=".6"/>
+          </svg>
+        </div>
+        <div class="card-face card-front">
+          <div class="c-emoji">${c.emoji}</div>
+          <div class="c-label">${c.label}</div>
+          <div class="c-hebrew">${c.heb}</div>
+        </div>
+      </div>`;
+
+    // Staggered entrance
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(12px) scale(.9)';
+    setTimeout(() => {
+      card.style.transition = 'opacity .4s ease, transform .4s ease';
+      card.style.opacity    = '1';
+      card.style.transform  = 'translateY(0) scale(1)';
+      setTimeout(() => {
+        card.style.transition = '';
+      }, 400);
+    }, i * 45 + 80);
+
+    card.addEventListener('click', () => handleClick(card, uid, c.id));
+    board.appendChild(card);
+  });
+}
+
+// ── Win ───────────────────────────────────────
+function showWin() {
+  stopTimer();
+  const t = formatTime(elapsed);
+  const score = Math.max(100, 2000 - moves * 20 - Math.floor(elapsed / 1000) * 4);
+  $('win-time').textContent  = t;
+  $('win-moves').textContent = moves;
+  $('win-score').textContent = score;
+  $('overlay').classList.add('active');
+  log(`✦ Victoria — ${t} · ${moves} movimientos · Score: ${score}`);
+}
+
+// ── Boot ──────────────────────────────────────
+initGame();
+</script>
+</body>
+</html>

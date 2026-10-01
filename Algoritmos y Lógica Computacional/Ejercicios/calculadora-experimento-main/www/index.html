@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CALC — Rust × WASM</title>
+
+  <!-- Share Tech Mono: fuente terminal para el display (misma que KernelGarden) -->
+  <!-- Barlow Condensed: fuente compacta y legible para los botones -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Loading state: visible hasta que WASM esté listo -->
+  <div id="loader" aria-live="polite">
+    <span class="loader-dot"></span>
+    <span class="loader-dot"></span>
+    <span class="loader-dot"></span>
+    <p>Cargando WASM...</p>
+  </div>
+
+  <!-- Calculadora principal: oculta hasta que WASM cargue -->
+  <main id="app" class="hidden" aria-label="Calculadora">
+
+    <!-- Badge decorativo -->
+    <div class="badge">RUST × WASM</div>
+
+    <!-- Calculadora -->
+    <div class="calculator" role="application" aria-label="Calculadora aritmética">
+
+      <!-- ── Display ────────────────────────────────────────────── -->
+      <div class="display-wrapper">
+        <!-- Línea de expresión (ej: "12 × 5 =") -->
+        <div
+          id="expression"
+          class="expression"
+          aria-label="Expresión actual"
+          aria-live="polite"
+        ></div>
+
+        <!-- Número principal -->
+        <div
+          id="display"
+          class="display"
+          role="status"
+          aria-label="Resultado"
+          aria-live="assertive"
+        >0</div>
+      </div>
+
+      <!-- ── Teclado ─────────────────────────────────────────────── -->
+      <!--
+        Layout del grid (4 columnas):
+        [C]  [⌫]  [ ]  [÷]
+        [7]  [8]  [9]  [×]
+        [4]  [5]  [6]  [-]
+        [1]  [2]  [3]  [+]
+        [0 (span 2)] [.] [=]
+      -->
+      <div class="keypad" role="group" aria-label="Botones de la calculadora">
+
+        <!-- Fila 1: Control -->
+        <button class="btn btn-clear"    data-action="clear"    aria-label="Limpiar todo (Escape)">C</button>
+        <button class="btn btn-back"     data-action="back"     aria-label="Borrar último dígito (Backspace)">⌫</button>
+        <button class="btn btn-op"       data-op="×"            aria-label="Multiplicar">×</button>
+        <button class="btn btn-op"       data-op="÷"            aria-label="Dividir">÷</button>
+
+        <!-- Fila 2: 7 8 9 - -->
+        <button class="btn btn-num"      data-digit="7">7</button>
+        <button class="btn btn-num"      data-digit="8">8</button>
+        <button class="btn btn-num"      data-digit="9">9</button>
+        <button class="btn btn-op"       data-op="-"            aria-label="Restar">−</button>
+
+        <!-- Fila 3: 4 5 6 + -->
+        <button class="btn btn-num"      data-digit="4">4</button>
+        <button class="btn btn-num"      data-digit="5">5</button>
+        <button class="btn btn-num"      data-digit="6">6</button>
+        <button class="btn btn-op"       data-op="+"            aria-label="Sumar">+</button>
+
+        <!-- Fila 4: 1 2 3 (vacío) -->
+        <button class="btn btn-num"      data-digit="1">1</button>
+        <button class="btn btn-num"      data-digit="2">2</button>
+        <button class="btn btn-num"      data-digit="3">3</button>
+        <!-- Celda vacía para completar la fila -->
+        <div class="btn-spacer" aria-hidden="true"></div>
+
+        <!-- Fila 5: 0 (ancho doble) + . = -->
+        <button class="btn btn-num btn-zero" data-digit="0">0</button>
+        <button class="btn btn-num"          data-action="decimal" aria-label="Punto decimal">.</button>
+        <button class="btn btn-equals"       data-action="equals"  aria-label="Igual (Enter)">=</button>
+
+      </div>
+      <!-- /keypad -->
+
+    </div>
+    <!-- /calculator -->
+
+    <!-- Hint de teclado -->
+    <p class="keyboard-hint" aria-hidden="true">
+      ↑ soporta teclado físico · <kbd>Esc</kbd> = C
+    </p>
+
+  </main>
+
+  <!--
+    app.js usa ES Modules para importar el módulo WASM generado por wasm-pack.
+    El atributo type="module" es obligatorio para que funcionen los imports.
+  -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>

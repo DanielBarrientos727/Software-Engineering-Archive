@@ -1,0 +1,2367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TypeScript — Guía Completa para el Parcial | Daniel Barrientos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg2: #0f1729;
+    --bg3: #141c35;
+    --card: #111827;
+    --border: #1e2d4a;
+    --accent: #38bdf8;
+    --accent2: #818cf8;
+    --accent3: #34d399;
+    --accent4: #f472b6;
+    --accent5: #fbbf24;
+    --warn: #fb923c;
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --code-bg: #0d1526;
+    --ts-blue: #3178c6;
+    --good: #10b981;
+    --bad: #ef4444;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    display: flex;
+  }
+
+  /* ──────── SIDEBAR ──────── */
+  #sidebar {
+    width: 280px;
+    min-height: 100vh;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    padding: 0 0 60px;
+    z-index: 100;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .sidebar-logo {
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg3);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .sidebar-logo .ts-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text2);
+  }
+
+  .sidebar-logo .ts-icon {
+    width: 28px; height: 28px;
+    background: var(--ts-blue);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.75rem; color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .sidebar-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-top: 8px;
+  }
+
+  .sidebar-subtitle {
+    font-size: 0.72rem;
+    color: var(--text3);
+    margin-top: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .sidebar-section {
+    padding: 12px 20px 4px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 8px;
+  }
+
+  #sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 20px;
+    font-size: 0.82rem;
+    color: var(--text2);
+    text-decoration: none;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+  }
+
+  #sidebar a:hover {
+    color: var(--accent);
+    background: rgba(56,189,248,0.06);
+    border-left-color: var(--accent);
+  }
+
+  #sidebar a .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text3);
+    min-width: 22px;
+  }
+
+  /* ──────── MAIN CONTENT ──────── */
+  #main {
+    margin-left: 280px;
+    flex: 1;
+    max-width: calc(100% - 280px);
+    padding: 0;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #0a0e1a 0%, #0f1729 40%, #0d1f3c 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 60px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(49,120,198,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: 'TypeScript';
+    position: absolute;
+    bottom: -20px; right: 40px;
+    font-family: 'Syne', sans-serif;
+    font-size: 120px;
+    font-weight: 800;
+    color: rgba(49,120,198,0.06);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(49,120,198,0.15);
+    border: 1px solid rgba(49,120,198,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1.15;
+    background: linear-gradient(135deg, #e2e8f0 30%, #38bdf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    max-width: 600px;
+  }
+
+  .hero p {
+    color: var(--text2);
+    margin-top: 16px;
+    max-width: 560px;
+    font-size: 1rem;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 30px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stat .n {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--accent);
+  }
+
+  .stat .l {
+    font-size: 0.75rem;
+    color: var(--text3);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* SECTION */
+  .section {
+    padding: 60px 60px 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section:last-child { border-bottom: none; }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text3);
+    padding-top: 6px;
+    min-width: 30px;
+  }
+
+  .section-title-group { flex: 1; }
+
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .section h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .section h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 28px 0 12px;
+  }
+
+  .section h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent3);
+    margin: 20px 0 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .section p {
+    color: var(--text2);
+    margin-bottom: 14px;
+    font-size: 0.95rem;
+    max-width: 720px;
+  }
+
+  .section ul, .section ol {
+    color: var(--text2);
+    font-size: 0.92rem;
+    padding-left: 24px;
+    margin-bottom: 16px;
+    max-width: 700px;
+  }
+
+  .section li { margin-bottom: 6px; }
+
+  /* CODE BLOCKS */
+  .code-block {
+    margin: 16px 0 24px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    position: relative;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg3);
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-lang {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .code-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text3);
+  }
+
+  .code-block pre {
+    margin: 0 !important;
+    border-radius: 0 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.82rem !important;
+    line-height: 1.65 !important;
+  }
+
+  .code-block code {
+    font-family: 'JetBrains Mono', monospace !important;
+  }
+
+  /* CALLOUTS */
+  .callout {
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 0.88rem;
+    max-width: 720px;
+    display: flex;
+    gap: 12px;
+  }
+
+  .callout .icon { font-size: 1.2rem; flex-shrink: 0; padding-top: 1px; }
+  .callout .content { flex: 1; }
+  .callout .content strong { display: block; margin-bottom: 4px; font-size: 0.85rem; }
+  .callout .content p { margin: 0; color: inherit; font-size: 0.88rem; max-width: none; }
+
+  .callout-info {
+    background: rgba(56,189,248,0.08);
+    border: 1px solid rgba(56,189,248,0.2);
+    color: #7dd3fc;
+  }
+
+  .callout-warn {
+    background: rgba(251,191,36,0.08);
+    border: 1px solid rgba(251,191,36,0.2);
+    color: #fcd34d;
+  }
+
+  .callout-good {
+    background: rgba(52,211,153,0.08);
+    border: 1px solid rgba(52,211,153,0.2);
+    color: #6ee7b7;
+  }
+
+  .callout-bad {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.2);
+    color: #fca5a5;
+  }
+
+  /* COMPARE GRID */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  .compare-item {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .compare-header {
+    padding: 8px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .compare-header.good { background: rgba(52,211,153,0.12); color: var(--accent3); }
+  .compare-header.bad { background: rgba(239,68,68,0.12); color: #f87171; }
+  .compare-header.neutral { background: rgba(129,140,248,0.12); color: var(--accent2); }
+
+  .compare-item pre {
+    margin: 0 !important;
+    border-radius: 0 !important;
+    font-size: 0.78rem !important;
+  }
+
+  /* TABLE */
+  .ts-table {
+    width: 100%;
+    max-width: 760px;
+    border-collapse: collapse;
+    margin: 16px 0 24px;
+    font-size: 0.85rem;
+  }
+
+  .ts-table th {
+    background: var(--bg3);
+    padding: 10px 16px;
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent2);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .ts-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text2);
+    vertical-align: top;
+  }
+
+  .ts-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .ts-table code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--accent3);
+  }
+
+  /* INLINE CODE */
+  p code, li code, td code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82em;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--accent3);
+  }
+
+  /* PILL */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    margin: 2px;
+  }
+
+  .pill-blue { background: rgba(49,120,198,0.2); color: #60a5fa; border: 1px solid rgba(49,120,198,0.3); }
+  .pill-green { background: rgba(52,211,153,0.15); color: var(--accent3); border: 1px solid rgba(52,211,153,0.25); }
+  .pill-purple { background: rgba(129,140,248,0.15); color: var(--accent2); border: 1px solid rgba(129,140,248,0.25); }
+  .pill-orange { background: rgba(251,146,60,0.15); color: var(--warn); border: 1px solid rgba(251,146,60,0.25); }
+  .pill-pink { background: rgba(244,114,182,0.15); color: var(--accent4); border: 1px solid rgba(244,114,182,0.25); }
+
+  /* DIAGRAM */
+  .diagram {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 20px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text2);
+    line-height: 1.8;
+    overflow-x: auto;
+  }
+
+  .diagram .arrow { color: var(--accent); }
+  .diagram .box {
+    display: inline-block;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 10px;
+    margin: 2px;
+    color: var(--text);
+    background: var(--bg3);
+  }
+  .diagram .box-blue { border-color: rgba(56,189,248,0.4); color: var(--accent); background: rgba(56,189,248,0.06); }
+  .diagram .box-green { border-color: rgba(52,211,153,0.4); color: var(--accent3); background: rgba(52,211,153,0.06); }
+  .diagram .box-purple { border-color: rgba(129,140,248,0.4); color: var(--accent2); background: rgba(129,140,248,0.06); }
+  .diagram .box-orange { border-color: rgba(251,146,60,0.4); color: var(--warn); background: rgba(251,146,60,0.06); }
+
+  /* INSTALL STEPS */
+  .steps { list-style: none; padding: 0; max-width: 680px; }
+  .steps li {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: rgba(49,120,198,0.2);
+    border: 1px solid rgba(49,120,198,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step-content { flex: 1; color: var(--text2); font-size: 0.9rem; }
+  .step-content strong { color: var(--text); display: block; margin-bottom: 4px; }
+
+  /* MODIFIER TABLE VISUAL */
+  .mod-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+    max-width: 680px;
+  }
+
+  .mod-card {
+    border-radius: 8px;
+    padding: 14px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    text-align: center;
+  }
+
+  .mod-card .name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .mod-card .desc {
+    font-size: 0.75rem;
+    color: var(--text3);
+    line-height: 1.4;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ANCHOR TARGET OFFSET */
+  [id] { scroll-margin-top: 20px; }
+
+  /* highlight overrides */
+  .hljs { background: #0b1220 !important; padding: 18px 20px !important; }
+
+  @media (max-width: 900px) {
+    #sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+    #main { margin-left: 0; max-width: 100%; }
+    .section, .hero { padding: 30px 24px; }
+    .compare { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 2rem; }
+    .hero::after { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─────────── SIDEBAR ─────────── -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <div class="ts-badge">
+      <div class="ts-icon">TS</div>
+      <span>TypeScript 2026</span>
+    </div>
+    <div class="sidebar-title">Guía Completa</div>
+    <div class="sidebar-subtitle">// para el parcial de mañana</div>
+  </div>
+
+  <div class="sidebar-section">Fundamentos</div>
+  <a href="#s0"><span class="num">00</span> Instalación en Fedora</a>
+  <a href="#s1"><span class="num">01</span> ¿Qué es TypeScript?</a>
+  <a href="#s2"><span class="num">02</span> Tipos Primitivos</a>
+  <a href="#s3"><span class="num">03</span> Inferencia de Tipos</a>
+  <a href="#s4"><span class="num">04</span> any vs unknown vs never</a>
+
+  <div class="sidebar-section">Colecciones y Aliases</div>
+  <a href="#s5"><span class="num">05</span> Arrays y Tuplas</a>
+  <a href="#s6"><span class="num">06</span> Union Types y Type Aliases</a>
+  <a href="#s7"><span class="num">07</span> Operadores ?. y ??</a>
+
+  <div class="sidebar-section">Funciones</div>
+  <a href="#s8"><span class="num">08</span> Funciones Tipadas</a>
+  <a href="#s9"><span class="num">09</span> Arrow Functions y this</a>
+  <a href="#s20"><span class="num">10</span> Parámetros Rest</a>
+  <a href="#s10"><span class="num">11</span> Switch + Exhaustive Check</a>
+
+  <div class="sidebar-section">OOP</div>
+  <a href="#s11"><span class="num">12</span> Clases y Modificadores</a>
+  <a href="#s12"><span class="num">13</span> Herencia (extends)</a>
+  <a href="#s13"><span class="num">14</span> Clases Abstractas</a>
+  <a href="#s14"><span class="num">15</span> Interfaces</a>
+  <a href="#s15"><span class="num">16</span> Interface vs Type</a>
+
+  <div class="sidebar-section">Avanzado</div>
+  <a href="#s16"><span class="num">17</span> Genéricos &lt;T&gt;</a>
+  <a href="#s17"><span class="num">18</span> Restricciones en Genéricos</a>
+  <a href="#s18"><span class="num">19</span> Utility Types</a>
+  <a href="#s19"><span class="num">20</span> Discriminated Unions</a>
+  <a href="#s21"><span class="num">21</span> Operador satisfies</a>
+  <a href="#s22"><span class="num">22</span> Async/Await tipado</a>
+  <a href="#s23"><span class="num">23</span> Patrón Result</a>
+  <a href="#s24"><span class="num">24</span> Módulos e import type</a>
+  <a href="#s25"><span class="num">25</span> Proyecto Integrador</a>
+</nav>
+
+<!-- ─────────── MAIN ─────────── -->
+<main id="main">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">📚 Guía de estudio — Parcial TypeScript</div>
+  <h1>TypeScript desde Cero Absoluto</h1>
+  <p>Todo lo que necesitas saber para el parcial del profe Arle Morales. Desde instalar Bun en Fedora hasta genéricos avanzados, patrones de error y async/await. Con ejemplos para cada concepto.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="n">25</span><span class="l">// temas</span></div>
+    <div class="stat"><span class="n">100+</span><span class="l">// ejemplos de código</span></div>
+    <div class="stat"><span class="n">∞</span><span class="l">// ánimo parcial 💪</span></div>
+  </div>
+</div>
+
+<!-- ───── 00 INSTALACIÓN ───── -->
+<section class="section" id="s0">
+  <div class="section-header">
+    <span class="section-num">00</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent3)">// setup · fedora linux · bun</div>
+      <h2>Instalación en Fedora con Bun</h2>
+    </div>
+  </div>
+
+  <p>El profe usa <strong>Bun</strong> como runtime y gestor de paquetes. Bun reemplaza a Node.js para este curso porque puede ejecutar archivos <code>.ts</code> <em>directamente</em> sin compilarlos primero. Es como si Bun hablara TypeScript de forma nativa.</p>
+
+  <div class="callout callout-info">
+    <div class="icon">💡</div>
+    <div class="content">
+      <strong>¿Por qué Bun y no Node.js?</strong>
+      <p>Node.js no puede ejecutar archivos <code>.ts</code> directamente. Necesitas herramientas extra (ts-node, esbuild, etc.). Bun los ejecuta nativamente, lo que simplifica mucho el flujo de desarrollo.</p>
+    </div>
+  </div>
+
+  <ul class="steps">
+    <li>
+      <span class="step-num">1</span>
+      <div class="step-content">
+        <strong>Instalar Bun en Fedora</strong>
+        Abre tu terminal de KDE (Konsole) y pega este comando:
+      </div>
+    </li>
+  </ul>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">bash</span><span class="code-label">Konsole — Fedora</span></div>
+    <pre><code class="language-bash">curl -fsSL https://bun.sh/install | bash
+
+# Luego recargar el PATH (o abrir nueva terminal):
+source ~/.bashrc   # o ~/.zshrc si usas zsh
+
+# Verificar que se instaló:
+bun --version</code></pre>
+  </div>
+
+  <ul class="steps">
+    <li>
+      <span class="step-num">2</span>
+      <div class="step-content">
+        <strong>Crear un proyecto nuevo</strong>
+        <code>bun init</code> genera automáticamente: <code>package.json</code>, <code>tsconfig.json</code>, <code>index.ts</code> y <code>bun.lockb</code>
+      </div>
+    </li>
+  </ul>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">bash</span><span class="code-label">Crear proyecto</span></div>
+    <pre><code class="language-bash">mkdir mi-proyecto
+cd mi-proyecto
+bun init       # responde las preguntas, o presiona Enter para todo</code></pre>
+  </div>
+
+  <ul class="steps">
+    <li>
+      <span class="step-num">3</span>
+      <div class="step-content">
+        <strong>Ejecutar TypeScript directamente</strong>
+        Sin compilar. Bun lo entiende.
+      </div>
+    </li>
+  </ul>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">bash</span><span class="code-label">Ejecutar archivo .ts</span></div>
+    <pre><code class="language-bash"># Ejecución normal:
+bun index.ts
+
+# Con recarga automática (hot reload) al guardar cambios:
+bun --watch index.ts</code></pre>
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="icon">⚠️</div>
+    <div class="content">
+      <strong>Pregunta de parcial: ¿Cómo inicializar con Bun y ejecutar con recarga?</strong>
+      <p><code>bun init</code> + <code>bun --watch index.ts</code> — Esa es la respuesta C del quiz. <code>bun compile</code> NO existe.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───── 01 QUÉ ES TS ───── -->
+<section class="section" id="s1">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent)">// conceptos base</div>
+      <h2>¿Qué es TypeScript?</h2>
+    </div>
+  </div>
+
+  <p>TypeScript es JavaScript <em>con tipos</em>. Es un <strong>superset</strong> de JavaScript: todo código JavaScript válido también es TypeScript válido. La diferencia es que TypeScript te obliga a declarar qué tipo de dato puede tener cada variable.</p>
+
+  <div class="diagram">
+    <div style="text-align:center; padding: 10px 0;">
+      <span class="box box-blue">TypeScript (.ts)</span>
+      <span class="arrow"> →  compila a  → </span>
+      <span class="box box-green">JavaScript (.js)</span>
+      <span class="arrow"> →  ejecuta en  → </span>
+      <span class="box">Bun / Node / Navegador</span>
+    </div>
+    <div style="text-align:center; margin-top:16px; color: var(--text3); font-size:0.75rem;">
+      Con Bun: el paso de compilación es automático e invisible ✓
+    </div>
+  </div>
+
+  <h3>¿Por qué sirve?</h3>
+  <p>En JavaScript puro esto es válido y no da error <em>hasta que ya estás corriendo el programa</em>:</p>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">javascript</span><span class="code-label">JavaScript — sin seguridad</span></div>
+    <pre><code class="language-javascript">let nombre = "Daniel";
+nombre = 42;          // JavaScript: OK (sin error)
+nombre.toUpperCase(); // 💥 Error en EJECUCIÓN: number no tiene toUpperCase</code></pre>
+  </div>
+
+  <p>En TypeScript, el error aparece <strong>antes de ejecutar</strong>, mientras escribes código:</p>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">TypeScript — error en compilación ✓</span></div>
+    <pre><code class="language-typescript">let nombre = "Daniel";
+nombre = 42;
+// ❌ Error: Type 'number' is not assignable to type 'string'
+// El error aparece en el editor, ANTES de correr el código</code></pre>
+  </div>
+
+  <div class="callout callout-good">
+    <div class="icon">✅</div>
+    <div class="content">
+      <strong>Regla de oro de TypeScript</strong>
+      <p>TypeScript detecta errores en <strong>tiempo de compilación</strong> (cuando escribes / guardas el código). JavaScript los detecta en <strong>tiempo de ejecución</strong> (cuando ya está corriendo, potencialmente frente a usuarios).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───── 02 TIPOS PRIMITIVOS ───── -->
+<section class="section" id="s2">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent4)">// tipos base</div>
+      <h2>Tipos Primitivos</h2>
+    </div>
+  </div>
+
+  <p>Los tipos primitivos son los bloques básicos. Aquí están todos los que debes conocer:</p>
+
+  <table class="ts-table">
+    <thead>
+      <tr><th>Tipo</th><th>Descripción</th><th>Ejemplo</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>string</code></td><td>Texto</td><td><code>"Hola mundo"</code></td></tr>
+      <tr><td><code>number</code></td><td>Enteros y decimales</td><td><code>42</code>, <code>3.14</code></td></tr>
+      <tr><td><code>boolean</code></td><td>Verdadero o falso</td><td><code>true</code>, <code>false</code></td></tr>
+      <tr><td><code>bigint</code></td><td>Números enormes (más allá de lo que soporta number)</td><td><code>9461000000000000n</code></td></tr>
+      <tr><td><code>null</code></td><td>Ausencia de valor intencional</td><td><code>null</code></td></tr>
+      <tr><td><code>undefined</code></td><td>Variable declarada pero sin valor</td><td><code>undefined</code></td></tr>
+      <tr><td><code>symbol</code></td><td>Identificador único (avanzado)</td><td><code>Symbol("id")</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Declaración correcta de tipos primitivos</span></div>
+    <pre><code class="language-typescript">// Sintaxis: let nombreVariable: tipo = valor;
+
+let nombre: string = "María";       // ✅ texto
+let edad: number = 25;              // ✅ número entero
+let activo: boolean = true;         // ✅ verdadero/falso
+
+// bigint: para números GIGANTES que superan la precisión de number
+// IMPORTANTE: el sufijo "n" al final del número es OBLIGATORIO
+let distancia: bigint = 9461000000000000n;  // ✅ un año luz en metros
+
+// ─── Errores comunes ───
+let nombre2: string = 25;           // ❌ Error: number ≠ string
+let activo2: boolean = "true";      // ❌ Error: string ≠ boolean
+let distancia2: bigint = 9461000000000000; // ❌ Falta la "n" → no es bigint</code></pre>
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="icon">⚠️</div>
+    <div class="content">
+      <strong>¡Trampa del parcial con bigint!</strong>
+      <p>Sin el sufijo <code>n</code>, el número es un <code>number</code> normal que pierde precisión. <code>9461000000000000n</code> es <code>bigint</code>. <code>9461000000000000</code> es <code>number</code> (inexacto). El tipo <code>boolean</code> solo acepta <code>true</code> o <code>false</code>, NUNCA el string <code>"true"</code>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───── 03 INFERENCIA ───── -->
+<section class="section" id="s3">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent5)">// type inference</div>
+      <h2>Inferencia de Tipos</h2>
+    </div>
+  </div>
+
+  <p>TypeScript es <em>inteligente</em>. Si declaras una variable con un valor, <strong>infiere automáticamente el tipo</strong> sin que tú lo escribas. Esto es la inferencia de tipos.</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Inferencia automática</span></div>
+    <pre><code class="language-typescript">// TypeScript INFIERE el tipo según el valor inicial:
+let ciudad = "Bogotá";    // TypeScript infiere: string
+let temperatura = 25;      // TypeScript infiere: number
+let esLluvioso = true;     // TypeScript infiere: boolean
+
+// Una vez inferido el tipo, NO puede cambiarse:
+ciudad = "Medellín";  // ✅ string → string, OK
+ciudad = 42;          // ❌ Error: Type 'number' is not assignable to type 'string'
+
+// La inferencia también funciona con template literals:
+let saludo = `Hola, ${ciudad}`;  // TypeScript infiere: string — OK
+</code></pre>
+  </div>
+
+  <div class="callout callout-info">
+    <div class="icon">🧠</div>
+    <div class="content">
+      <strong>Inferencia vs Anotación explícita</strong>
+      <p><code>let x = "hola"</code> → inferencia (TS adivina que es <code>string</code>).<br>
+      <code>let x: string = "hola"</code> → anotación explícita (tú le dices el tipo).<br>
+      Ambas son válidas. La anotación explícita es más clara en proyectos grandes.</p>
+    </div>
+  </div>
+
+  <h3>¿Qué fragmento tiene error?</h3>
+  <div class="compare">
+    <div class="compare-item">
+      <div class="compare-header good">✓ Sin error</div>
+      <pre><code class="language-typescript">let mensaje = "Hola";
+mensaje = "Adiós";  // string → string ✓
+
+let total = 100;
+total = 200;        // number → number ✓
+
+let esValido = true;
+esValido = false;   // boolean → boolean ✓</code></pre>
+    </div>
+    <div class="compare-item">
+      <div class="compare-header bad">✗ Error de compilación</div>
+      <pre><code class="language-typescript">let ciudad = "Bogotá";
+// TypeScript infiere: string
+
+ciudad = 42;
+// ❌ Error: Type 'number' is not
+// assignable to type 'string'
+</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ───── 04 ANY / UNKNOWN / NEVER ───── -->
+<section class="section" id="s4">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--bad)">// tipos especiales</div>
+      <h2>any vs unknown vs never</h2>
+    </div>
+  </div>
+
+  <p>Estos tres tipos especiales controlan cómo TypeScript maneja valores cuyo tipo no es conocido o que nunca deberían ocurrir.</p>
+
+  <h3>any — El tipo "rendirse" 😞</h3>
+  <p>Con <code>any</code> le dices a TypeScript: <em>"no revises nada aquí"</em>. Desactiva toda la seguridad de tipos. En 2026 es una mala práctica grave.</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">any — mala práctica</span></div>
+    <pre><code class="language-typescript">function procesar(dato: any): string {
+  return dato.toUpperCase();  // ✅ TypeScript no objeta...
+  // ❌ Pero si "dato" es un número, EXPLOTA en ejecución
+  // any = seguridad cero
+}
+
+procesar(42);       // No da error de compilación
+procesar("hola");   // Tampoco
+// Los dos compilan, pero el primero FALLA al ejecutar</code></pre>
+  </div>
+
+  <h3>unknown — El tipo "no sé, pero verifica" ✅</h3>
+  <p><code>unknown</code> también acepta cualquier valor, PERO antes de usar el valor, TypeScript te <strong>exige</strong> verificar qué tipo es. Es la versión segura de <code>any</code>.</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">unknown + type guards — la forma correcta</span></div>
+    <pre><code class="language-typescript">function procesar(dato: unknown): string {
+  // ANTES de usar "dato", debemos verificar su tipo:
+  if (typeof dato === "string") {
+    // Dentro de este bloque, TypeScript SABE que dato es string
+    return dato.toUpperCase();    // ✅ seguro
+  }
+  if (typeof dato === "number") {
+    // Aquí TypeScript sabe que dato es number
+    return dato.toFixed(2);       // ✅ seguro
+  }
+  return "Tipo no soportado";
+}
+
+// Esto se llama "type guard" — verificar tipo con typeof antes de usar
+</code></pre>
+  </div>
+
+  <h3>never — El tipo "esto no puede pasar"</h3>
+  <p><code>never</code> representa valores que <em>nunca deberían existir</em>. Útil para el patrón exhaustive checking (explicado en la sección 11).</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">never — casos imposibles</span></div>
+    <pre><code class="language-typescript">// Una función que NUNCA retorna (bucle infinito o siempre lanza error):
+function error(mensaje: string): never {
+  throw new Error(mensaje);  // Nunca llega al return
+}
+
+// never como tipo de variable: no se puede asignar ningún valor
+let x: never;
+// x = "algo";  // ❌ Error — ningún valor satisface never</code></pre>
+  </div>
+
+  <table class="ts-table">
+    <thead><tr><th>Tipo</th><th>¿Acepta?</th><th>¿Requiere verificación?</th><th>Usar cuando...</th></tr></thead>
+    <tbody>
+      <tr><td><code>any</code></td><td>Todo</td><td>No</td><td>Nunca (mala práctica)</td></tr>
+      <tr><td><code>unknown</code></td><td>Todo</td><td>Sí (type guards)</td><td>Datos de APIs externas, JSON desconocido</td></tr>
+      <tr><td><code>never</code></td><td>Nada</td><td>N/A</td><td>Funciones que nunca retornan, exhaustive checks</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-bad">
+    <div class="icon">🚫</div>
+    <div class="content">
+      <strong>En examen: any = respuesta incorrecta casi siempre</strong>
+      <p>Si una opción usa <code>any</code>, descártala. El profe busca código seguro. La respuesta correcta usa <code>unknown</code> con type guards.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───── 05 ARRAYS Y TUPLAS ───── -->
+<section class="section" id="s5">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent2)">// colecciones tipadas</div>
+      <h2>Arrays y Tuplas</h2>
+    </div>
+  </div>
+
+  <h3>Arrays — listas de un tipo</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Arrays tipados</span></div>
+    <pre><code class="language-typescript">// Forma 1: tipo[]
+let numeros: number[] = [1, 2, 3, 4, 5];
+let nombres: string[] = ["Ana", "Luis", "Sara"];
+
+// Forma 2: Array<tipo>  (equivalente)
+let numeros2: Array<number> = [1, 2, 3];
+
+// Los arrays son dinámicos: pueden crecer con push, pop, etc.
+nombres.push("Carlos");  // ✅ OK — agrega al final
+nombres.push(42);        // ❌ Error: number no es string
+
+// Array de sedes (dinámico):
+let sedes: string[] = ["Norte", "Sur"];
+sedes.push("Centro");   // ✅ puede crecer sin límite</code></pre>
+  </div>
+
+  <h3>Tuplas — listas con estructura fija</h3>
+  <p>Las tuplas tienen <strong>longitud fija</strong> y <strong>tipos definidos por posición</strong>. La posición 0 es de un tipo, la posición 1 de otro, etc.</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Tuplas</span></div>
+    <pre><code class="language-typescript">// Tupla simple: exactamente [number, string]
+let coordenada: [number, string] = [4.60, "Norte"];
+
+// Tupla con etiquetas (más descriptivo):
+let punto: [latitud: number, longitud: number] = [4.60, -74.08];
+
+// readonly: hace la tupla INMUTABLE (no se puede modificar)
+const coordInmutable: readonly [latitud: number, longitud: number] = [4.60, -74.08];
+// coordInmutable[0] = 5;  // ❌ Error: cannot assign to readonly
+
+// ─── La respuesta correcta del parcial (Pregunta 5) ───
+const coordenada2: readonly [latitud: number, longitud: number] = [4.60, -74.08];
+let sedes: string[] = ["Norte", "Sur"];
+sedes.push("Centro");  // ✅ el array puede crecer, la tupla no</code></pre>
+  </div>
+
+  <div class="compare">
+    <div class="compare-item">
+      <div class="compare-header neutral">number[] — Array normal</div>
+      <pre><code class="language-typescript">let arr: number[] = [4.60, -74.08];
+// ❌ NO es tupla:
+// - No fija la longitud
+// - Acepta más o menos elementos
+// - Sin nombres descriptivos
+arr.push(100); // Permite</code></pre>
+    </div>
+    <div class="compare-item">
+      <div class="compare-header good">readonly [number, number] — Tupla</div>
+      <pre><code class="language-typescript">const coord: readonly [latitud: number, longitud: number]
+  = [4.60, -74.08];
+// ✅ ES tupla:
+// - Exactamente 2 elementos
+// - Posición 0 = latitud (number)
+// - Posición 1 = longitud (number)
+// - readonly = no se puede modificar</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ───── 06 UNION TYPES ───── -->
+<section class="section" id="s6">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent3)">// union types · literal types · type aliases</div>
+      <h2>Union Types y Type Aliases</h2>
+    </div>
+  </div>
+
+  <h3>Union Types — "puede ser A o B"</h3>
+  <p>El operador <code>|</code> crea tipos que pueden ser uno <em>u</em> otro.</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Union Types</span></div>
+    <pre><code class="language-typescript">// Un ID puede ser UUID (string) o número legacy
+type ID = string | number;
+
+let userId: ID = "abc-123";  // ✅ string
+userId = 456;                 // ✅ number también es válido
+userId = true;                // ❌ Error: boolean no está en la unión
+
+// ─── Intersection vs Union ───
+type Intersection = string & number; // = never (imposible: nada es string Y number al mismo tiempo)
+type Union = string | number;        // OK: puede ser uno O el otro</code></pre>
+  </div>
+
+  <h3>Literal Types — valores exactos</h3>
+  <p>Puedes restringir un tipo a <em>valores específicos</em>, no solo al tipo general:</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Literal Types</span></div>
+    <pre><code class="language-typescript">// Sin literal types: acepta CUALQUIER string
+let estado: string = "casado";
+estado = "zombi";  // ✅ TS lo permite, aunque no tiene sentido
+
+// CON literal types: solo acepta esos valores exactos
+type EstadoCivil = "soltero" | "casado" | "divorciado";
+let mi_estado: EstadoCivil = "soltero";   // ✅
+mi_estado = "casado";                      // ✅
+mi_estado = "zombi";                       // ❌ Error: no está en la unión</code></pre>
+  </div>
+
+  <h3>Type Aliases — nombres para tipos</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Type Aliases completo</span></div>
+    <pre><code class="language-typescript">// "type" crea un ALIAS — un nombre para un tipo
+type ID = string | number;
+type EstadoCivil = "soltero" | "casado" | "divorciado";
+
+// Uso:
+let userId: ID = "abc-123";
+userId = 456;  // Válido — ambos están en la unión
+
+let estado: EstadoCivil = "soltero";
+// estado = "separado"; // ❌ no está en el alias
+
+// ─── interface NO puede hacer esto ───
+// interface ID = string | number;  // ❌ SINTAXIS INVÁLIDA
+// Las interfaces son SOLO para objetos, no para uniones primitivas</code></pre>
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="icon">⚠️</div>
+    <div class="content">
+      <strong>interface vs type — diferencia clave</strong>
+      <p><code>interface</code> solo sirve para describir la <em>forma</em> de objetos. <code>type</code> sirve para todo: uniones, intersecciones, tipos condicionales, alias de primitivos. Si necesitas <code>string | number</code>, usa <code>type</code>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───── 07 ?. y ?? ───── -->
+<section class="section" id="s7">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent5)">// optional chaining · nullish coalescing</div>
+      <h2>Operadores ?. y ??</h2>
+    </div>
+  </div>
+
+  <h3>?. — Optional Chaining (acceso seguro)</h3>
+  <p>Si intentas acceder a una propiedad de algo que podría ser <code>null</code> o <code>undefined</code>, tu programa explota. <code>?.</code> lo evita: si el objeto no existe, devuelve <code>undefined</code> en lugar de lanzar error.</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Optional Chaining ?.</span></div>
+    <pre><code class="language-typescript">interface Usuario {
+  nombre: string;
+  direccion?: {       // La ? significa que es opcional (puede no existir)
+    calle: string;
+    piso?: number;
+  };
+}
+
+const usuario: Usuario = { nombre: "Daniel" }; // Sin dirección
+
+// SIN ?. — EXPLOTA si dirección no existe:
+// const calle = usuario.direccion.calle;  // ❌ TypeError en ejecución
+
+// CON ?. — Seguro:
+const calle = usuario.direccion?.calle;  // ✅ Devuelve undefined (no explota)
+const piso = usuario.direccion?.piso;    // ✅ También undefined</code></pre>
+  </div>
+
+  <h3>?? — Nullish Coalescing (valor por defecto)</h3>
+  <p><code>??</code> proporciona un valor por defecto <strong>solo si el lado izquierdo es <code>null</code> o <code>undefined</code></strong>. Ignora otros valores "falsy" como <code>0</code>, <code>""</code>, <code>false</code>.</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Nullish Coalescing ?? vs OR ||</span></div>
+    <pre><code class="language-typescript">// ?? solo actúa ante null/undefined:
+const piso = usuario.direccion?.piso ?? 0;
+// Si piso es 0 → devuelve 0  ← ✅ correcto (0 es válido)
+// Si piso es undefined → devuelve 0 (el default)
+// Si piso es null → devuelve 0 (el default)
+
+// || actúa ante TODOS los valores falsy (0, false, ""):
+const piso2 = usuario.direccion?.piso || 1;
+// Si piso es 0 → devuelve 1  ← ❌ incorrecto (perdemos el 0)
+// Si piso es undefined → devuelve 1
+
+// ─── Combinando ?. y ?? ───
+const calle = usuario.direccion?.calle ?? "No registrada";
+// Si dirección no existe: undefined ?? "No registrada" = "No registrada"
+// Si dirección existe pero calle está vacía: "" ?? "No registrada" = "" (preserva)
+</code></pre>
+  </div>
+
+  <table class="ts-table">
+    <thead><tr><th>Operador</th><th>Activa con</th><th>No activa con</th></tr></thead>
+    <tbody>
+      <tr><td><code>??</code></td><td><code>null</code>, <code>undefined</code></td><td><code>0</code>, <code>""</code>, <code>false</code></td></tr>
+      <tr><td><code>||</code></td><td>Todo lo "falsy": <code>null</code>, <code>undefined</code>, <code>0</code>, <code>""</code>, <code>false</code></td><td>Solo valores "truthy"</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-info">
+    <div class="icon">💡</div>
+    <div class="content">
+      <strong>El ! es peligroso</strong>
+      <p><code>usuario.direccion!.calle</code> — El <code>!</code> (non-null assertion) le dice a TypeScript "confía en mí, esto existe". Pero si no existe, <strong>explota en ejecución</strong>. Úsalo solo cuando estés 100% seguro. En el parcial, es casi siempre respuesta incorrecta.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───── 08 FUNCIONES ───── -->
+<section class="section" id="s8">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent)">// funciones tipadas</div>
+      <h2>Funciones — Parámetros y Retorno</h2>
+    </div>
+  </div>
+
+  <p>En TypeScript, las funciones tienen tipos en sus parámetros Y en su valor de retorno.</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Anatomía de una función tipada</span></div>
+    <pre><code class="language-typescript">//         parámetro obligatorio   parámetro con default  retorno
+//                  ↓                        ↓               ↓
+function calcularConIVA(precio: number, iva: number = 0.19): number {
+  if (precio < 0) throw new Error("Precio inválido");
+  return precio * (1 + iva);
+}
+
+// Uso:
+calcularConIVA(100);         // usa iva = 0.19 (default)
+calcularConIVA(100, 0.16);   // usa iva = 0.16 explícito</code></pre>
+  </div>
+
+  <h3>Parámetros opcionales vs con default</h3>
+  <div class="compare">
+    <div class="compare-item">
+      <div class="compare-header bad">✗ Parámetro opcional (peligroso)</div>
+      <pre><code class="language-typescript">function calc(precio: number, iva?: number): number {
+  // iva es opcional → puede ser undefined
+  return precio * (1 + iva);
+  // ❌ 1 + undefined = NaN !
+}</code></pre>
+    </div>
+    <div class="compare-item">
+      <div class="compare-header good">✓ Parámetro con default (correcto)</div>
+      <pre><code class="language-typescript">function calc(precio: number, iva: number = 0.19): number {
+  // iva tiene valor por defecto
+  return precio * (1 + iva);
+  // ✅ Si no se pasa, usa 0.19
+}</code></pre>
+    </div>
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="icon">⚠️</div>
+    <div class="content">
+      <strong>Incompatibilidad de retorno</strong>
+      <p><code>): string { return numero * iva }</code> — Si declaras retorno <code>string</code> pero la expresión produce <code>number</code>, TypeScript marca error. El tipo declarado debe coincidir con lo que realmente retorna la función.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───── 09 ARROW FUNCTIONS ───── -->
+<section class="section" id="s9">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent4)">// arrow functions · this léxico</div>
+      <h2>Arrow Functions y el problema de this</h2>
+    </div>
+  </div>
+
+  <p>Las funciones flecha (<code>=&gt;</code>) tienen una propiedad especial: heredan el <code>this</code> del contexto donde fueron definidas (léxico). Las funciones tradicionales crean su propio <code>this</code>.</p>
+
+  <div class="compare">
+    <div class="compare-item">
+      <div class="compare-header bad">✗ function() — this incorrecto</div>
+      <pre><code class="language-typescript">class Temporizador {
+  segundos: number = 0;
+  iniciar() {
+    setInterval(function() {
+      this.segundos++;
+      // ❌ "this" aquí NO apunta a
+      // la instancia de Temporizador.
+      // Apunta al contexto global
+      // (o undefined en strict mode)
+    }, 1000);
+  }
+}</code></pre>
+    </div>
+    <div class="compare-item">
+      <div class="compare-header good">✓ Arrow function — this correcto</div>
+      <pre><code class="language-typescript">class Temporizador {
+  segundos: number = 0;
+  iniciar() {
+    setInterval(() => {
+      this.segundos++;
+      // ✅ "this" hereda del método
+      // iniciar() → apunta a la
+      // instancia de Temporizador ✓
+    }, 1000);
+  }
+}</code></pre>
+    </div>
+  </div>
+
+  <h3>Arrow functions con .map()</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Sintaxis concisa con map</span></div>
+    <pre><code class="language-typescript">// Función tradicional (verbosa):
+const conIVA1 = [100, 200, 300].map(function(p) {
+  return p * 1.19;
+});
+
+// Arrow function (concisa) — la forma preferida:
+const conIVA2 = [100, 200, 300].map((p) => p * 1.19);
+// Si el body es una sola expresión, no necesita {} ni return
+
+// ─── Trampa: retornar objetos ───
+// ❌ Mal: las {} se interpretan como bloque de código:
+const crear1 = (nombre: string) => { nombre, activo: true };
+
+// ✅ Bien: envolver el objeto en paréntesis:
+const crear2 = (nombre: string) => ({ nombre, activo: true });</code></pre>
+  </div>
+</section>
+
+<!-- ───── 20 REST PARAMS ───── -->
+<section class="section" id="s20">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent3)">// variadic functions</div>
+      <h2>Parámetros Rest (...)</h2>
+    </div>
+  </div>
+
+  <p>Los parámetros rest (<code>...</code>) capturan un número indefinido de argumentos en un array tipado. Siempre van <strong>al final</strong> de la firma de la función.</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Rest parameters</span></div>
+    <pre><code class="language-typescript">// "...numeros" captura todos los argumentos como number[]
+function sumar(...numeros: number[]): number {
+  return numeros.reduce((total, n) => total + n, 0);
+}
+
+sumar(1, 2, 3);        // 6
+sumar(10, 20, 30, 40); // 100
+sumar();               // 0 (array vacío)
+
+// Combinando parámetro fijo + rest:
+function registrar(accion: string, ...detalles: string[]): void {
+  console.log(`[${accion}] ${detalles.join(", ")}`);
+}
+
+registrar("LOGIN", "usuario:daniel", "ip:192.168.1.1");
+// → "[LOGIN] usuario:daniel, ip:192.168.1.1"
+
+// ─── Errores comunes ───
+// ❌ El rest NO puede ir antes de un parámetro fijo:
+// function mal(...items: string[], titulo: string) {}  // Error de sintaxis</code></pre>
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="icon">⚠️</div>
+    <div class="content">
+      <strong>Rest vs arguments (legacy)</strong>
+      <p>El objeto <code>arguments</code> es de JavaScript antiguo: no tiene tipos, no funciona en arrow functions. Siempre usa <code>...params: tipo[]</code> en TypeScript.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───── 10 SWITCH EXHAUSTIVE ───── -->
+<section class="section" id="s10">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent2)">// exhaustive checking · never pattern</div>
+      <h2>Switch con Exhaustive Checking</h2>
+    </div>
+  </div>
+
+  <p>El patrón <em>exhaustive checking</em> usa <code>never</code> en el <code>default</code> del switch para que TypeScript te <strong>obligue</strong> a manejar todos los casos posibles. Si en el futuro agregas un nuevo valor al tipo, el compilador te avisa.</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">El patrón exhaustive checking</span></div>
+    <pre><code class="language-typescript">type Semaforo = "rojo" | "amarillo" | "verde";
+
+function accion(color: Semaforo): string {
+  switch (color) {
+    case "rojo":     return "Detenerse";
+    case "amarillo": return "Precaución";
+    case "verde":    return "Avanzar";
+    default:
+      // Si todos los casos están cubiertos, "color" tiene tipo never
+      // (es imposible llegar aquí)
+      const _exhaustive: never = color;
+      return _exhaustive;
+      // Si agregas "azul" al tipo Semaforo y olvidas el case "azul",
+      // TypeScript marca error aquí: '"azul" no es assignable a never'
+  }
+}
+</code></pre>
+  </div>
+
+  <h3>¿Por qué no es suficiente un default normal?</h3>
+  <div class="compare">
+    <div class="compare-item">
+      <div class="compare-header bad">✗ Default normal — oculta errores</div>
+      <pre><code class="language-typescript">type Semaforo = "rojo" | "amarillo" | "verde";
+// Más tarde alguien agrega: | "azul"
+
+switch (color) {
+  case "rojo": return "Detenerse";
+  case "verde": return "Avanzar";
+  // Falta "amarillo" y "azul"
+  default: return "Desconocido";
+  // ❌ Caen silenciosamente aquí
+  // TypeScript NO avisa del caso faltante
+}</code></pre>
+    </div>
+    <div class="compare-item">
+      <div class="compare-header good">✓ Never — detecta casos faltantes</div>
+      <pre><code class="language-typescript">type Semaforo = "rojo" | "amarillo" | "verde" | "azul";
+
+switch (color) {
+  case "rojo":     return "Detenerse";
+  case "amarillo": return "Precaución";
+  case "verde":    return "Avanzar";
+  // Falta "azul" ↓
+  default:
+    const x: never = color;
+    // ❌ Error: '"azul"' is not assignable
+    // to type 'never' → TypeScript AVISA
+    return x;
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ───── 11 CLASES ───── -->
+<section class="section" id="s11">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent)">// OOP · clases</div>
+      <h2>Clases y Modificadores de Acceso</h2>
+    </div>
+  </div>
+
+  <p>Las clases son plantillas para crear objetos. TypeScript añade <strong>modificadores de acceso</strong> que controlan desde dónde se puede acceder a cada propiedad o método.</p>
+
+  <div class="mod-grid">
+    <div class="mod-card">
+      <div class="name" style="color:var(--accent3)">public</div>
+      <div class="desc">Accesible desde cualquier lugar: dentro de la clase, subclases, y código externo</div>
+    </div>
+    <div class="mod-card">
+      <div class="name" style="color:var(--bad)">private</div>
+      <div class="desc">Solo accesible dentro de la propia clase. Ni siquiera subclases pueden accederlo</div>
+    </div>
+    <div class="mod-card">
+      <div class="name" style="color:var(--warn)">protected</div>
+      <div class="desc">Accesible dentro de la clase Y en todas sus subclases (pero no externamente)</div>
+    </div>
+    <div class="mod-card">
+      <div class="name" style="color:var(--accent2)">readonly</div>
+      <div class="desc">Solo puede asignarse en la declaración o en el constructor. Después es inmutable</div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">CuentaBancaria — modificadores correctos</span></div>
+    <pre><code class="language-typescript">class CuentaBancaria {
+  public titular: string;        // Accesible externamente ✓
+  private saldo: number;         // Solo dentro de esta clase
+  protected banco: string;       // Accesible en subclases también
+  readonly numeroCuenta: string; // Solo lectura después del constructor
+
+  constructor(titular: string, saldo: number, banco: string, numeroCuenta: string) {
+    this.titular = titular;
+    this.saldo = saldo;
+    this.banco = banco;
+    this.numeroCuenta = numeroCuenta;
+  }
+
+  // Método público para acceder al saldo (con validación):
+  depositar(monto: number): void {
+    if (monto <= 0) throw new Error("Monto inválido");
+    this.saldo += monto;  // ✅ Acceso a private OK desde dentro
+  }
+
+  consultarSaldo(): number {
+    return this.saldo;  // ✅ OK desde dentro
+  }
+}
+
+const cuenta = new CuentaBancaria("Daniel", 1000, "Bancolombia", "001-123");
+
+cuenta.titular = "Carlos";     // ✅ public — OK
+// cuenta.saldo = 9999;        // ❌ private — Error
+// cuenta.banco = "Davivienda"; // ❌ protected — Error (solo subclases)
+// cuenta.numeroCuenta = "xxx"; // ❌ readonly — Error</code></pre>
+  </div>
+
+  <div class="callout callout-info">
+    <div class="icon">💡</div>
+    <div class="content">
+      <strong>Shorthand en constructores</strong>
+      <p>Puedes poner el modificador directamente en el parámetro del constructor y TypeScript crea automáticamente la propiedad: <code>constructor(private nombre: string)</code> equivale a declarar la propiedad y asignarla en el constructor.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───── 12 HERENCIA ───── -->
+<section class="section" id="s12">
+  <div class="section-header">
+    <span class="section-num">13</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent4)">// extends · super · override</div>
+      <h2>Herencia</h2>
+    </div>
+  </div>
+
+  <div class="diagram">
+    <div style="text-align:center">
+      <span class="box box-blue">Animal</span><br>
+      <span style="color:var(--text3)">  │ (clase padre / base)</span><br>
+      <span style="color:var(--accent)">  extends</span><br>
+      <span class="box box-green">Perro</span><br>
+      <span style="color:var(--text3)">  │ (clase hija / derivada)</span>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Herencia completa — la respuesta del parcial</span></div>
+    <pre><code class="language-typescript">class Animal {
+  constructor(
+    public nombre: string,
+    public edad: number
+  ) {}
+
+  presentarse(): string {
+    return `Soy ${this.nombre}, tengo ${this.edad} años`;
+  }
+}
+
+class Perro extends Animal {    // ← "extends" para herencia de clases
+  constructor(
+    nombre: string,
+    edad: number,
+    private raza: string         // ← Propiedad nueva de Perro
+  ) {
+    super(nombre, edad);         // ← OBLIGATORIO: llama al constructor padre
+    // "super()" debe ir ANTES de cualquier uso de "this"
+  }
+
+  override presentarse(): string {  // ← "override" explícito (buena práctica)
+    // super.presentarse() reutiliza el método del padre:
+    return `${super.presentarse()} y soy un ${this.raza}`;
+  }
+}
+
+const rex = new Perro("Rex", 3, "Labrador");
+console.log(rex.presentarse());
+// → "Soy Rex, tengo 3 años y soy un Labrador"</code></pre>
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="icon">⚠️</div>
+    <div class="content">
+      <strong>Reglas críticas de herencia</strong>
+      <p>
+      1. <code>extends</code> es para herencia de <strong>clases</strong>.<br>
+      2. <code>implements</code> es para <strong>interfaces</strong> (diferente).<br>
+      3. <code>super()</code> es obligatorio en el constructor de la clase hija, y debe ir primero.<br>
+      4. Con <code>noImplicitOverride: true</code> en tsconfig, debes poner <code>override</code> explícitamente.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ───── 13 ABSTRACTAS ───── -->
+<section class="section" id="s13">
+  <div class="section-header">
+    <span class="section-num">14</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent3)">// abstract classes</div>
+      <h2>Clases Abstractas</h2>
+    </div>
+  </div>
+
+  <p>Una clase abstracta es una clase que <strong>no puede instanciarse directamente</strong> (<code>new Figura()</code> da error). Define métodos abstractos sin implementación que las subclases <em>deben</em> implementar obligatoriamente.</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Clase abstracta correcta</span></div>
+    <pre><code class="language-typescript">abstract class Figura {     // ← "abstract" impide new Figura()
+  constructor(public readonly color: string) {}
+
+  // Métodos ABSTRACTOS: sin cuerpo (sin {})
+  // Las subclases DEBEN implementarlos:
+  abstract calcularArea(): number;
+  abstract calcularPerimetro(): number;
+
+  // Método CONCRETO: tiene implementación, se hereda
+  describir(): string {
+    return `Figura de color ${this.color}, área: ${this.calcularArea().toFixed(2)}`;
+  }
+}
+
+class Circulo extends Figura {
+  constructor(color: string, private radio: number) {
+    super(color);
+  }
+
+  // Implementación obligatoria de los métodos abstractos:
+  calcularArea(): number {
+    return Math.PI * this.radio ** 2;
+  }
+  calcularPerimetro(): number {
+    return 2 * Math.PI * this.radio;
+  }
+}
+
+// new Figura("rojo");  // ❌ Error: Cannot create instance of abstract class
+const c = new Circulo("azul", 5);  // ✅ OK
+console.log(c.describir());         // ✅ heredado de Figura</code></pre>
+  </div>
+
+  <table class="ts-table">
+    <thead><tr><th>Característica</th><th>abstract class</th><th>interface</th><th>class normal</th></tr></thead>
+    <tbody>
+      <tr><td>¿Puede instanciarse?</td><td>❌ No</td><td>❌ No</td><td>✅ Sí</td></tr>
+      <tr><td>¿Métodos con implementación?</td><td>✅ Sí (los concretos)</td><td>❌ No</td><td>✅ Sí</td></tr>
+      <tr><td>¿Obliga a subclases?</td><td>✅ Métodos abstract</td><td>✅ Todo</td><td>❌ No</td></tr>
+      <tr><td>Se usa con</td><td><code>extends</code></td><td><code>implements</code></td><td><code>extends</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ───── 14 INTERFACES ───── -->
+<section class="section" id="s14">
+  <div class="section-header">
+    <span class="section-num">15</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent2)">// interfaces · extends</div>
+      <h2>Interfaces y Herencia</h2>
+    </div>
+  </div>
+
+  <p>Las interfaces definen la <em>forma</em> (estructura) que deben tener los objetos. Son contratos: si una clase o objeto dice que implementa/cumple una interfaz, TypeScript verifica que tenga todas las propiedades y métodos requeridos.</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Interfaces básicas</span></div>
+    <pre><code class="language-typescript">interface Persona {
+  nombre: string;
+  edad: number;
+  email?: string;   // ← La ? hace la propiedad OPCIONAL
+}
+
+const daniel: Persona = {
+  nombre: "Daniel",
+  edad: 20,
+  // email es opcional, no hay que incluirlo
+};</code></pre>
+  </div>
+
+  <h3>Herencia entre interfaces (extends)</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Extensión de interfaces</span></div>
+    <pre><code class="language-typescript">interface EntidadBase {
+  readonly id: string;    // readonly = no se puede cambiar
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Usuario HEREDA todas las propiedades de EntidadBase
+// y AGREGA las suyas:
+interface Usuario extends EntidadBase {
+  nombre: string;
+  email: string;
+  rol: "admin" | "editor" | "lector";  // literal type
+}
+
+// Usuario ahora tiene: id, createdAt, updatedAt, nombre, email, rol
+const user: Usuario = {
+  id: "abc123",
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  nombre: "Daniel",
+  email: "daniel@cue.edu.co",
+  rol: "editor"
+};
+
+// ─── Trampa del parcial ───
+// interface Usuario implements EntidadBase  // ❌ SINTAXIS INVÁLIDA
+// Las interfaces NO usan "implements", usan "extends"
+// "implements" es solo para que las CLASES implementen interfaces</code></pre>
+  </div>
+</section>
+
+<!-- ───── 15 INTERFACE VS TYPE ───── -->
+<section class="section" id="s15">
+  <div class="section-header">
+    <span class="section-num">16</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent5)">// interface vs type</div>
+      <h2>Interface vs Type Alias</h2>
+    </div>
+  </div>
+
+  <p>Esta es una pregunta frecuente. La regla de oro de 2026:</p>
+
+  <table class="ts-table">
+    <thead><tr><th>Usa</th><th>Para</th><th>¿Por qué?</th></tr></thead>
+    <tbody>
+      <tr><td><code>interface</code></td><td>Contratos de objetos (forma de un objeto)</td><td>Más legible, extensible con extends, mejor para OOP</td></tr>
+      <tr><td><code>type</code></td><td>Uniones, intersecciones, tipos condicionales, alias de primitivos</td><td>Más flexible, única forma de hacer uniones/condicionales</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">La regla: cada herramienta en su contexto</span></div>
+    <pre><code class="language-typescript">// ✅ interface para la forma de un OBJETO:
+interface Producto {
+  nombre: string;
+  precio: number;
+}
+
+// ✅ type para UNIÓN de primitivos (interface no puede hacer esto):
+type ID = string | number;
+// interface ID = string | number;  // ❌ SINTAXIS INVÁLIDA
+
+// ✅ type para TIPO CONDICIONAL genérico (interface no puede):
+type Respuesta<T> = T extends string ? "texto" : "otro";
+// interface Respuesta<T> = T extends string...  // ❌ INVÁLIDO
+
+// Resumen en código:
+interface Producto { nombre: string; precio: number; }
+type ID = string | number;
+type Resp<T> = T extends string ? "texto" : "otro";</code></pre>
+  </div>
+
+  <div class="callout callout-info">
+    <div class="icon">💡</div>
+    <div class="content">
+      <strong>¿type puede hacer todo lo que hace interface?</strong>
+      <p>Técnicamente sí: <code>type Producto = { nombre: string }</code> funciona igual. Pero la convención 2026 recomienda <code>interface</code> para objetos. Si el examen pregunta sobre la convención correcta, interface para objetos = correcto.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───── 16 GENÉRICOS ───── -->
+<section class="section" id="s16">
+  <div class="section-header">
+    <span class="section-num">17</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent)">// generics &lt;T&gt;</div>
+      <h2>Genéricos &lt;T&gt;</h2>
+    </div>
+  </div>
+
+  <p>Los genéricos son como <em>parámetros para los tipos</em>. En lugar de escribir una función para <code>number</code> y otra para <code>string</code>, escribes una sola función que funciona con <em>cualquier tipo que tú especifiques</em>.</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">¿Por qué necesitamos genéricos?</span></div>
+    <pre><code class="language-typescript">// ❌ Sin genéricos: hay que escribir una función por tipo:
+function primerNumero(arr: number[]): number { return arr[0]; }
+function primerString(arr: string[]): string { return arr[0]; }
+
+// ❌ Con "any": funciona, pero perdemos los tipos:
+function primero(arr: any[]): any { return arr[0]; }
+const x = primero([1, 2, 3]);
+// x tiene tipo "any" — TypeScript no sabe que es number
+
+// ✅ Con genéricos: una sola función, tipos preservados:
+function primero<T>(arr: T[]): T {
+  return arr[0];
+}
+
+const numero = primero([1, 2, 3]);    // T = number → resultado: number
+const texto = primero(["a", "b"]);    // T = string → resultado: string
+// TypeScript sabe el tipo exacto del resultado ✓</code></pre>
+  </div>
+
+  <h3>Clase genérica: Pila&lt;T&gt; (Stack)</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Implementación correcta de Pila&lt;T&gt;</span></div>
+    <pre><code class="language-typescript">class Pila<T> {
+  private elementos: T[] = [];    // ← array interno usa T, no any
+
+  push(elem: T): void {
+    this.elementos.push(elem);
+  }
+
+  pop(): T | undefined {          // ← T | undefined: puede estar vacía
+    return this.elementos.pop();
+  }
+
+  peek(): T | undefined {         // ← ver el tope sin sacarlo
+    return this.elementos.at(-1);
+  }
+}
+
+// Al instanciar, T se concretiza:
+const nums = new Pila<number>();
+nums.push(10);      // ✅ OK
+// nums.push("x");  // ❌ Error: string no es number
+
+const textos = new Pila<string>();
+textos.push("hola"); // ✅ OK</code></pre>
+  </div>
+
+  <div class="callout callout-bad">
+    <div class="icon">🚫</div>
+    <div class="content">
+      <strong>Error de parcial: pop() con non-null assertion (!)</strong>
+      <p><code>pop(): T { return this.elementos.pop()! }</code> — Si la pila está vacía, <code>pop()</code> devuelve <code>undefined</code> y el <code>!</code> falla en ejecución. La firma correcta es <code>pop(): T | undefined</code>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───── 17 RESTRICCIONES ───── -->
+<section class="section" id="s17">
+  <div class="section-header">
+    <span class="section-num">18</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent3)">// generic constraints · extends</div>
+      <h2>Restricciones en Genéricos</h2>
+    </div>
+  </div>
+
+  <p>A veces quieres que el genérico solo acepte tipos con ciertas características. <code>T extends SomeThing</code> restringe T para que solo sea válido si cumple con esa estructura.</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">T extends ConLongitud — solo tipos con .length</span></div>
+    <pre><code class="language-typescript">// Definimos qué necesitamos:
+interface ConLongitud {
+  length: number;
+}
+
+// T extends ConLongitud → T DEBE tener la propiedad "length"
+function mostrar<T extends ConLongitud>(elemento: T): string {
+  return `Longitud: ${elemento.length}`;
+}
+
+mostrar("hola");         // ✅ string tiene .length
+mostrar([1, 2, 3]);      // ✅ array tiene .length
+mostrar({ length: 5 });  // ✅ objeto con length
+
+// mostrar(42);          // ❌ Error de compilación: number no tiene .length
+// mostrar(true);        // ❌ Error de compilación: boolean no tiene .length
+
+// ─── Sin la restricción: error diferente ───
+function mostrarSinRestr<T>(elemento: T): string {
+  return `Longitud: ${elemento.length}`;
+  // ❌ Error de compilación: Property 'length' does not exist on type 'T'
+  // TypeScript no sabe si T tiene .length
+}</code></pre>
+  </div>
+</section>
+
+<!-- ───── 18 UTILITY TYPES ───── -->
+<section class="section" id="s18">
+  <div class="section-header">
+    <span class="section-num">19</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent4)">// Partial · Pick · Omit · Required</div>
+      <h2>Utility Types</h2>
+    </div>
+  </div>
+
+  <p>Los utility types son "transformadores" de tipos que vienen incluidos en TypeScript. Te permiten derivar nuevos tipos a partir de uno existente sin repetir código.</p>
+
+  <table class="ts-table">
+    <thead><tr><th>Utility Type</th><th>Qué hace</th><th>Ejemplo</th></tr></thead>
+    <tbody>
+      <tr><td><code>Partial&lt;T&gt;</code></td><td>Hace TODAS las propiedades opcionales</td><td>Para actualizar parcialmente un objeto</td></tr>
+      <tr><td><code>Required&lt;T&gt;</code></td><td>Hace TODAS las propiedades obligatorias (opuesto a Partial)</td><td>Cuando necesitas que todo esté presente</td></tr>
+      <tr><td><code>Omit&lt;T, K&gt;</code></td><td>Excluye propiedades K del tipo T</td><td>Crear objeto sin el campo "id"</td></tr>
+      <tr><td><code>Pick&lt;T, K&gt;</code></td><td>Selecciona solo las propiedades K de T</td><td>Vista resumida con solo 2 campos</td></tr>
+      <tr><td><code>Readonly&lt;T&gt;</code></td><td>Hace todo readonly</td><td>Datos inmutables</td></tr>
+      <tr><td><code>Record&lt;K, V&gt;</code></td><td>Crea un objeto con claves K y valores V</td><td>Diccionarios</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Utility Types en práctica</span></div>
+    <pre><code class="language-typescript">interface Producto {
+  id: string;
+  nombre: string;
+  precio: number;
+  stock: number;
+}
+
+// Actualización parcial (PUT/PATCH en API):
+type ActualizarProducto = Partial<Producto>;
+// Equivale a: { id?: string; nombre?: string; precio?: number; stock?: number; }
+
+// Crear sin id (lo genera el servidor):
+type CrearProducto = Omit<Producto, "id">;
+// Equivale a: { nombre: string; precio: number; stock: number; }
+
+// Vista resumida:
+type ResumenProducto = Pick<Producto, "nombre" | "precio">;
+// Equivale a: { nombre: string; precio: number; }
+
+// ─── Ventaja clave ───
+// Si mañana agregas "categoria: string" a Producto,
+// ActualizarProducto, CrearProducto y ResumenProducto
+// se actualizan AUTOMÁTICAMENTE sin tocar su definición ✓</code></pre>
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="icon">⚠️</div>
+    <div class="content">
+      <strong>Partial ≠ Required</strong>
+      <p>Para actualizaciones parciales → <code>Partial&lt;T&gt;</code> (todo opcional). <code>Required&lt;T&gt;</code> es lo opuesto (todo obligatorio). No los confundas en el parcial.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───── 19 DISCRIMINATED UNIONS ───── -->
+<section class="section" id="s19">
+  <div class="section-header">
+    <span class="section-num">20</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent)">// discriminated unions · pattern matching</div>
+      <h2>Discriminated Unions</h2>
+    </div>
+  </div>
+
+  <p>Una <em>discriminated union</em> es una unión donde cada variante tiene una propiedad con un <strong>valor literal único</strong> que la identifica (el "discriminante"). TypeScript usa ese discriminante para saber exactamente qué propiedades están disponibles en cada caso.</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Discriminated Union — la forma correcta</span></div>
+    <pre><code class="language-typescript">// Cada variante tiene "tipo" con un valor LITERAL ÚNICO:
+type Figura =
+  | { tipo: "circulo"; radio: number }           // discriminante: "circulo"
+  | { tipo: "rectangulo"; ancho: number; alto: number };  // discriminante: "rectangulo"
+
+function area(fig: Figura): number {
+  switch (fig.tipo) {
+    case "circulo":
+      // Aquí TypeScript SABE que fig tiene "radio"
+      return Math.PI * fig.radio ** 2;    // ✅ acceso seguro
+
+    case "rectangulo":
+      // Aquí TypeScript SABE que fig tiene "ancho" y "alto"
+      return fig.ancho * fig.alto;        // ✅ acceso seguro
+  }
+}
+
+area({ tipo: "circulo", radio: 5 });
+area({ tipo: "rectangulo", ancho: 4, alto: 6 });</code></pre>
+  </div>
+
+  <div class="compare">
+    <div class="compare-item">
+      <div class="compare-header bad">✗ Sin discriminante literal</div>
+      <pre><code class="language-typescript">// tipo: string ← no discrimina
+type Figura =
+  | { tipo: string; radio: number }
+  | { tipo: string; ancho: number; alto: number };
+
+// TypeScript no puede distinguir
+// cuál variante es en el switch
+// ❌ No hay narrowing</code></pre>
+    </div>
+    <div class="compare-item">
+      <div class="compare-header good">✓ Con discriminante literal</div>
+      <pre><code class="language-typescript">// "circulo" y "rectangulo" son
+// valores literales únicos ✓
+type Figura =
+  | { tipo: "circulo"; radio: number }
+  | { tipo: "rectangulo"; ancho: number; alto: number };
+
+// ✅ TypeScript refina el tipo
+// en cada case del switch</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ───── 21 SATISFIES ───── -->
+<section class="section" id="s21">
+  <div class="section-header">
+    <span class="section-num">21</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent3)">// satisfies operator — TypeScript 4.9+</div>
+      <h2>Operador satisfies</h2>
+    </div>
+  </div>
+
+  <p>El operador <code>satisfies</code> hace dos cosas a la vez: <strong>valida</strong> que un objeto cumple un tipo, Y <strong>mantiene</strong> la inferencia exacta de las propiedades. Es la solución entre anotar el tipo (que pierde precisión) y no anotar nada (que no valida).</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">satisfies vs anotación directa vs as</span></div>
+    <pre><code class="language-typescript">type Colores = Record<string, [number, number, number]>;
+
+// ─── Con anotación directa ( :Colores ) ───
+const paleta1: Colores = {
+  rojo: [255, 0, 0],
+  verde: [0, 255, 0],
+};
+paleta1.amarillo;  // ✅ no da error (la clave es "string")
+// Pero TypeScript no sabe qué colores existen realmente
+
+// ─── Con "as" ───
+const paleta2 = {
+  rojo: [255, 0, 0],
+} as Colores;
+// No valida que el valor sea correcto
+// paleta2.amarillo; // No da error tampoco — pierde inferencia
+
+// ─── Con "satisfies" ✅ ───
+const paleta = {
+  rojo: [255, 0, 0],
+  verde: [0, 255, 0],
+  azul: [0, 0, 255],
+} satisfies Colores;
+
+paleta.rojo;      // ✅ TypeScript sabe que existe y su tipo exacto
+// paleta.amarillo; // ❌ Error: propiedad no existe → detecta errores
+// paleta.rojo = [255]; // ❌ Error: no cumple [number, number, number]</code></pre>
+  </div>
+
+  <table class="ts-table">
+    <thead><tr><th>Técnica</th><th>¿Valida la estructura?</th><th>¿Mantiene inferencia exacta?</th></tr></thead>
+    <tbody>
+      <tr><td><code>const x: Tipo = {...}</code></td><td>✅ Sí</td><td>❌ No (pierde propiedades específicas)</td></tr>
+      <tr><td><code>const x = {...} as Tipo</code></td><td>❌ No (lo asumes)</td><td>❌ No</td></tr>
+      <tr><td><code>const x = {...} satisfies Tipo</code></td><td>✅ Sí</td><td>✅ Sí — lo mejor de los dos</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ───── 22 ASYNC/AWAIT ───── -->
+<section class="section" id="s22">
+  <div class="section-header">
+    <span class="section-num">22</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent2)">// async · await · Promise&lt;T&gt;</div>
+      <h2>Async/Await Tipado</h2>
+    </div>
+  </div>
+
+  <p>El código asíncrono (operaciones que toman tiempo: llamadas a APIs, lectura de archivos, etc.) en TypeScript usa <code>async/await</code>. Las funciones <code>async</code> <em>siempre</em> retornan una <code>Promise</code>.</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Función asíncrona correctamente tipada</span></div>
+    <pre><code class="language-typescript">// Definimos la forma de los datos que esperamos de la API:
+interface DatosAPI {
+  usuarios: { id: number; nombre: string }[];
+  total: number;
+}
+
+// async → la función retorna Promise automáticamente
+// El tipo de retorno es Promise<DatosAPI>
+async function obtenerDatos(url: string): Promise<DatosAPI> {
+  const resp = await fetch(url);          // await pausa hasta que fetch termina
+
+  if (!resp.ok) {                         // Verificación de error HTTP
+    throw new Error(`HTTP ${resp.status}`);
+  }
+
+  const datos: DatosAPI = await resp.json();  // Tipamos el JSON
+  return datos;
+}
+
+// Uso:
+async function main() {
+  const datos = await obtenerDatos("https://api.ejemplo.com/usuarios");
+  console.log(datos.total);          // TypeScript sabe que es number ✓
+  console.log(datos.usuarios[0].nombre); // TypeScript sabe que es string ✓
+}</code></pre>
+  </div>
+
+  <div class="callout callout-bad">
+    <div class="icon">🚫</div>
+    <div class="content">
+      <strong>Error frecuente en parcial</strong>
+      <p><code>async function f(): DatosAPI</code> — Incorrecto. Las funciones async <strong>siempre</strong> retornan <code>Promise</code>. Debe ser <code>async function f(): Promise&lt;DatosAPI&gt;</code>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───── 23 RESULT PATTERN ───── -->
+<section class="section" id="s23">
+  <div class="section-header">
+    <span class="section-num">23</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--bad)">// patrón result · manejo de errores tipado</div>
+      <h2>Patrón Result</h2>
+    </div>
+  </div>
+
+  <p>El patrón Result es una alternativa a las excepciones (<code>try/catch</code>). En lugar de lanzar un error, la función retorna un objeto que puede ser <em>éxito</em> o <em>fallo</em>, y TypeScript sabe exactamente qué propiedades existen en cada caso.</p>
+
+  <div class="compare">
+    <div class="compare-item">
+      <div class="compare-header bad">✗ Con excepciones</div>
+      <pre><code class="language-typescript">function dividir(a: number, b: number): number {
+  if (b === 0) throw new Error("División por cero");
+  return a / b;
+}
+
+try {
+  const r = dividir(10, 0);
+} catch (e) {
+  // ❌ "e" es de tipo unknown
+  // No hay certeza del tipo del error
+}</code></pre>
+    </div>
+    <div class="compare-item">
+      <div class="compare-header good">✓ Con patrón Result</div>
+      <pre><code class="language-typescript">type Result<T, E = Error> =
+  | { success: true; data: T }
+  | { success: false; error: E };
+
+function dividir(a: number, b: number): Result<number, string> {
+  if (b === 0) return { success: false, error: "División por cero" };
+  return { success: true, data: a / b };
+}
+
+const r = dividir(10, 3);
+if (r.success) {
+  console.log(r.data);   // ✅ TypeScript sabe: .data existe
+} else {
+  console.log(r.error);  // ✅ TypeScript sabe: .error existe
+}</code></pre>
+    </div>
+  </div>
+
+  <div class="callout callout-info">
+    <div class="icon">💡</div>
+    <div class="content">
+      <strong>¿Por qué es mejor que try/catch?</strong>
+      <p>Con <code>try/catch</code>, el tipo del error es <code>unknown</code>. Con Result, el tipo del error es explícito y TypeScript lo verifica. Además, quien llame la función <em>no puede olvidarse</em> de manejar el error porque tiene que revisar <code>result.success</code>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───── 24 MÓDULOS ───── -->
+<section class="section" id="s24">
+  <div class="section-header">
+    <span class="section-num">24</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent5)">// modules · import type · ESM</div>
+      <h2>Módulos e import type</h2>
+    </div>
+  </div>
+
+  <p>TypeScript 2026 con Bun usa módulos ES (<code>import/export</code>). La mejora importante es <code>import type</code>: permite importar tipos puros que <strong>se eliminan en compilación</strong>, optimizando el bundle final.</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">La forma correcta de importar en 2026</span></div>
+    <pre><code class="language-typescript">// ─── archivo: usuario.ts ───
+export interface Usuario { nombre: string; email: string; }
+export type RolUsuario = "admin" | "editor";
+export function crearUsuario(nombre: string): Usuario { ... }
+
+// ─── archivo: app.ts ───
+
+// ❌ import regular: TypeScript no sabe cuáles son tipos (para el bundler)
+import { Usuario, RolUsuario, crearUsuario } from "../usuario";
+
+// ❌ import type de todo: crearUsuario no existe en runtime!
+import type { Usuario, RolUsuario, crearUsuario } from "../usuario";
+// crearUsuario quedará undefined al ejecutar
+
+// ✅ La forma correcta: type para tipos, import regular para funciones
+import {
+  type Usuario,       // ← eliminado en compilación
+  type RolUsuario,    // ← eliminado en compilación
+  crearUsuario        // ← disponible en runtime
+} from "../usuario";
+
+// ❌ CommonJS (viejo, no usar en 2026 con Bun):
+const { crearUsuario } = require("../usuario"); // Nope</code></pre>
+  </div>
+</section>
+
+<!-- ───── 25 PROYECTO INTEGRADOR ───── -->
+<section class="section" id="s25">
+  <div class="section-header">
+    <span class="section-num">25</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent)">// todo junto · repositorio genérico</div>
+      <h2>Proyecto Integrador — Repositorio Genérico</h2>
+    </div>
+  </div>
+
+  <p>Esta es la pregunta final del parcial. Combina todos los conceptos: genéricos con restricciones, patrón Result, Map, arrow functions, y interfaces.</p>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Repositorio genérico — la respuesta correcta completa</span></div>
+    <pre><code class="language-typescript">// ─── 1. Interfaz base: todo lo que manejamos tiene id y fecha ───
+interface EntidadBase {
+  readonly id: string;   // readonly: no se modifica después de crear
+  createdAt: Date;
+}
+
+// ─── 2. Patrón Result: éxito o error sin excepciones ───
+type Result<T, E = string> =
+  | { ok: true; valor: T }
+  | { ok: false; error: E };
+
+// ─── 3. Clase genérica: T debe tener las propiedades de EntidadBase ───
+class Repositorio<T extends EntidadBase> {
+  // Map<clave, valor>: estructura clave-valor para búsqueda eficiente O(1)
+  private datos: Map<string, T> = new Map();
+
+  agregar(entidad: T): Result<T> {
+    // Verificar duplicados:
+    if (this.datos.has(entidad.id)) {
+      return {
+        ok: false,
+        error: `ID ${entidad.id} ya existe`
+      };
+    }
+    this.datos.set(entidad.id, entidad);
+    return { ok: true, valor: entidad };
+  }
+
+  // Filtrar con arrow function (callback tipado):
+  filtrar(predicado: (e: T) => boolean): T[] {
+    return [...this.datos.values()].filter(predicado);
+  }
+
+  buscar(id: string): T | undefined {
+    return this.datos.get(id);
+  }
+}
+
+// ─── Uso ───
+interface Estudiante extends EntidadBase {
+  nombre: string;
+  nota: number;
+}
+
+const repo = new Repositorio<Estudiante>();
+
+const resultado = repo.agregar({
+  id: "est-001",
+  createdAt: new Date(),
+  nombre: "Daniel",
+  nota: 4.5
+});
+
+if (resultado.ok) {
+  console.log("Agregado:", resultado.valor.nombre);
+} else {
+  console.log("Error:", resultado.error);
+}
+
+// Filtrar estudiantes aprobados:
+const aprobados = repo.filtrar(e => e.nota >= 3.0);</code></pre>
+  </div>
+
+  <h3>¿Por qué Map y no un array?</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">typescript</span><span class="code-label">Map vs Array para almacenamiento</span></div>
+    <pre><code class="language-typescript">// Con Array: buscar por ID requiere recorrer todo → O(n)
+const arr: Estudiante[] = [];
+const found = arr.find(e => e.id === "est-001"); // Lento si hay miles
+
+// Con Map: buscar por ID es instantáneo → O(1)
+const map = new Map<string, Estudiante>();
+map.set("est-001", estudiante);
+const found2 = map.get("est-001"); // Instantáneo, sin importar cuántos haya
+
+// Convertir Map a Array (para usar .filter, .map, etc.):
+const todos = [...map.values()];  // spread operator convierte valores a array</code></pre>
+  </div>
+
+  <div class="callout callout-good">
+    <div class="icon">🎯</div>
+    <div class="content">
+      <strong>Lo que combina la pregunta 25</strong>
+      <p>
+      ✅ <code>interface EntidadBase</code> con <code>readonly</code><br>
+      ✅ <code>type Result&lt;T, E&gt;</code> como discriminated union<br>
+      ✅ <code>class Repositorio&lt;T extends EntidadBase&gt;</code> → genérico con restricción<br>
+      ✅ <code>Map&lt;string, T&gt;</code> → almacenamiento eficiente tipado<br>
+      ✅ Arrow function como callback tipado: <code>(e: T) =&gt; boolean</code><br>
+      ✅ <code>ok: true/false</code> como discriminante del Result
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── RESUMEN FINAL ─── -->
+<section class="section" style="background: var(--bg2);">
+  <div class="section-header">
+    <span class="section-num">🎯</span>
+    <div class="section-title-group">
+      <div class="section-tag" style="color:var(--accent4)">// cheatsheet</div>
+      <h2>Cheatsheet: Lo que más pregunta el profe</h2>
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; max-width:900px;">
+    <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:20px;">
+      <h4 style="margin-top:0">Respuestas que casi siempre son ❌</h4>
+      <ul style="font-size:0.83rem; color:var(--text2);">
+        <li>Cualquier opción con <code>any</code></li>
+        <li><code>bun compile</code> (no existe)</li>
+        <li><code>interface ID = string | number</code> (sintaxis inválida)</li>
+        <li><code>interface Usuario implements OtraInterface</code></li>
+        <li><code>async function f(): DatosAPI</code> (falta Promise)</li>
+        <li>Non-null assertion <code>!</code> en pop() de pila</li>
+        <li><code>||</code> en lugar de <code>??</code> cuando hay ceros</li>
+        <li><code>default: return "Desconocido"</code> en exhaustive check</li>
+      </ul>
+    </div>
+    <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:20px;">
+      <h4 style="margin-top:0">Respuestas que casi siempre son ✅</h4>
+      <ul style="font-size:0.83rem; color:var(--text2);">
+        <li><code>bun init</code> + <code>bun --watch index.ts</code></li>
+        <li><code>unknown</code> + <code>typeof</code> para type guards</li>
+        <li><code>readonly [lat: number, lng: number]</code> para tuplas</li>
+        <li><code>type ID = string | number</code></li>
+        <li><code>??</code> con <code>?.</code> para valores opcionales</li>
+        <li>Parámetro con default en lugar de <code>?</code></li>
+        <li><code>override</code> explícito en herencia</li>
+        <li>Patrón Result con <code>success</code> como discriminante</li>
+        <li><code>import { type X, funcion }</code> para módulos</li>
+        <li><code>satisfies</code> para validar y mantener inferencia</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top:32px; padding:24px; background: linear-gradient(135deg, rgba(49,120,198,0.1), rgba(129,140,248,0.1)); border:1px solid rgba(49,120,198,0.2); border-radius:12px; max-width:680px;">
+    <div style="font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:700; color:var(--accent); margin-bottom:8px;">
+      💪 Ya tienes todo lo que necesitas, Daniel
+    </div>
+    <p style="color:var(--text2); font-size:0.88rem; margin:0;">
+      Hiciste el taller con 100% — eso significa que tu instinto ya tiene los patrones.
+      Esta guía te da la lógica detrás de cada respuesta. Descansa bien,
+      y suerte mañana con el profe Arle Morales.
+      <span style="font-family:'JetBrains Mono',monospace; color:var(--accent3)">// ¡a pasarlo!</span>
+    </p>
+  </div>
+</section>
+
+</main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    hljs.highlightAll();
+  });
+</script>
+</body>
+</html>

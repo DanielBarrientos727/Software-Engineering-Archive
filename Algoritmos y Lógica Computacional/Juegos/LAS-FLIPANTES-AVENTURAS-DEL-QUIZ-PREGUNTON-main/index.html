@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>juegin</title>
+        <link rel="stylesheet" href="estilo.css">
+    </head>
+    <body>
+        <header>
+            <h1>LAS FLIPANTES AVENTURAS DEL QUIZ PREGUNTON</h1>
+            <P>JUEGUITO DE PREGUNTAS</P>
+        </header>
+
+        <div class="container">
+            <section id="p0">
+                <h3>1- ¿que es el vive100%?</h3>
+                <label>
+                    <input type="radio" value="1" name="p0" onclick="respuesta(0,this)"> una bebida energizante XD
+                </label>
+                <label>
+                    <input type="radio" value="2" name="p0" onclick="respuesta(0,this)"> mano no se
+                </label>
+                <label>
+                    <input type="radio" value="3" name="p0" onclick="respuesta(0,this)"> un batido de proteina
+                </label>
+            </section>
+            <section id="p1">
+                <h3>2- ¿quien es pangolin?</h3>
+                <label>
+                    <input type="radio" value="1" name="p1" onclick="respuesta(1,this)"> mi chocolate dubai
+                </label>
+                <label>
+                    <input type="radio" value="2" name="p1" onclick="respuesta(1,this)"> oe quien es pangolin?
+                </label>
+                <label>
+                    <input type="radio" value="3" name="p1" onclick="respuesta(1,this)"> un emperador romano de hace como 300 años
+                </label>
+            </section>
+            <section id="p2">
+                <h3>3- que es geometry dash</h3>
+                <label>
+                    <input type="radio" value="1" name="p2" onclick="respuesta(2,this)"> la capital de suecia
+                </label>
+                <label>
+                    <input type="radio" value="2" name="p2" onclick="respuesta(2,this)"> una materia de la u
+                </label>
+                <label>
+                    <input type="radio" value="3" name="p2" onclick="respuesta(2,this)"> el juego del cuadradito que salta
+                </label>
+            </section>
+            <section id="p3">
+                <h3>4- ¿por que ella te dejo?</h3>
+                <label>
+                    <input type="radio" value="1" name="p3" onclick="respuesta(3,this)"> por que no te ama
+                </label>
+                <label>
+                    <input type="radio" value="2" name="p3" onclick="respuesta(3,this)"> intentaste dar todo y no fue suficiente
+                </label>
+                <label>
+                    <input type="radio" value="3" name="p3" onclick="respuesta(3,this)"> por que le vendio la nevera
+                </label>
+            </section>
+            <section id="p4">
+                <h3>5- ¿por que no te debes enamorar de una mujer que estudia enfermeria?</h3>
+                <label>
+                    <input type="radio" value="1" name="p4" onclick="respuesta(4,this)"> UY PA.
+                </label>
+                <label>
+                    <input type="radio" value="2" name="p4" onclick="respuesta(4,this)"> por que son crespas
+                </label>
+                <label>
+                    <input type="radio" value="3" name="p4" onclick="respuesta(4,this)"> nirvana .-.
+                </label>
+            </section>
+            <section id="p5">
+                <h3>6- ¿la amabas?</h3>
+                <label>
+                    <input type="radio" value="1" name="p5" onclick="respuesta(5,this)"> si. quisiera devolver el tiempo y poder hacer mejor las cosas
+                </label>
+                <label>
+                    <input type="radio" value="2" name="p5" onclick="respuesta(5,this)"> gas
+                </label>
+                <label>
+                    <input type="radio" value="3" name="p5" onclick="respuesta(5,this)"> no. ya la supere
+                </label>
+            </section>
+            <section id="p6">
+                <h3>7- abajo el suelo ¿y arriba?</h3>
+                <label>
+                    <input type="radio" value="1" name="p6" onclick="respuesta(6,this)">  oslo
+                </label>
+                <label>
+                    <input type="radio" value="2" name="p6" onclick="respuesta(6,this)"> 203
+                </label>
+                <label>
+                    <input type="radio" value="3" name="p6" onclick="respuesta(6,this)"> españa
+                </label>
+            </section>
+            <section id="p7">
+                <h3>8- ¿que es tartarus?</h3>
+                <label>
+                    <input type="radio" value="1" name="p7" onclick="respuesta(7,this)"> una salsa
+                </label>
+                <label>
+                    <input type="radio" value="2" name="p7" onclick="respuesta(7,this)"> un ex top1
+                </label>
+                <label>
+                    <input type="radio" value="3" name="p7" onclick="respuesta(7,this)"> nirvana 7u7
+                </label>
+            </section>
+
+            <button onclick="corregir()">CORREGIR</button>
+            <h2> CUANTAS ACERTO MI SOCIO: <span id="resultado">0</span></h2>
+        
+
+        </div>
+
+        <script src="script.js">
+
+        </script>
+    </body>
+</html>

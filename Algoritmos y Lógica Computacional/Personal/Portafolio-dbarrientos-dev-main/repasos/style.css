@@ -1,0 +1,131 @@
+body {
+    background-color: #1e1e1e; /* color de fondo de toda la página */
+    color: #e0e0e0; /* color de texto por defecto */
+    font-family: "Montserrat", sans-serif; /* tipo de letra */
+    margin: 0; /* elimina márgenes por defecto del navegador */
+}
+
+/* Texto general */
+p {
+    color: #cfcfcf; /* color del texto */
+    font-size: 14px; /* tamaño de letra */
+    font-weight: 400; /* grosor de la letra */
+    font-style: normal; /* estilo (normal o cursiva) */
+    text-align: justify; /* alinea el texto en ambos lados */
+    line-height: 1.6; /* espacio entre líneas */
+    margin: 10px 20px; /* espacio externo (arriba/abajo - lados) */
+}
+
+/* Título principal */
+h1 {
+    background-color: #2a2a2a; /* fondo del título */
+    color: #e63946; /* color del texto */
+    text-align: center; /* alineación */
+    font-weight: 800; /* grosor */
+    letter-spacing: 1px; /* espacio entre letras */
+    margin: 20px; /* separación externa */
+    padding: 10px; /* espacio interno */
+}
+
+/* Listas */
+li {
+    color: #d4a373; /* color del texto */
+    margin: 5px 0; /* separación entre elementos */
+}
+
+/* Texto en línea */
+span {
+    color: #f1f1f1; /* color del texto */
+}
+
+/* Clase: contenido electrónico */
+.electronico {
+    color: #9d4edd; /* color del texto */
+    font-style: normal; /* estilo de letra */
+    font-weight: 600; /* grosor */
+}
+
+/* ID importante */
+#sistema-Nuevo {
+    color: #ff4d6d; /* color del texto */
+    text-transform: capitalize; /* primera letra en mayúscula */
+    font-weight: 700; /* grosor */
+}
+
+/* Enlaces */
+a {
+    color: #4cc9f0; /* color del enlace */
+    text-decoration: none; /* quitar subrayado */
+}
+
+a:hover {
+    text-decoration: underline; /* subrayado al pasar el mouse */
+}
+
+/* Botones */
+button {
+    letter-spacing: 1.5px; /* espacio entre letras */
+    text-transform: uppercase; /* todo en mayúscula */
+    padding: 8px 16px; /* espacio interno */
+    border: none; /* sin borde */
+    background-color: #e63946; /* color de fondo */
+    color: white; /* color del texto */
+    cursor: pointer; /* cambia el cursor */
+    margin: 10px; /* separación externa */
+}
+
+button:hover {
+    background-color: #c1121f; /* color al pasar el mouse */
+}
+
+div {
+    background-color: #2a2a2a; /* fondo del contenedor */
+    width: 300px; /* ancho */
+    height: 100px; /* alto */
+    margin: 15px; /* separación entre cajas */
+    padding: 10px; /* espacio interno */
+}
+
+input {
+    width: 50%; /* ancho relativo al contenedor */
+    height: 50%; /* alto relativo */
+    margin: 5px 0; /* separación */
+}
+
+/* Formulario */
+.formulario {
+    background: #283618; /* color de fondo */
+    padding: 30px; /* espacio interno */
+    margin: 20px; /* separación externa */
+}
+
+/* Inputs del formulario */
+.formulario_input {
+    padding: 6px 10px; /* espacio interno */
+    width: 100%; /* ocupa todo el ancho */
+    background: #1e1e1e; /* fondo */
+    color: #f1faee; /* color del texto */
+    margin-bottom: 10px; /* separación entre inputs */
+}
+
+/* Botón del formulario */
+.formulario_submit {
+    letter-spacing: 2px; /* espacio entre letras */
+    text-transform: uppercase; /* mayúsculas */
+    background: #e63946; /* color de fondo */
+    width: 50%; /* ancho */
+    margin-top: 10px; /* separación superior */
+}
+
+.box {
+    background: gold;
+    padding: 50px;
+    height: 150px;
+    width: 150px;
+    margin: 10px; /*el margin separa los elementos entre sí*/
+    display: flex;
+    flex-direction: column;
+}
+
+
+/*existe el margin collapse* -> el margin mas grande predomina, ganara a los demas, si uno es 60px y el otro 891px, ese sera quien domina a lo que esten abajo creo/

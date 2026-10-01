@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Aprende composición de funciones navegando el océano matemático. Un juego educativo interactivo.">
+  <title>El Barco y el Faro — Composición de Funciones</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ══ SCREEN: THEORY ══════════════════════════════════════ -->
+  <section id="s-theory" class="screen" role="main" aria-label="Pantalla de teoría">
+    <div class="starfield" aria-hidden="true"></div>
+
+    <header class="theory-hero">
+      <span class="pill" role="note">📚 Proyecto — Matemáticas Básicas</span>
+      <h1>Composición de<br><span class="accent">Funciones</span></h1>
+      <p class="hero-sub">Aprende el concepto antes de embarcarte. ¡En 2 minutos lo tienes!</p>
+    </header>
+
+    <div class="theory-body">
+
+      <article class="card" aria-labelledby="card1-title">
+        <h2 id="card1-title" class="card-title"><span aria-hidden="true">🧠</span> ¿Qué es una composición de funciones?</h2>
+        <p>Una <strong>función</strong> es como una máquina: le metes un número y te devuelve otro diferente.</p>
+        <p>La <strong>composición de funciones</strong> es encadenar dos máquinas: el resultado de la primera entra directo a la segunda.</p>
+        <div class="highlight-box">
+          💡 <strong>En pocas palabras:</strong> calculas <code>g(x)</code> primero, y ese resultado lo usas como ingrediente para calcular <code>f</code>. Por eso se escribe <strong>f(g(x))</strong>.
+        </div>
+      </article>
+
+      <article class="card" aria-labelledby="card2-title">
+        <h2 id="card2-title" class="card-title"><span aria-hidden="true">👟</span> Ejemplo de la vida cotidiana</h2>
+        <p>Para salir de casa necesitas dos pasos obligatorios, <strong>en orden:</strong></p>
+        <div class="analogy-row" role="img" aria-label="Primero calcetines (g), luego zapatos (f), resultado: salir de casa (f∘g)(x)">
+          <div class="analogy-box analogy-box--g">
+            <span class="analogy-icon" aria-hidden="true">🧦</span>
+            <span class="analogy-label">Primero — g</span>
+            <span class="analogy-val">Calcetines</span>
+          </div>
+          <span class="analogy-arrow" aria-hidden="true">→</span>
+          <div class="analogy-box analogy-box--f">
+            <span class="analogy-icon" aria-hidden="true">👟</span>
+            <span class="analogy-label">Luego — f</span>
+            <span class="analogy-val">Zapatos</span>
+          </div>
+          <span class="analogy-arrow" aria-hidden="true">=</span>
+          <div class="analogy-box analogy-box--r">
+            <span class="analogy-icon" aria-hidden="true">🚶</span>
+            <span class="analogy-label">Resultado</span>
+            <span class="analogy-val">(f∘g)(x)</span>
+          </div>
+        </div>
+        <p>No puedes ponerte los zapatos sin los calcetines. <strong>El orden importa.</strong> Eso es composición.</p>
+      </article>
+
+      <article class="card" aria-labelledby="card3-title">
+        <h2 id="card3-title" class="card-title"><span aria-hidden="true">✏️</span> La notación matemática</h2>
+        <p>Se escribe <strong>(f ∘ g)(x)</strong> — se lee "f compuesta con g de x".</p>
+        <div class="formula-block" role="math" aria-label="f compuesta g de x, igual a f de g de x">
+          <span class="ft">( f ∘ g )( x )</span> = f( <span class="fo">g(x)</span> )
+          <br>
+          <span class="fm">↑ primero g(x), luego ese resultado entra a f</span>
+        </div>
+        <p>Si <code class="ct">g(x) = x + 3</code> y <code class="co">f(x) = 2x</code>, con x = 4:</p>
+        <div class="analogy-row">
+          <div class="analogy-box analogy-box--g">
+            <span class="analogy-label">Paso 1</span>
+            <span class="analogy-val" style="font-size:.9rem">g(4)=4+3=<em style="color:var(--teal)">7</em></span>
+          </div>
+          <span class="analogy-arrow" aria-hidden="true">→</span>
+          <div class="analogy-box analogy-box--f">
+            <span class="analogy-label">Paso 2</span>
+            <span class="analogy-val" style="font-size:.9rem">f(7)=2×7=<em style="color:var(--orange)">14</em></span>
+          </div>
+          <span class="analogy-arrow" aria-hidden="true">=</span>
+          <div class="analogy-box analogy-box--r">
+            <span class="analogy-label">Respuesta</span>
+            <span class="analogy-val" style="font-size:1.15rem">14 ✓</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card card--mission" aria-labelledby="card4-title">
+        <h2 id="card4-title" class="card-title"><span aria-hidden="true">🚢</span> Tu misión — El barco y el faro</h2>
+        <p>Un barco navega a <strong>20 millas/hora</strong> paralelo a la orilla. El faro está a <strong>5 millas</strong> perpendiculares de la orilla.</p>
+        <p>Usarás <strong>dos funciones encadenadas</strong> para saber qué tan lejos está el barco del faro:</p>
+        <div class="mission-fns">
+          <div class="fn-card fn-card--g">
+            <div class="fn-tag">g — Primera función</div>
+            <div class="fn-formula">g(t) = 20t</div>
+            <div class="fn-desc">tiempo → distancia recorrida (d)</div>
+          </div>
+          <span class="fn-arrow" aria-hidden="true">→</span>
+          <div class="fn-card fn-card--f">
+            <div class="fn-tag">f — Segunda función</div>
+            <div class="fn-formula">f(d) = √(25+d²)</div>
+            <div class="fn-desc">distancia d → distancia al faro (s)</div>
+          </div>
+        </div>
+        <div class="highlight-box highlight-box--mission">
+          🎯 <strong>Cómo funciona:</strong> en cada escena verás los datos del barco. Tu trabajo es resolver las funciones paso a paso eligiendo la respuesta correcta.
+        </div>
+      </article>
+
+      <button class="btn-primary btn-launch" id="btnStart" aria-label="Comenzar el juego">
+        ⛵ ¡Zarpar ahora!
+      </button>
+
+    </div>
+  </section>
+
+  <!-- ══ SCREEN: GAME ════════════════════════════════════════ -->
+  <section id="s-game" class="screen" role="main" aria-label="Pantalla de juego">
+
+    <!-- Ocean Scene (visual / decorative) -->
+    <div class="ocean-scene" id="oceanScene" aria-hidden="true">
+      <div class="scene-sky"></div>
+      <div class="stars-layer" id="starsLayer"></div>
+      <div class="moon"></div>
+
+      <!-- HUD: data chips -->
+      <div class="hud-chips" id="hudChips">
+        <div class="hud-chip" id="chip-v">
+          <span class="chip-label">⚡ Velocidad</span>
+          <span class="chip-val">20 mi/h</span>
+        </div>
+        <div class="hud-chip" id="chip-shore">
+          <span class="chip-label">📏 Orilla→Faro</span>
+          <span class="chip-val">5 millas</span>
+        </div>
+        <div class="hud-chip hud-chip--teal" id="chip-t">
+          <span class="chip-label">⏱ Tiempo t</span>
+          <span class="chip-val" id="chip-t-val">?</span>
+        </div>
+        <div class="hud-chip hud-chip--teal" id="chip-d">
+          <span class="chip-label">🔵 d = g(t)</span>
+          <span class="chip-val" id="chip-d-val">?</span>
+        </div>
+        <div class="hud-chip hud-chip--orange" id="chip-s">
+          <span class="chip-label">🟠 s = f(d)</span>
+          <span class="chip-val" id="chip-s-val">?</span>
+        </div>
+      </div>
+
+      <span class="shore-label">ORILLA</span>
+      <svg class="scene-svg" id="sceneSvg"></svg>
+      <div class="shore-terrain"></div>
+
+      <!-- Lighthouse -->
+      <div class="lighthouse" id="lighthouse">
+        <div class="lh-beam"></div>
+        <div class="lh-beacon" id="lhBeacon"></div>
+        <div class="lh-cap"></div>
+        <div class="lh-body"></div>
+        <div class="lh-base"></div>
+      </div>
+
+      <!-- Ocean water -->
+      <div class="ocean-water">
+        <div class="wave wave--1"></div>
+        <div class="wave wave--2"></div>
+        <div class="wave wave--3"></div>
+      </div>
+
+      <!-- The ship -->
+      <div class="ship" id="ship" role="img" aria-label="Barco navegando">🚢</div>
+    </div>
+
+    <!-- Story Panel -->
+    <div class="story-panel" id="storyPanel">
+
+      <div class="progress-header">
+        <div class="progress-steps" id="progressSteps" role="progressbar" aria-label="Progreso del juego"></div>
+        <div class="score-badge" aria-live="polite" aria-label="Puntaje actual">
+          <span aria-hidden="true">⭐</span>
+          <span class="score-val" id="scoreVal">0</span>
+          <span class="score-unit">pts</span>
+        </div>
+      </div>
+
+      <div class="narrator-bubble">
+        <div class="narrator-who">🧭 Narrador</div>
+        <div class="narrator-msg" id="narMsg" aria-live="polite">Cargando...</div>
+        <div class="formula-hint" id="formulaHint" hidden></div>
+      </div>
+
+      <div class="question-box" id="questionBox" hidden role="group" aria-labelledby="questionText">
+        <div class="question-label">❓ Pregunta</div>
+        <p class="question-text" id="questionText"></p>
+      </div>
+
+      <div class="options-grid" id="optionsGrid" role="radiogroup" aria-label="Opciones de respuesta"></div>
+
+      <div class="feedback" id="feedback" role="alert" aria-live="assertive" hidden></div>
+
+      <button class="btn-next" id="btnNext" hidden aria-label="Continuar al siguiente paso">
+        Continuar →
+      </button>
+
+    </div>
+  </section>
+
+  <!-- ══ SCREEN: WIN ═════════════════════════════════════════ -->
+  <section id="s-win" class="screen" role="main" aria-label="Pantalla de victoria">
+    <div class="starfield" aria-hidden="true"></div>
+    <div class="win-content">
+      <div class="win-trophy" aria-hidden="true">🏆</div>
+      <h2 class="win-title">¡El barco llegó al faro!</h2>
+      <p class="win-desc">Resolviste la composición de funciones paso a paso usando los datos reales del barco.</p>
+
+      <div class="win-score-box" aria-label="Puntaje final">
+        <div class="win-score-label">Puntaje final</div>
+        <div class="win-score-val" id="finalScore">0 pts</div>
+      </div>
+
+      <div class="win-summary">
+        <h3 class="summary-title">📝 Lo que aprendiste</h3>
+        <ul class="summary-list">
+          <li><span aria-hidden="true">⚙️</span><span><strong>g(t) = 20t</strong> — convierte el tiempo en distancia recorrida a lo largo de la orilla</span></li>
+          <li><span aria-hidden="true">📐</span><span><strong>f(d) = √(25+d²)</strong> — usa Pitágoras para hallar la distancia directa al faro</span></li>
+          <li><span aria-hidden="true">🔗</span><span><strong>(f∘g)(t) = √(25+(20t)²)</strong> — la función compuesta en un solo paso</span></li>
+          <li><span aria-hidden="true">✅</span><span>t = 1h → d = 20 mi → s ≈ 20.6 millas del faro</span></li>
+          <li><span aria-hidden="true">✅</span><span>t = 2h → d = 40 mi → s ≈ 40.3 millas del faro</span></li>
+        </ul>
+      </div>
+
+      <button class="btn-primary" id="btnRestart" aria-label="Jugar de nuevo desde el principio">
+        🔄 Jugar de nuevo
+      </button>
+    </div>
+  </section>
+
+  <!-- Particle container (decorative) -->
+  <div id="particleContainer" aria-hidden="true"></div>
+
+  <script src="main.js"></script>
+</body>
+</html>

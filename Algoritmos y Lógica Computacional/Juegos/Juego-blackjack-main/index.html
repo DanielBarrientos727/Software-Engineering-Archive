@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blackjack</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --felt: #1a472a;
+    --felt-light: #2d6a42;
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --cream: #f5ead8;
+    --card-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: radial-gradient(ellipse at center, var(--felt-light) 0%, var(--felt) 40%, #0d2b1a 100%);
+    min-height: 100vh;
+    font-family: 'Crimson Text', serif;
+    color: var(--cream);
+    overflow-x: hidden;
+  }
+
+  /* Felt texture overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 3h1v1H1V3zm2-2h1v1H3V1z' fill='%23ffffff' fill-opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .table {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    text-align: center;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: var(--gold);
+    text-shadow: 0 0 40px rgba(201,168,76,0.4), 2px 2px 0 rgba(0,0,0,0.5);
+    letter-spacing: 0.1em;
+    padding: 10px 0;
+  }
+
+  /* Divider line */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    opacity: 0.5;
+  }
+
+  /* Score badge */
+  .score-badge {
+    display: inline-block;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 20px;
+    padding: 4px 16px;
+    font-size: 0.95rem;
+    color: var(--gold-light);
+    letter-spacing: 0.05em;
+  }
+
+  /* Zone (dealer / player area) */
+  .zone {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 20px;
+    min-height: 180px;
+  }
+
+  .zone-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Cards container */
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-height: 110px;
+    align-items: center;
+  }
+
+  /* Individual card */
+  .card {
+    width: 72px;
+    height: 105px;
+    border-radius: 8px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 6px;
+    box-shadow: var(--card-shadow);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    animation: dealCard 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  @keyframes dealCard {
+    from { opacity: 0; transform: translateY(-30px) rotate(-5deg) scale(0.8); }
+    to   { opacity: 1; transform: translateY(0) rotate(0) scale(1); }
+  }
+
+  .card.red { color: #c0392b; }
+  .card.black { color: #1a1a1a; }
+
+  .card .top { font-size: 0.9rem; line-height: 1; }
+  .card .suit-big {
+    font-size: 2rem;
+    text-align: center;
+    line-height: 1;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card .bottom { font-size: 0.9rem; line-height: 1; transform: rotate(180deg); text-align: left; }
+
+  /* Hidden card */
+  .card.hidden {
+    background: linear-gradient(135deg, #1a3a5c 25%, #0d2040 25%, #0d2040 50%, #1a3a5c 50%, #1a3a5c 75%, #0d2040 75%);
+    background-size: 12px 12px;
+    color: transparent;
+  }
+  .card.hidden .suit-big,
+  .card.hidden .top,
+  .card.hidden .bottom { opacity: 0; }
+
+  /* Message bar */
+  #message {
+    text-align: center;
+    font-size: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    color: var(--gold-light);
+    min-height: 40px;
+    text-shadow: 0 0 20px rgba(232, 201, 106, 0.5);
+    transition: all 0.3s;
+  }
+
+  /* Stats */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 0.95rem;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .stat-label { color: rgba(245,234,216,0.5); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .stat-value { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gold); }
+
+  /* Buttons */
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  button {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  #btn-deal {
+    background: linear-gradient(135deg, var(--gold), #a07830);
+    color: #1a1a1a;
+    box-shadow: 0 4px 20px rgba(201,168,76,0.4);
+  }
+  #btn-deal:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(201,168,76,0.6); }
+
+  #btn-hit {
+    background: linear-gradient(135deg, #27ae60, #1a7a42);
+    color: white;
+    box-shadow: 0 4px 16px rgba(39,174,96,0.3);
+  }
+  #btn-hit:hover { transform: translateY(-2px); }
+
+  #btn-stand {
+    background: linear-gradient(135deg, #c0392b, #8b1a14);
+    color: white;
+    box-shadow: 0 4px 16px rgba(192,57,43,0.3);
+  }
+  #btn-stand:hover { transform: translateY(-2px); }
+
+  button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Win/Lose flash */
+  .flash-win  { animation: flashWin 0.6s ease; }
+  .flash-lose { animation: flashLose 0.6s ease; }
+
+  @keyframes flashWin  { 0%,100%{background:rgba(0,0,0,0.2)} 50%{background:rgba(39,174,96,0.2)} }
+  @keyframes flashLose { 0%,100%{background:rgba(0,0,0,0.2)} 50%{background:rgba(192,57,43,0.15)} }
+</style>
+</head>
+<body>
+<div class="table">
+  <h1>♠ BLACKJACK ♥</h1>
+  <div class="divider"></div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <span class="stat-label">Victorias</span>
+      <span class="stat-value" id="wins">0</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Derrotas</span>
+      <span class="stat-value" id="losses">0</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Empates</span>
+      <span class="stat-value" id="ties">0</span>
+    </div>
+  </div>
+
+  <!-- Dealer zone -->
+  <div class="zone" id="dealer-zone">
+    <div class="zone-label">
+      🎩 Dealer
+      <span class="score-badge" id="dealer-score">?</span>
+    </div>
+    <div class="cards" id="dealer-cards"></div>
+  </div>
+
+  <!-- Message -->
+  <div id="message">Pulsa "Nueva Partida" para comenzar</div>
+
+  <!-- Player zone -->
+  <div class="zone" id="player-zone">
+    <div class="zone-label">
+      🎯 Tú
+      <span class="score-badge" id="player-score">0</span>
+    </div>
+    <div class="cards" id="player-cards"></div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button id="btn-deal">Nueva Partida</button>
+    <button id="btn-hit" disabled>Pedir Carta</button>
+    <button id="btn-stand" disabled>Plantarse</button>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// 1. LA BARAJA
+// Creamos un array con las 52 cartas.
+// Cada carta tiene: valor visible, palo y puntos.
+// ─────────────────────────────────────────────
+const SUITS = ['♠','♥','♦','♣'];
+const RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+
+function createDeck() {
+  const deck = [];
+  for (const suit of SUITS) {
+    for (const rank of RANKS) {
+      // El As vale 11 (lo ajustamos luego si pasamos de 21)
+      // J, Q, K valen 10
+      const points = rank === 'A' ? 11 : isNaN(rank) ? 10 : parseInt(rank);
+      const isRed = suit === '♥' || suit === '♦';
+      deck.push({ suit, rank, points, isRed });
+    }
+  }
+  return deck;
+}
+
+// ─────────────────────────────────────────────
+// 2. MEZCLAR (Fisher-Yates shuffle)
+// Recorremos el array desde el final e
+// intercambiamos cada carta con una posición aleatoria.
+// ─────────────────────────────────────────────
+function shuffle(deck) {
+  const d = [...deck];
+  for (let i = d.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [d[i], d[j]] = [d[j], d[i]];
+  }
+  return d;
+}
+
+// ─────────────────────────────────────────────
+// 3. CALCULAR PUNTUACIÓN
+// La regla especial del As: si te pasas de 21
+// con un As valiendo 11, lo convertimos en 1.
+// ─────────────────────────────────────────────
+function calcScore(hand) {
+  let total = 0;
+  let aces = 0;
+  for (const card of hand) {
+    total += card.points;
+    if (card.rank === 'A') aces++;
+  }
+  // Reducir el valor de los Ases si nos pasamos
+  while (total > 21 && aces > 0) {
+    total -= 10; // 11 → 1
+    aces--;
+  }
+  return total;
+}
+
+// ─────────────────────────────────────────────
+// 4. ESTADO DEL JUEGO
+// ─────────────────────────────────────────────
+let deck = [];
+let playerHand = [];
+let dealerHand = [];
+let gameActive = false;
+let stats = { wins: 0, losses: 0, ties: 0 };
+
+// Referencias al DOM
+const dealerCardsEl  = document.getElementById('dealer-cards');
+const playerCardsEl  = document.getElementById('player-cards');
+const dealerScoreEl  = document.getElementById('dealer-score');
+const playerScoreEl  = document.getElementById('player-score');
+const messageEl      = document.getElementById('message');
+const btnDeal        = document.getElementById('btn-deal');
+const btnHit         = document.getElementById('btn-hit');
+const btnStand       = document.getElementById('btn-stand');
+
+// ─────────────────────────────────────────────
+// 5. RENDERIZAR CARTAS EN PANTALLA
+// Limpia el contenedor y dibuja cada carta.
+// hidden=true oculta la segunda carta del dealer.
+// ─────────────────────────────────────────────
+function renderCards(hand, container, hideSecond = false) {
+  container.innerHTML = '';
+  hand.forEach((card, i) => {
+    const el = document.createElement('div');
+    el.classList.add('card', card.isRed ? 'red' : 'black');
+    el.style.animationDelay = `${i * 0.1}s`;
+
+    if (hideSecond && i === 1) {
+      el.classList.add('hidden');
+      el.innerHTML = `<div class="top"></div><div class="suit-big"></div><div class="bottom"></div>`;
+    } else {
+      el.innerHTML = `
+        <div class="top">${card.rank}<br>${card.suit}</div>
+        <div class="suit-big">${card.suit}</div>
+        <div class="bottom">${card.rank}<br>${card.suit}</div>
+      `;
+    }
+    container.appendChild(el);
+  });
+}
+
+// ─────────────────────────────────────────────
+// 6. NUEVA PARTIDA
+// Creamos y mezclamos la baraja, repartimos 2
+// cartas a cada uno (alternando como en casino).
+// ─────────────────────────────────────────────
+function deal() {
+  deck = shuffle(createDeck());
+  playerHand = [deck.pop(), deck.pop()];
+  dealerHand = [deck.pop(), deck.pop()];
+  gameActive = true;
+
+  renderCards(dealerHand, dealerCardsEl, true); // 2ª carta oculta
+  renderCards(playerHand, playerCardsEl);
+
+  const pScore = calcScore(playerHand);
+  playerScoreEl.textContent = pScore;
+  dealerScoreEl.textContent = '?';
+  messageEl.textContent = '';
+
+  btnHit.disabled = false;
+  btnStand.disabled = false;
+
+  // ¿Blackjack natural al repartir?
+  if (pScore === 21) {
+    endGame('blackjack');
+  }
+}
+
+// ─────────────────────────────────────────────
+// 7. PEDIR CARTA (HIT)
+// El jugador recibe una carta más.
+// Si se pasa de 21 → pierde.
+// ─────────────────────────────────────────────
+function hit() {
+  if (!gameActive) return;
+  playerHand.push(deck.pop());
+  renderCards(playerHand, playerCardsEl);
+  const score = calcScore(playerHand);
+  playerScoreEl.textContent = score;
+  if (score > 21) endGame('bust');
+  if (score === 21) stand(); // si llega a 21 se planta automáticamente
+}
+
+// ─────────────────────────────────────────────
+// 8. PLANTARSE (STAND) — turno del dealer
+// El dealer SIEMPRE pide carta si tiene < 17.
+// Esta es la regla oficial del casino.
+// ─────────────────────────────────────────────
+function stand() {
+  if (!gameActive) return;
+  btnHit.disabled = true;
+  btnStand.disabled = true;
+
+  // Revelar carta oculta del dealer con delay
+  setTimeout(() => {
+    renderCards(dealerHand, dealerCardsEl, false);
+    dealerScoreEl.textContent = calcScore(dealerHand);
+    dealerPlay();
+  }, 400);
+}
+
+function dealerPlay() {
+  const score = calcScore(dealerHand);
+  if (score < 17) {
+    // El dealer pide carta con animación
+    setTimeout(() => {
+      dealerHand.push(deck.pop());
+      renderCards(dealerHand, dealerCardsEl, false);
+      const newScore = calcScore(dealerHand);
+      dealerScoreEl.textContent = newScore;
+      dealerPlay(); // Recursivo hasta llegar a 17+
+    }, 600);
+  } else {
+    // Ya tiene 17 o más → resolver
+    setTimeout(resolveGame, 300);
+  }
+}
+
+// ─────────────────────────────────────────────
+// 9. RESOLVER EL JUEGO
+// Comparamos puntuaciones y determinamos ganador.
+// ─────────────────────────────────────────────
+function resolveGame() {
+  const p = calcScore(playerHand);
+  const d = calcScore(dealerHand);
+
+  if (d > 21) endGame('dealer-bust');
+  else if (p > d) endGame('win');
+  else if (d > p) endGame('lose');
+  else endGame('tie');
+}
+
+// ─────────────────────────────────────────────
+// 10. FIN DE PARTIDA
+// Mostramos el resultado y actualizamos el marcador.
+// ─────────────────────────────────────────────
+function endGame(result) {
+  gameActive = false;
+  btnHit.disabled = true;
+  btnStand.disabled = true;
+
+  // Revelar cartas del dealer si no se ha hecho
+  renderCards(dealerHand, dealerCardsEl, false);
+  dealerScoreEl.textContent = calcScore(dealerHand);
+
+  const messages = {
+    'blackjack':   '🎉 ¡BLACKJACK! ¡Ganaste!',
+    'bust':        '💥 ¡Te pasaste de 21! Pierdes.',
+    'dealer-bust': '🃏 ¡El dealer se pasó! ¡Ganaste!',
+    'win':         '✨ ¡Ganaste! Mejor puntuación.',
+    'lose':        '😔 El dealer gana. Suerte la próxima.',
+    'tie':         '🤝 Empate. Nadie gana.',
+  };
+
+  messageEl.textContent = messages[result];
+
+  const playerZone = document.getElementById('player-zone');
+  const dealerZone = document.getElementById('dealer-zone');
+
+  if (['blackjack','dealer-bust','win'].includes(result)) {
+    stats.wins++;
+    playerZone.classList.add('flash-win');
+    setTimeout(() => playerZone.classList.remove('flash-win'), 600);
+  } else if (['bust','lose'].includes(result)) {
+    stats.losses++;
+    dealerZone.classList.add('flash-win');
+    setTimeout(() => dealerZone.classList.remove('flash-win'), 600);
+  } else {
+    stats.ties++;
+  }
+
+  document.getElementById('wins').textContent   = stats.wins;
+  document.getElementById('losses').textContent = stats.losses;
+  document.getElementById('ties').textContent   = stats.ties;
+}
+
+// ─────────────────────────────────────────────
+// 11. EVENT LISTENERS
+// ─────────────────────────────────────────────
+btnDeal.addEventListener('click', deal);
+btnHit.addEventListener('click', hit);
+btnStand.addEventListener('click', stand);
+</script>
+</body>
+</html>

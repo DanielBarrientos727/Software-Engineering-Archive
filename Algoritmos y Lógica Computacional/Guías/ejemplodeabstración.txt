@@ -1,0 +1,107 @@
+1. Pensamiento computacional: primero entendemos el problema
+No empieces escribiendo Scanner. Ese es un error típico.
+Primero preguntamos:
+¿Qué necesito calcular?
+
+La respuesta es:
+La devuelta del cliente.
+Entonces ya tenemos una idea matemática muy sencilla:
+devuelta = dinero_entregado - valor_total
+Ejemplo:
+Factura:        $18.000
+Cliente paga:   $20.000
+Devuelta:        $2.000
+
+Eso ya es pensar computacionalmente: convertir una situación del mundo real en una operación que un computador pueda ejecutar.
+2. Abstracción
+La abstracción consiste en quedarnos solamente con lo importante.
+Del problema no nos interesa:
+- quién es Alexander;
+- cómo se llama la tienda;
+- qué producto compró el cliente;
+- cuántos productos hay.
+Nos interesan solamente:
+valor total de la factura
+dinero entregado por el cliente
+
+Y queremos obtener:
+devuelta
+
+Por tanto:
+ENTRADAS:
+- valorTotal
+- dineroEntregado
+
+PROCESO:
+- devuelta = dineroEntregado - valorTotal
+
+SALIDA:
+- devuelta
+
+Ese es el modelo del problema.
+3. Descomposición
+Ahora rompemos el problema en pequeñas acciones.
+1. Pedir el valor total de la factura.
+2. Pedir cuánto dinero entregó el cliente.
+3. Restar el total de la factura al dinero entregado.
+4. Mostrar la devuelta.
+
+Mira qué sencillo queda cuando lo partes.
+El computador no “entiende una compra”. Nosotros convertimos la compra en cuatro instrucciones simples.
+4. Reconocimiento de patrones
+Aquí aparece algo importante.
+Este problema tiene el mismo patrón que muchísimos ejercicios de programación:
+ENTRADA → PROCESO → SALIDA
+
+En este caso:
+Entrada
+   ↓
+valor total
+dinero entregado
+   ↓
+Proceso
+   ↓
+resta
+   ↓
+Salida
+   ↓
+devuelta
+
+Y este patrón lo vamos a reutilizar una y otra vez.
+Por ejemplo:
+precio + cantidad → multiplicación → total
+
+o:
+temperatura Celsius → fórmula → Fahrenheit
+
+o:
+kilómetros + litros → división → rendimiento
+
+La programación tiene muchísimo de esto: reconocer estructuras que ya conoces y reutilizarlas.
+5. Algoritmo
+Ahora escribimos el procedimiento sin Java todavía.
+INICIO
+
+1. Leer valorTotal
+2. Leer dineroEntregado
+3. Calcular devuelta
+4. Mostrar devuelta
+
+FIN
+
+Esto es prácticamente el programa, solo que todavía no está escrito en un lenguaje de programación.
+6. Pseudocódigo
+Podemos hacerlo todavía más parecido al código:
+Inicio
+
+    Leer valorTotal
+    Leer dineroEntregado
+
+    devuelta = dineroEntregado - valorTotal
+
+    Mostrar devuelta
+
+Fin
+
+Observa algo importante: todavía no hemos pensado en double, Scanner, System.out.println, etc.
+Primero resolvemos el problema. Después decidimos cómo expresarlo en Java.

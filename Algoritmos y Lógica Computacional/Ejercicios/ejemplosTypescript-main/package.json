@@ -1,0 +1,29 @@
+{
+  "name": "ejemplosTypecript",
+  "version": "1.0.0",
+  "description": "Tutorial profesional de TypeScript 2026 con Bun para la Universidad Alexander von Humboldt",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run src/index.ts",
+    "check": "tsc --noEmit",
+    "build": "tsc --noEmit",
+    "docx": "bun run scripts/generate-docx.ts",
+    "capitulo:01": "bun run chapters/capitulo-01-ecosistema/ejemplo.ts",
+    "capitulo:02": "bun run chapters/capitulo-02-tipado/ejemplo.ts",
+    "capitulo:03": "bun run chapters/capitulo-03-operadores/ejemplo.ts",
+    "capitulo:04": "bun run chapters/capitulo-04-funciones/ejemplo.ts",
+    "capitulo:05": "bun run chapters/capitulo-05-funciones-flecha/ejemplo.ts",
+    "capitulo:06": "bun run chapters/capitulo-06-control/ejemplo.ts",
+    "capitulo:07": "bun run chapters/capitulo-07-clases/ejemplo.ts",
+    "capitulo:08": "bun run chapters/capitulo-08-interfaces/ejemplo.ts",
+    "capitulo:09": "bun run chapters/capitulo-09-complementarios/ejemplo.ts"
+  },
+  "dependencies": {
+    "docx": "^9.6.1"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.12",
+    "typescript": "^6.0.3"
+  },
+  "private": true
+}

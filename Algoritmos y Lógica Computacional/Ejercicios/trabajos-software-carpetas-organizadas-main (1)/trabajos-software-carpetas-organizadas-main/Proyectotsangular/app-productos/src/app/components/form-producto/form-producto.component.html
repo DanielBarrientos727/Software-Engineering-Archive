@@ -1,0 +1,30 @@
+<div class="container">
+  <h1>{{ esEdicion ? 'Editar Producto' : 'Nuevo Producto' }}</h1>
+
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+    <div class="campo">
+      <label>Nombre</label>
+      <input formControlName="nombre" type="text" placeholder="Nombre del producto" />
+    </div>
+
+    <div class="campo">
+      <label>Precio</label>
+      <input formControlName="precio" type="number" placeholder="Precio" />
+    </div>
+
+    <div class="campo">
+      <label>Stock</label>
+      <input formControlName="stock" type="number" placeholder="Stock" />
+    </div>
+
+    <div class="campo">
+      <label>Categoría</label>
+      <input formControlName="categoria" type="text" placeholder="Categoría" />
+    </div>
+
+    <div class="botones">
+      <button type="submit" [disabled]="form.invalid">Guardar</button>
+      <a routerLink="/productos">Cancelar</a>
+    </div>
+  </form>
+</div>

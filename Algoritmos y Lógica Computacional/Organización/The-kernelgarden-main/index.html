@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The KernelGarden</title>
+  <meta name="description" content="The KernelGarden: proyectos, juegos y tecnología creada por estudiantes de ingeniería de software." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&family=Special+Elite&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="img/logo.jpg" />
+</head>
+<body>
+  <nav class="nav" aria-label="Principal">
+    <a href="#hero" class="logo">[ KernelGarden ]</a>
+    <ul class="nav-links">
+      <li><a href="#nosotros">Sobre Nosotros</a></li>
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#extras">Extras</a></li>
+      <li><a href="#foro">Foro</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <header id="hero">
+    <div class="hero-img" aria-hidden="true"></div>
+    <h1>THE KERNELGARDEN<span class="cursor"></span></h1>
+    <p class="subtitulo">
+      Seis ingenieros de software. Un jardín donde crecen programas,
+      videojuegos, seguridad e IA.
+    </p>
+    <div class="btn-group">
+      <a href="#proyectos" class="btn">Ver Proyectos</a>
+      <a href="https://github.com/dbarrientos-dev/The-KernelGarden-games" class="btn secundario" target="_blank" rel="noopener noreferrer">Entrar al GitHub</a>
+    </div>
+  </header>
+
+  <section id="nosotros" class="container">
+    <p class="seccion-titulo">// NOSOTROS</p>
+    <div class="seccion-linea"></div>
+    <p class="intro">
+      Somos un grupo de amigos y compañeros de ingeniería de software en la CUE AVH.
+      Nos apasiona construir, aprender y compartir: desde bots para Telegram hasta sistemas distribuidos,
+      ciberseguridad y videojuegos creativos.
+    </p>
+
+    <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=900&q=80&auto=format&fit=crop" alt="Equipo programando" class="img-decorativa" />
+
+    <div class="equipo-grid">
+      <article class="miembro"><img class="avatar" src="img/1.jpg" alt="Daniel" /><h3>Daniel</h3><span class="rol">Líder · Backend · Rust</span></article>
+      <article class="miembro"><img class="avatar" src="img/3.jpg" alt="Santiago" /><h3>Santiago</h3><span class="rol">Frontend · UI/UX</span></article>
+      <article class="miembro"><img class="avatar" src="img/2.jpg" alt="Juan" /><h3>Juan</h3><span class="rol">Ciberseguridad · Servidor</span></article>
+      <article class="miembro"><img class="avatar" src="img/4.jpg" alt="Miguel" /><h3>Miguel</h3><span class="rol">Narrativa · Documentación</span></article>
+      <article class="miembro"><img class="avatar" src="img/5.jpg" alt="Steeven" /><h3>Steeven</h3><span class="rol">Algoritmos · Bajo nivel</span></article>
+      <article class="miembro"><img class="avatar" src="img/6.jpg" alt="David" /><h3>David</h3><span class="rol">Música · Sistemas interactivos</span></article>
+    </div>
+  </section>
+
+  <section id="proyectos">
+    <div class="container">
+      <p class="seccion-titulo">// PROYECTOS</p>
+      <div class="seccion-linea"></div>
+      <div class="proyectos-grid">
+        <article class="proyecto-card">
+          <img src="img/pag4.jpeg" alt="CafeBinario" class="proyecto-img" />
+          <div class="proyecto-contenido"><h3>CafeBinario</h3><p>Wiki técnica FOSS para aprender computación real desde fundamentos hasta investigación avanzada.</p><div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div></div>
+        </article>
+        <article class="proyecto-card">
+          <img src="img/pag3.jpeg" alt="Pangolin: The Game" class="proyecto-img" />
+          <div class="proyecto-contenido"><h3>Pangolin: The Game</h3><p>Videojuego indie nacido en el Quindío. Precisión, física y reflejos.</p><div class="tags"><span class="tag">Python</span><span class="tag">Blender</span><span class="tag">Godot</span></div></div>
+        </article>
+        <article class="proyecto-card">
+          <img src="img/pag1.jpg" alt="The SoundGarden" class="proyecto-img" />
+          <div class="proyecto-contenido"><h3>The SoundGarden</h3><p>Ciencia y arte sonoro con programación creativa y síntesis digital.</p><div class="tags"><span class="tag">Rust</span><span class="tag">React</span></div></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="extras">
+    <div class="container extras-grid">
+      <div class="extra-bloque">
+        <h2>// MÚSICA</h2>
+        <div class="linea-sub"></div>
+        <div class="track"><span class="num">01</span><div class="info"><div class="nombre">「アイドル」</div><div class="artista">YOASABI</div></div></div>
+        <div class="track"><span class="num">02</span><div class="info"><div class="nombre">Harder Better Faster</div><div class="artista">Daft Punk</div></div></div>
+        <div class="track"><span class="num">03</span><div class="info"><div class="nombre">Losing My Religion</div><div class="artista">R.E.M.</div></div></div>
+      </div>
+      <div class="extra-bloque">
+        <h2>// JUEGOS</h2>
+        <div class="linea-sub"></div>
+        <article class="juego"><h4>DOOM</h4><p>FPS clásico con diseño de niveles brutal.</p></article>
+        <article class="juego"><h4>MINECRAFT</h4><p>Sandbox infinito y base para pruebas técnicas.</p></article>
+        <article class="juego"><h4>TERRARIA</h4><p>Supervivencia 2D estratégica y desafiante.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="foro" class="container">
+    <p class="seccion-titulo">// FORO</p>
+    <div class="seccion-linea"></div>
+    <div class="hilos">
+      <article class="hilo"><span class="cat seg">SEG</span><div class="info"><h4>Hardening en Linux para devs</h4><p>Seguridad · 13 respuestas</p></div><div class="meta">Hoy</div></article>
+      <article class="hilo"><span class="cat ia">IA</span><div class="info"><h4>Modelos pequeños para local</h4><p>Machine Learning · 8 respuestas</p></div><div class="meta">Ayer</div></article>
+      <article class="hilo"><span class="cat juegos">GAMEDEV</span><div class="info"><h4>Física arcade en Godot</h4><p>Videojuegos · 5 respuestas</p></div><div class="meta">2 días</div></article>
+    </div>
+  </section>
+
+  <section id="contacto">
+    <div class="container contacto-wrap">
+      <h2>// CONTACTO</h2>
+      <p>¿Quieres colaborar con The KernelGarden? Escríbenos:</p>
+      <form class="contact-form" action="mailto:dabarrientos_1333@unihumboldt.edu.co" method="post" enctype="text/plain">
+        <div class="form-grupo"><label for="nombre">Nombre</label><input id="nombre" name="nombre" required /></div>
+        <div class="form-grupo"><label for="mensaje">Mensaje</label><textarea id="mensaje" name="mensaje" required></textarea></div>
+        <button type="submit" class="btn">Enviar</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="logo-footer">[ THE KERNELGARDEN ]</div>
+    <div class="links-footer">
+      <a href="#nosotros">Nosotros</a><a href="#proyectos">Proyectos</a><a href="#foro">Foro</a><a href="#extras">Música</a><a href="#contacto">Contacto</a>
+    </div>
+    <p class="copy">&copy; <span id="current-year">2025</span> The KernelGarden — Hecho con ☕ y demasiado café</p>
+  </footer>
+
+  <script src="main.js" defer></script>
+</body>
+</html>
